@@ -3,6 +3,9 @@ import { stat } from "fs";
 const dotenv = require('dotenv');
 import ready from "./listeners/ready";
 import status from "./listeners/status";
+import { Logger, LogManager } from './logger/logger';
+
+let logManager:LogManager = new LogManager('./logs') ;
 
 dotenv.config()
 
