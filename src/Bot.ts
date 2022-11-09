@@ -11,7 +11,7 @@ const token = process.env.BOT_TOKEN;
 
 
 
-const client = new Client ({
+const client = new Client({
     intents: []
 });
 
