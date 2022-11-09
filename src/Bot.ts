@@ -16,7 +16,7 @@ const client = new Client ({
 });
 
 ready(client)
-status(client)
+status(client) // set the status to Testing and Playing as the activity
 
 client.login(token);
 
