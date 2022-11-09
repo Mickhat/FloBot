@@ -1,6 +1,6 @@
 import { CommandInteraction, Client, Interaction } from "discord.js";
 import LogManager from "src/logger/logger";
-import { codeblocks, metafrage } from "../action/infoMessages";
+import { codeblocks, metafrage, about } from "../action/infoMessages";
 
 export default (client: Client, logger: LogManager): void => {
     client.on("interactionCreate", async (interaction: Interaction) => {
@@ -19,6 +19,8 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
         case 'codeblocks':
             codeblocks(client, interaction, logger.logger('Codeblocks'))
             return;
+        case 'about':
+            about(client, interaction, logger.logger('About'))
     }
 
 };

@@ -1,5 +1,6 @@
 import { Client, CommandInteraction } from 'discord.js'
 import { Logger } from 'src/logger/logger'
+import { EmbedBuilder } from 'discord.js';
 
 export async function metafrage(client: Client, interaction: CommandInteraction, logger: Logger) {
 
@@ -49,4 +50,37 @@ Codeblocks sind die beste Art, Code auf Discord zu teilen, und alle werden dir D
         logger.logSync("ERROR", "Codeblock-Info konnte nicht gesendet werden.")
     })
 
+}
+
+
+export async function about(client: Client, interaction: CommandInteraction, logger: Logger) {
+
+    if (!interaction.isRepliable() || !interaction.reply) {
+        logger.logSync("ERROR", "Gegebene interaction kann nicht beantwortet werden.")
+        return;
+    }
+
+    let exampleEmbed = new EmbedBuilder()
+	.setColor(0x0099FF)
+	.setTitle('Über mich')
+	.setAuthor({ name: 'Moderation Bot', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+	.setDescription('Wer hat mich entwickelt')
+	.setThumbnail('https://i.imgur.com/AfFp7pu.png')
+	.addFields(
+		{ name: 'Regular field title', value: 'Some value here' },
+		{ name: '\u200B', value: '\u200B' },
+		{ name: 'Inline field title', value: 'Some value here', inline: true },
+		{ name: 'Inline field title', value: 'Some value here', inline: true },
+	)
+	.addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
+	.setTimestamp()
+	.setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+
+    await interaction.reply({ 
+        embeds: [exampleEmbed]
+    }).then(() => {
+        logger.logSync("INFO", "About-info gesendet.")
+    }).catch(() => {
+        logger.logSync("ERROR", "About-Info konnte nicht gesendet werden.")
+    })
 }
