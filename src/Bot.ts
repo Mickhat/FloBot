@@ -7,8 +7,8 @@ import { Logger, LogManager } from './logger/logger';
 
 let logManager:LogManager = new LogManager('./logs') ;
 
-dotenv.config()
 
+dotenv.config()
 
 const token = process.env.BOT_TOKEN;
 
@@ -18,10 +18,7 @@ const client = new Client ({
     intents: []
 });
 
-ready(client)
-status(client) // set the status to Testing and Playing as the activity
+ready(client, logManager)
+status(client, logManager) // set the status to Testing and Playing as the activity
 
 client.login(token);
-
-
-console.log("Bot has been started")

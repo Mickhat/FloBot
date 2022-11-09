@@ -2,7 +2,7 @@
   "name": "moderation-bot",
   "version": "0.0.1",
   "description": "A Discord Bot written in TypeScript",
-  "main": "index.js",
+  "main": "src/Bot.ts",
   "author": "Mickhat",
   "license": "MIT",
   "dependencies": {

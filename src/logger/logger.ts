@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import {v4 as uuid} from 'uuid';
 import { join } from 'node:path';
+import path from 'node:path';
 
 import { format as formatDate } from 'date-fns';
 
@@ -16,6 +17,7 @@ interface Logger {
 class LogManager {
     constructor(path:string, name:string = uuid()) {
         this.filename = join(path, `${formatDate(new Date(), 'yyyy-MM-dd--HH-mm')}--${name}.log`)
+        if (!fs.existsSync(path)) fs.mkdirSync(path);
         fs.writeFileSync(this.filename, `${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')} Begin of log ${name}\n`)
     }
     logger(name:string) {
@@ -23,7 +25,7 @@ class LogManager {
     }
     async log<Promise>(type: "WARN" | "INFO" | "DEBUG" | "ERROR" | "LOG" | string,text: string) {
         return new Promise<void>(async (acc, dec) => {
-            text = `${type} [master ${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')}] ${text}`
+            text = `${type} [master ${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')}] ${text}\n`
             console.log(text)
             fs.appendFile(this.filename, text, { encoding: 'utf-8' }, (err) => {
                 if (err) {
@@ -34,7 +36,7 @@ class LogManager {
         })
     }
     logSync<LogManager>(type: "WARN" | "INFO" | "DEBUG" | "ERROR" | "LOG" | string, text: string) {
-        text = `${type} [master ${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')}] ${text}`
+        text = `${type} [master ${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')}] ${text}\n`
         console.log(text)
         fs.appendFileSync(this.filename, text, { encoding: 'utf-8'})
         return this;
@@ -53,7 +55,7 @@ class Logger {
     }
     async log<Promise>(type: "WARN" | "INFO" | "DEBUG" | "ERROR" | "LOG" | string,text: string) {
         return new Promise<void>(async (acc, dec) => {
-            text = `${type} [${this.logerName} ${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')}] ${text}`
+            text = `${type} [${this.logerName} ${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')}] ${text}\n`
             console.log(text)
             fs.appendFile(this.filename, text, { encoding: 'utf-8' }, (err) => {
                 if (err) {
@@ -64,7 +66,7 @@ class Logger {
         })
     }
     logSync<Logger>(type: "WARN" | "INFO" | "DEBUG" | "ERROR" | "LOG" | string,text: string) {
-        text = `${type} [${this.logerName} ${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')}] ${text}`
+        text = `${type} [${this.logerName} ${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')}] ${text}\n`
         console.log(text)
         fs.appendFileSync(this.filename, text, { encoding: 'utf-8'})
         return this;
