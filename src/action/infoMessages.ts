@@ -63,9 +63,9 @@ export async function about(client: Client, interaction: CommandInteraction, log
     let exampleEmbed = new EmbedBuilder()
 	.setColor(0x0099FF)
 	.setTitle('Über mich')
-	.setAuthor({ name: 'Moderation Bot', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+	.setAuthor({ name: 'Moderation Bot', url: 'https://discord.js.org' })
 	.setDescription('Wer hat mich entwickelt')
-	.setThumbnail('https://i.imgur.com/AfFp7pu.png')
+	// .setThumbnail('https://i.imgur.com/AfFp7pu.png')
 	.addFields(
 		{ name: 'Regular field title', value: 'Some value here' },
 		{ name: '\u200B', value: '\u200B' },
