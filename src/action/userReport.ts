@@ -13,7 +13,8 @@ export default async (interaction: discord.UserContextMenuCommandInteraction,
     let reportId = uuid()
 
     interaction.reply({
-        content: "Du bist dabei einen Nutzer zu reporten. Hier ist eine Vorschau des Berichts. Gebe bitte mehr Informationen an, damit wir schneller und geziehlter handeln können.",
+        content: `Du bist dabei einen Nutzer zu reporten. Hier ist eine Vorschau des Berichts. Gebe bitte mehr Informationen an, damit wir schneller und geziehlter handeln können.
+Setzt Du den Report fort und das Team stellt fest, das dieser bewusst falsch ist oder fahlässig versendet wurde, kannst Du selbst bestraft werden.`,
         embeds: [
             new discord.EmbedBuilder()
                 .setAuthor({
@@ -35,7 +36,7 @@ export default async (interaction: discord.UserContextMenuCommandInteraction,
             new discord.ActionRowBuilder<discord.SelectMenuBuilder>()
                 .addComponents(
                     new discord.SelectMenuBuilder()
-                        .setCustomId(`user_report_${reportId}_category`)
+                        .setCustomId(`report_${reportId}_category`)
                         .setPlaceholder('Verstoßene Regel / Kategorie angeben')
                         .addOptions(
                             {
