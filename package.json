@@ -12,6 +12,7 @@
     "discord.js": "^14.6.0",
     "dotenv": "^16.0.3",
     "nodemon": "^2.0.20",
+    "sqlite3": "^5.1.2",
     "uuid": "^9.0.0"
   },
   "scripts": {
