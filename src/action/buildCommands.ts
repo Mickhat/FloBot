@@ -22,7 +22,7 @@ export default [
         .setDescription('Ein Text über Metafragen.'),
     new SlashCommandBuilder().setName('codeblocks')
         .setDescription('Ein Text über Codeblocks'),
-        new SlashCommandBuilder().setName('about')
+    new SlashCommandBuilder().setName('about')
         .setDescription('About me'),
     /*
     Toggle-Role-Commands

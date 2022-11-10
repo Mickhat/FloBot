@@ -1,8 +1,6 @@
 import fs from 'node:fs';
 import {v4 as uuid} from 'uuid';
 import { join } from 'node:path';
-import path from 'node:path';
-
 import { format as formatDate } from 'date-fns';
 
 interface LogManager {
