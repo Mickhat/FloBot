@@ -1,20 +1,23 @@
 import discord, { ActionRow, ButtonBuilder } from 'discord.js';
 import { Logger } from '../logger/logger';
 
-let toggleRoles: Array<string> = process.env.TOGGLE_ROLES?.split(',') || [];
 
 /**
  * Creates a role choose panel with buttons
  * @param {discord.Interaction} interaction
  * @param { "global" | "once"} mode
  */
-export default async function createRoleChoose(interaction: discord.Interaction, mode: "global" | "once", logger: Logger) {
+export async function createRoleInterface(interaction: discord.CommandInteraction, mode: "global" | "once", logger: Logger) {
 
+    let toggleRoles: Array<string> = process.env.TOGGLE_ROLES?.split(',') || [];
     let buttons: Array<discord.ActionRowBuilder<ButtonBuilder>> = [];
-    let commandMode = mode;
+
+    logger.logSync("DEBUG", `Verfügbare Rollen: ${JSON.stringify(toggleRoles)}`)
 
     for (let i in toggleRoles) {
-        let rId = i
+        let rId = toggleRoles[i]
+
+        logger.logSync("DEBUG", `Erstelle Button für Rolle: ${rId}`)
 
         if (interaction == null) {
             logger.logSync("ERROR", "Interaction nicht gefunden...")
@@ -47,9 +50,9 @@ export default async function createRoleChoose(interaction: discord.Interaction,
     if (interaction.isRepliable()) interaction.reply({
         embeds: [
             new discord.EmbedBuilder()
-                .setTitle("Toggle roles")
+                .setTitle("Rollenübersicht")
                 .setDescription(
-                    (buttons.length == 0) ? "Es sind keine Rollen verfügbar" : "Drücke die + oder - Buttons, um dir eine Rolle zu geben oder zu entfernen.")
+                    (buttons.length == 0) ? "Es sind keine Rollen verfügbar" : "Hier sind alle Rollen, die du dir selbst geben oder nehmen kannst.\nDrücke die + oder - Buttons, um dir eine Rolle zu geben oder zu entfernen.")
                 .setFooter({
                     text: "Kontaktiere einen Administrator oder Moderator, wenn du Hilfe brauchst."
                 })
