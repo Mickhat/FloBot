@@ -1,6 +1,6 @@
 import { Client } from "discord.js";
 import { stat } from "fs";
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
 import ready from "./listeners/ready";
 import status from "./listeners/status";
 import interactionCreate from "./listeners/interactionCreate";
@@ -11,14 +11,14 @@ import { verbose } from 'sqlite3';
 const sqlite = verbose()
 
 
-let logManager: LogManager = new LogManager('./logs');
-let db_logger = logManager.logger('sqlite3')
+const logManager: LogManager = new LogManager('./logs');
+const db_logger = logManager.logger('sqlite3')
 
 dotenv.config()
 
 const token = process.env.BOT_TOKEN;
 
-let db = new sqlite.Database(process.env.DB_PATH ?? "./sqlite3.db",
+const db = new sqlite.Database(process.env.DB_PATH ?? "./sqlite3.db",
     (err) => {
         if (err) {
             db_logger.logSync("ERROR", `DB-Open failed: ${JSON.stringify(err)}`)
