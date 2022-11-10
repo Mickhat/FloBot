@@ -1,10 +1,7 @@
-import { Client, Colors, EmbedBuilder, ModalSubmitInteraction } from 'discord.js'
+import { ChannelType, Client, Colors, EmbedBuilder, ModalSubmitInteraction, TextBasedChannel, TextBasedChannelMixin } from 'discord.js'
 import { Database } from 'sqlite3'
 import { Logger } from '../logger/logger';
 
-interface result {
-
-}
 
 export default async (interaction: ModalSubmitInteraction, client: Client, db: Database, logger: Logger) => {
 
@@ -61,7 +58,8 @@ export default async (interaction: ModalSubmitInteraction, client: Client, db: D
             })
 
             interaction.guild?.channels.fetch(process.env.REPORT_CHANNEL_ID ?? "").then(async (channel) => {
-                if (!channel?.isTextBased()) {
+                if (!channel || channel?.type !== ChannelType.GuildText) {
+                    logger.logSync("ERROR", "Channel not found / not TextBased")
                     return;
                 }
                 channel.send({
