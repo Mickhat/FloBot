@@ -18,7 +18,7 @@ export default async (interaction: ModalSubmitInteraction, client: Client, db: D
         if (err) interaction.reply("Ein Fehler ist geschehen, kontaktiere bitte einen Mod.")
         else {
             interaction.reply({
-                content: "Du bist dabei einen Nutzer zu reporten. Hier ist eine Vorschau des Berichts. Gebe bitte mehr Informationen an, damit wir schneller und geziehlter handeln können.",
+                content: "Dein Report wurde an das Mod-Team übermittelt. Du kannst im neu erstellten Ticket Datails, Screenshots und ähnliches teilen.",
                 embeds: [
                     new EmbedBuilder()
                         .setAuthor({
