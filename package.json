@@ -2,14 +2,17 @@
   "name": "moderation-bot",
   "version": "0.0.1",
   "description": "A Discord Bot written in TypeScript",
-  "main": "index.js",
+  "main": "src/Bot.ts",
   "author": "Mickhat",
   "license": "MIT",
   "dependencies": {
     "@discordjs/rest": "^1.3.0",
+    "@types/uuid": "^8.3.4",
+    "date-fns": "^2.29.3",
     "discord.js": "^14.6.0",
     "dotenv": "^16.0.3",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "uuid": "^9.0.0"
   },
   "scripts": {
     "dev": "nodemon src/Bot.ts",

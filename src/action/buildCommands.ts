@@ -1,39 +1,31 @@
-import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType, SlashCommandUserOption, SlashCommandStringOption } from 'discord.js'
+import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType } from 'discord.js';
 
 export default [
     /*
-    Commands, um einen Nutzer zu reporten.
+    Report-System-Commands
     */
     new ContextMenuCommandBuilder().setType(ApplicationCommandType.Message)
         .setName('REPORT').setDMPermission(false),
     new ContextMenuCommandBuilder().setType(ApplicationCommandType.User)
         .setName('REPORT').setDMPermission(false),
     /*
-    Commands, um sich zu verifizieren / Captcha
+    Captcha-System-Commands
     */
     new SlashCommandBuilder().setName('verify').setDescription('Dich verifizieren lassen')
         .setDMPermission(false),
     new SlashCommandBuilder().setName('verify-button').setDescription('Einen Verifizieren-Button erstellen')
         .setDMPermission(false),
     /*
-    Info-Nachrichten
+    Info-Text-Commands
     */
     new SlashCommandBuilder().setName('metafrage')
-        .setDescription("Zeigt eine Nachricht über Metafragen an")
-        .setDMPermission(false)
-        .addUserOption((builder: SlashCommandUserOption) =>
-            builder.setName('Ping')
-                .setDescription('Der Nutzer, der gepingt werden soll.')
-                .setRequired(false)),
+        .setDescription('Ein Text über Metafragen.'),
     new SlashCommandBuilder().setName('codeblocks')
-        .setDescription("Zeigt eine Nachricht über Codeblocks an")
-        .setDMPermission(false)
-        .addUserOption((builder: SlashCommandUserOption) =>
-            builder.setName('Ping')
-                .setDescription('Der Nutzer, der gepingt werden soll.')
-                .setRequired(false)),
+        .setDescription('Ein Text über Codeblocks'),
+    new SlashCommandBuilder().setName('about')
+        .setDescription('About me'),
     /*
-    Role Toggle System
+    Toggle-Role-Commands
     */
     new SlashCommandBuilder().setName('role')
         .setDescription('Dir bestimmte Rollen geben / entfernen'),

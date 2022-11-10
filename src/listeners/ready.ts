@@ -1,14 +1,14 @@
 import { Client } from 'discord.js';
+import { LogManager } from '../logger/logger'
 
-export default (client: Client): void => {
+export default (client: Client, logger:LogManager): void => {
     client.on("ready", async () => {
         if (!client.user || !client.application) {
             return ;
             
         }
-  
 
-        console.log(`${client.user.username} is online.`);
+        logger.logSync("INFO", `${client.user.username}#${client.user.discriminator} ist online!`)
     })
     
 }
