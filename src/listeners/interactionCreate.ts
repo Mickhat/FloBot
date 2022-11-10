@@ -1,6 +1,6 @@
 import { CommandInteraction, Client, Interaction, ButtonInteraction } from "discord.js";
 import LogManager from "src/logger/logger";
-import { codeblocks, metafrage } from "../action/infoMessages";
+import { codeblocks, metafrage, about } from "../action/infoMessages";
 import { createRoleInterface } from '../action/roles_buttons_create'
 import { toggleRoles } from "../action/toggleRole";
 
@@ -31,6 +31,9 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
             createRoleInterface(interaction, "global", logger.logger('Toggle-Roles'))
             return;
 
+        case 'about':
+            about(client, interaction, logger.logger('About'))
+            return;
     }
 
 };
