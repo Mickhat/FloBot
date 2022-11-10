@@ -1,4 +1,4 @@
-import { CommandInteraction, Client, Interaction, ButtonInteraction, ContextMenuCommandInteraction, ApplicationCommandType, UserContextMenuCommandInteraction, ModalSubmitInteraction, SelectMenuInteraction } from "discord.js";
+import { CommandInteraction, Client, Interaction, ButtonInteraction, ContextMenuCommandInteraction, ApplicationCommandType, UserContextMenuCommandInteraction, ModalSubmitInteraction, SelectMenuInteraction, MessageContextMenuCommandInteraction } from "discord.js";
 import LogManager from "src/logger/logger";
 import { codeblocks, metafrage, about } from "../action/infoMessages";
 import { createRoleInterface } from '../action/roles_buttons_create'
@@ -8,6 +8,7 @@ import { Database } from 'sqlite3'
 
 import continueReport from "../action/continueReport";
 import finishReport from "../action/finishReport";
+import messageReport from "../action/messageReport";
 
 export default (client: Client, logger: LogManager, db: Database): void => {
     client.on("interactionCreate", async (interaction: Interaction) => {
@@ -19,6 +20,9 @@ export default (client: Client, logger: LogManager, db: Database): void => {
         }
         if (interaction.isContextMenuCommand() && interaction.commandType == ApplicationCommandType.User) {
             handleUserContextMenuCommand(client, interaction, logger, db)
+        }
+        if (interaction.isContextMenuCommand() && interaction.commandType == ApplicationCommandType.Message) {
+            handleMessageContextMenuCommand(client, interaction, logger, db)
         }
         if (interaction.isSelectMenu()) {
             handleSelectMenu(client, interaction, logger, db)
@@ -60,6 +64,12 @@ const handleButtonInteraction = async (client: Client, interaction: ButtonIntera
 const handleUserContextMenuCommand = async (client: Client, interaction: UserContextMenuCommandInteraction, logger: LogManager, db: Database) => {
     if (interaction.commandType == ApplicationCommandType.User && interaction.commandName == "REPORT") {
         startUserReport(interaction, client, db, logger.logger("Report-System"))
+    }
+}
+
+const handleMessageContextMenuCommand = async (client: Client, interaction: MessageContextMenuCommandInteraction, logger: LogManager, db: Database) => {
+    if (interaction.commandType == ApplicationCommandType.Message && interaction.commandName == "REPORT") {
+        messageReport(interaction, client, db, logger.logger("Report-System"))
     }
 }
 
