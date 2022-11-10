@@ -64,7 +64,7 @@ export async function about(client: Client, interaction: CommandInteraction, log
 	.setColor(0x0099FF)
 	.setTitle('Über mich')
 	.setAuthor({ name: 'Moderation Bot', url: 'https://discord.js.org' })
-	.setDescription('Wer hat mich entwickelt')
+	.setDescription('Wer mich entwickelt hat')
 	// .setThumbnail('https://i.imgur.com/AfFp7pu.png')
 	.addFields(
 		{ name: 'Regular field title', value: 'Some value here' },

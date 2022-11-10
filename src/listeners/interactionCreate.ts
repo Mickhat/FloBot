@@ -30,8 +30,7 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
         case 'role-force-button':
             createRoleInterface(interaction, "global", logger.logger('Toggle-Roles'))
             return;
-
-        case 'about':
+       case 'about':
             about(client, interaction, logger.logger('About'))
             return;
     }
