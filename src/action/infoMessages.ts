@@ -62,19 +62,19 @@ export async function about(client: Client, interaction: CommandInteraction, log
 
     let exampleEmbed = new EmbedBuilder()
 	.setColor(0x0099FF)
-	.setTitle('Über mich')
+	.setTitle('Wer mich entwickelt hat:')
 	.setAuthor({ name: 'Moderation Bot', url: 'https://discord.js.org' })
-	.setDescription('Wer mich entwickelt hat')
+	.setDescription('lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem \nlorem lorem')
 	// .setThumbnail('https://i.imgur.com/AfFp7pu.png')
 	.addFields(
-		{ name: 'Regular field title', value: 'Some value here' },
+		{ name: 'Github Repo:', value: 'Some value here' },
 		{ name: '\u200B', value: '\u200B' },
-		{ name: 'Inline field title', value: 'Some value here', inline: true },
-		{ name: 'Inline field title', value: 'Some value here', inline: true },
+		{ name: 'heecker', value: '<@768872955500953710>', inline: true },
+		{ name: 'oglimmer', value: '<@441658607818375183>', inline: true },
 	)
-	.addFields({ name: 'Inline field title', value: 'Some value here', inline: true })
+	.addFields({ name: 'Mickhat', value: '<@226223176269561857>', inline: true })
 	.setTimestamp()
-	.setFooter({ text: 'Some footer text here', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+	.setFooter({ text: '\u200B', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
 
     await interaction.reply({ 
         embeds: [exampleEmbed]
