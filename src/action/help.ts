@@ -133,7 +133,7 @@ export async function fourthPage(interaction: ButtonInteraction) {
                 'Um eine Umfrage zu erstellen, nutze **/voting**. Gebe dort nun deine Frage ein.\n' +
                 'Anschließen musst du deine Antwortmöglichkeiten eingeben. Gebe diese mit Komata getrennt __ohne Leerzeichen__ nach dem Komma ein. Du kannst bis zu 6 Antwortmöglichkeiten eintragen')
                 .setFooter({
-                    text: 'Seite 3/4'
+                    text: 'Seite 4/4'
                 })
         ],
         components: [
