@@ -63,7 +63,7 @@ export async function secondPage(interaction: ButtonInteraction) {
     interaction.update({
         embeds: [
             new EmbedBuilder().setTitle('Informationen erhalten')
-                .setDescription('Dieser Bot enthällt Befehle, die nur eine Nachricht mir Informationen verschicken.')
+                .setDescription('Dieser Bot enthält Befehle, die nur eine Nachricht mir Informationen verschicken.')
                 .addFields(
                     { name: '/about', value: 'Dieser Befehl zeigt dir Informationen über diesen Bot an.', inline: false },
                     { name: '/codeblocks', value: 'Diese Nachricht erklärt die Nutzung und Bedienung von Codeblocks.', inline: false },
@@ -96,7 +96,7 @@ export async function thirdPage(interaction: ButtonInteraction) {
     interaction.update({
         embeds: [
             new EmbedBuilder().setTitle('Nutzer melden')
-                .setDescription('Dieser Bot enthällt ein Melde-System. Dieses soll garantieren, dass Moderatoren schnell mitbekommen, wenn auf dem Server etwas passiert, was nicht in Ordnung ist. ' +
+                .setDescription('Dieser Bot enthält ein Melde-System. Dieses soll garantieren, dass Moderatoren schnell mitbekommen, wenn auf dem Server etwas passiert, was nicht in Ordnung ist. ' +
                 'Bist du der Meinung, dass etwas gegen unsere Regeln verstößt, kannst du die Nachricht rechtsklicken. Anschließen wählst du Apps > REPORT aus. ' +
                 'Gebe uns hier bitte noch ein paar Details. Was hat der Nutzer gemacht? Wähle erst die Kategorie aus und beschreibe dann den Vorfall kurz. ' +
                 'Bitte bewahre in jedem Fall Screenshots __vom ganzen Bildschirm__ auf. Wenn wir uns unsicher sind, ob dein Report der Richtigkeit entspricht, werden ' +
