@@ -24,6 +24,8 @@ export default [
         .setDescription('Ein Text über Codeblocks'),
     new SlashCommandBuilder().setName('about')
         .setDescription('About me'),
+    new SlashCommandBuilder().setName('help')
+        .setDescription('Was kann ich?'),
     /*
     Toggle-Role-Commands
     */

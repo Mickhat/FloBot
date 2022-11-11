@@ -62,17 +62,18 @@ export async function about(client: Client, interaction: CommandInteraction, log
 
     let exampleEmbed = new EmbedBuilder()
 	.setColor(0x0099FF)
-	.setTitle('Wer mich entwickelt hat:')
+	.setTitle('Etwas über mich')
 	.setAuthor({ name: 'Moderation Bot', url: 'https://discord.js.org' })
-	.setDescription('lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem \nlorem lorem')
+	.setDescription('Ich bin ein Discord-Bot, der für die Administration, Verwaltung und Moderation des Servers von <@950222367311937606> erstellt wurde. ' +
+    'Um zu sehen, was ich alles kann, nutze einfach /help.\n\n**__Meine Entwickler:__**')
 	// .setThumbnail('https://i.imgur.com/AfFp7pu.png')
 	.addFields(
-		{ name: 'Github Repo:', value: 'Some value here' },
-		{ name: '\u200B', value: '\u200B' },
-		{ name: 'heecker', value: '<@768872955500953710>', inline: true },
-		{ name: 'oglimmer', value: '<@441658607818375183>', inline: true },
+        { name: 'heeecker', value: '<@768872955500953710>\nheeecker#5770', inline: true },
+		{ name: 'oglimmer', value: '<@441658607818375183>\noglimmer#4256', inline: true },
+        { name: 'Mickhat', value: '<@226223176269561857>\nMickhat#1337', inline: true },
+        { name: '\u200B', value: '\u200B' },
+		{ name: 'Github Repo:', value: 'nicht öffentlich' },
 	)
-	.addFields({ name: 'Mickhat', value: '<@226223176269561857>', inline: true })
 	.setTimestamp()
 	.setFooter({ text: '\u200B', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
 

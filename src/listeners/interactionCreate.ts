@@ -1,4 +1,4 @@
-import { CommandInteraction, Client, Interaction, ButtonInteraction, ContextMenuCommandInteraction, ApplicationCommandType, UserContextMenuCommandInteraction, ModalSubmitInteraction, SelectMenuInteraction, MessageContextMenuCommandInteraction } from "discord.js";
+import { CommandInteraction, Client, Interaction, ButtonInteraction, ContextMenuCommandInteraction, ApplicationCommandType, UserContextMenuCommandInteraction, ModalSubmitInteraction, SelectMenuInteraction, MessageContextMenuCommandInteraction, EmbedBuilder } from "discord.js";
 import LogManager from "src/logger/logger";
 import { codeblocks, metafrage, about } from "../action/infoMessages";
 import { createRoleInterface } from '../action/roles_buttons_create'
@@ -10,6 +10,7 @@ import continueReport from "../action/continueReport";
 import finishReport from "../action/finishReport";
 import messageReport from "../action/messageReport";
 import voting from "../action/voting";
+import { fourthPage, helpIntroduction, mainHelpPage, secondPage, thirdPage } from "../action/help";
 
 export default (client: Client, logger: LogManager, db: Database): void => {
     client.on("interactionCreate", async (interaction: Interaction) => {
@@ -55,6 +56,9 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
         case 'voting':
             voting(client, interaction);
             return;
+        case 'help':
+            helpIntroduction(interaction)
+            return;
     }
 
 };
@@ -63,7 +67,20 @@ const handleButtonInteraction = async (client: Client, interaction: ButtonIntera
     if (/(addRole-|removeRole-)([0-9]+)/.test(interaction.customId)) {
         toggleRoles(client, interaction, logger.logger("Toggle-Roles"))
     }
-}
+    if (interaction.customId == 'help-page1') {
+        mainHelpPage(interaction)
+    }
+    if (interaction.customId == 'help-page2') {
+        secondPage(interaction)
+    }
+    if (interaction.customId == 'help-page3') {
+        thirdPage(interaction)
+    }
+    if (interaction.customId == 'help-page4') {
+        fourthPage(interaction)
+    }
+
+};
 
 const handleUserContextMenuCommand = async (client: Client, interaction: UserContextMenuCommandInteraction, logger: LogManager, db: Database) => {
     if (interaction.commandType == ApplicationCommandType.User && interaction.commandName == "REPORT") {
