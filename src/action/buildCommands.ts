@@ -30,5 +30,18 @@ export default [
     new SlashCommandBuilder().setName('role')
         .setDescription('Dir bestimmte Rollen geben / entfernen'),
     new SlashCommandBuilder().setName('role-force-button')
-        .setDescription('Einen Button zum verteilen von Rollen anzeigen')
+        .setDescription('Einen Button zum verteilen von Rollen anzeigen'),
+    /*
+    Voting
+    */
+    new SlashCommandBuilder().setName('voting')
+        .setDescription('Eine Umfrage / Abstimmung machen.')
+        .addStringOption(option =>
+            option.setName('question')
+                .setDescription('Die Frage')
+                .setRequired(true))
+        .addStringOption(option =>
+            option.setName('answers')
+                .setDescription('Die Antworten, mit Kommata getrennt')
+                .setRequired(true))
 ]

@@ -1,4 +1,4 @@
-import { Client } from "discord.js";
+import { Client, IntentsBitField } from "discord.js";
 import { stat } from "fs";
 import dotenv from 'dotenv';
 import ready from "./listeners/ready";
@@ -39,7 +39,11 @@ status INT NOT NULL)`)
 
 
 const client = new Client({
-    intents: []
+    intents: [
+        IntentsBitField.Flags.Guilds,
+        IntentsBitField.Flags.GuildMessageReactions,
+        IntentsBitField.Flags.MessageContent
+    ]
 });
 
 ready(client, logManager)

@@ -9,6 +9,7 @@ import { Database } from 'sqlite3'
 import continueReport from "../action/continueReport";
 import finishReport from "../action/finishReport";
 import messageReport from "../action/messageReport";
+import voting from "../action/voting";
 
 export default (client: Client, logger: LogManager, db: Database): void => {
     client.on("interactionCreate", async (interaction: Interaction) => {
@@ -50,6 +51,9 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
             return;
         case 'about':
             about(client, interaction, logger.logger('About'))
+            return;
+        case 'voting':
+            voting(client, interaction);
             return;
     }
 
