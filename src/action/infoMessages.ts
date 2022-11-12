@@ -85,3 +85,25 @@ export async function about(client: Client, interaction: CommandInteraction, log
         logger.logSync("ERROR", "About-Info konnte nicht gesendet werden.")
     })
 }
+
+export async function ping(client: Client, interaction: CommandInteraction, logger: Logger) {
+
+    if (!interaction.isRepliable() || !interaction.reply) {
+        logger.logSync("ERROR", "Gegebene interaction kann nicht beantwortet werden.")
+        return;
+    }
+
+
+     let sent = await interaction.reply({ content: 'Pinging...', fetchReply: true });
+     
+    interaction.editReply({
+      
+
+        content: `Current Bot latency:  ${client.ws.ping}ms\nRoundtrip latency: ${sent.createdTimestamp - interaction.createdTimestamp}ms`,
+
+    }).then(() => {
+    logger.logSync("INFO", "Pong wurde erfolgreich gesendet.")
+    }).catch(() => {
+    logger.logSync("ERROR", "Ping konnte nicht gesendet werden.")
+    })
+}

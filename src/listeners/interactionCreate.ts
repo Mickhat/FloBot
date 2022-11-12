@@ -1,6 +1,6 @@
 import { CommandInteraction, Client, Interaction, ButtonInteraction, ContextMenuCommandInteraction, ApplicationCommandType, UserContextMenuCommandInteraction, ModalSubmitInteraction, SelectMenuInteraction, MessageContextMenuCommandInteraction, EmbedBuilder } from "discord.js";
 import LogManager from "src/logger/logger";
-import { codeblocks, metafrage, about } from "../action/infoMessages";
+import { codeblocks, metafrage, about, ping } from "../action/infoMessages";
 import { createRoleInterface } from '../action/roles_buttons_create'
 import { toggleRoles } from "../action/toggleRole";
 import startUserReport from "../action/userReport"
@@ -58,6 +58,12 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
             return;
         case 'help':
             helpIntroduction(interaction)
+            return;
+        case 'voting':
+            voting(client, interaction);
+            return;
+        case 'ping':
+            ping(client, interaction, logger.logger('Ping'));
             return;
     }
 

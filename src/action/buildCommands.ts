@@ -26,6 +26,8 @@ export default [
         .setDescription('About me'),
     new SlashCommandBuilder().setName('help')
         .setDescription('Was kann ich?'),
+    new SlashCommandBuilder().setName('ping')
+        .setDescription('ping'),
     /*
     Toggle-Role-Commands
     */
