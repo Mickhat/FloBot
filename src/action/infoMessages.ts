@@ -61,23 +61,23 @@ export async function about(client: Client, interaction: CommandInteraction, log
     }
 
     let exampleEmbed = new EmbedBuilder()
-	.setColor(0x0099FF)
-	.setTitle('Etwas über mich')
-	.setAuthor({ name: 'Moderation Bot', url: 'https://discord.js.org' })
-	.setDescription('Ich bin ein Discord-Bot, der für die Administration, Verwaltung und Moderation des Servers von <@950222367311937606> erstellt wurde. ' +
-    'Um zu sehen, was ich alles kann, nutze einfach /help.\n\n**__Meine Entwickler:__**')
-	// .setThumbnail('https://i.imgur.com/AfFp7pu.png')
-	.addFields(
-        { name: 'heeecker', value: '<@768872955500953710>\nheeecker#5770', inline: true },
-		{ name: 'oglimmer', value: '<@441658607818375183>\noglimmer#4256', inline: true },
-        { name: 'Mickhat', value: '<@226223176269561857>\nMickhat#1337', inline: true },
-        { name: '\u200B', value: '\u200B' },
-		{ name: 'Github Repo:', value: 'nicht öffentlich' },
-	)
-	.setTimestamp()
-	.setFooter({ text: '\u200B', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+        .setColor(0x0099FF)
+        .setTitle('Etwas über mich')
+        .setAuthor({ name: 'Moderation Bot', url: 'https://discord.js.org' })
+        .setDescription('Ich bin ein Discord-Bot, der für die Administration, Verwaltung und Moderation des Servers von <@950222367311937606> erstellt wurde. ' +
+            'Um zu sehen, was ich alles kann, nutze einfach /help.\n\n**__Meine Entwickler:__**')
+        // .setThumbnail('https://i.imgur.com/AfFp7pu.png')
+        .addFields(
+            { name: 'heeecker', value: '<@768872955500953710>\nheeecker#5770', inline: true },
+            { name: 'oglimmer', value: '<@441658607818375183>\noglimmer#4256', inline: true },
+            { name: 'Mickhat', value: '<@226223176269561857>\nMickhat#1337', inline: true },
+            { name: '\u200B', value: '\u200B' },
+            { name: 'Github Repo:', value: 'nicht öffentlich' },
+        )
+        .setTimestamp()
+        .setFooter({ text: '\u200B', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
 
-    await interaction.reply({ 
+    await interaction.reply({
         embeds: [exampleEmbed]
     }).then(() => {
         logger.logSync("INFO", "About-info gesendet.")
@@ -94,16 +94,13 @@ export async function ping(client: Client, interaction: CommandInteraction, logg
     }
 
 
-     let sent = await interaction.reply({ content: 'Pinging...', fetchReply: true });
-     
+    let sent = await interaction.reply({ content: 'Pinging...', fetchReply: true });
+
     interaction.editReply({
-      
-
-        content: `Current Bot latency:  ${client.ws.ping}ms\nRoundtrip latency: ${sent.createdTimestamp - interaction.createdTimestamp}ms`,
-
+        content: `PONG!\nCurrent Bot latency: ${client.ws.ping}ms\nRoundtrip latency: ${sent.createdTimestamp - interaction.createdTimestamp}ms`,
     }).then(() => {
-    logger.logSync("INFO", "Pong wurde erfolgreich gesendet.")
+        logger.logSync("INFO", "Pong wurde erfolgreich gesendet.")
     }).catch(() => {
-    logger.logSync("ERROR", "Ping konnte nicht gesendet werden.")
+        logger.logSync("ERROR", "Ping konnte nicht gesendet werden.")
     })
 }
