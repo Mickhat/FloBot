@@ -1,4 +1,4 @@
-import { CommandInteraction, Client, Interaction, ButtonInteraction, ContextMenuCommandInteraction, ApplicationCommandType, UserContextMenuCommandInteraction, ModalSubmitInteraction, SelectMenuInteraction, MessageContextMenuCommandInteraction, EmbedBuilder } from "discord.js";
+import { CommandInteraction, Client, Interaction, ButtonInteraction, ContextMenuCommandInteraction, ApplicationCommandType, UserContextMenuCommandInteraction, ModalSubmitInteraction, SelectMenuInteraction, MessageContextMenuCommandInteraction, EmbedBuilder, InteractionType } from "discord.js";
 import LogManager from "src/logger/logger";
 import { codeblocks, metafrage, about, ping } from "../action/infoMessages";
 import { createRoleInterface } from '../action/roles_buttons_create'
@@ -11,6 +11,8 @@ import finishReport from "../action/finishReport";
 import messageReport from "../action/messageReport";
 import voting from "../action/voting";
 import { fourthPage, helpIntroduction, mainHelpPage, secondPage, thirdPage } from "../action/help";
+import { createTicket } from "../action/ticket-system";
+import { resourceUsage } from "process";
 
 export default (client: Client, logger: LogManager, db: Database): void => {
     client.on("interactionCreate", async (interaction: Interaction) => {
@@ -64,6 +66,18 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
             return;
         case 'ping':
             ping(client, interaction, logger.logger('Ping'));
+            return;
+        case 'ticket-create':
+            if (!interaction.guild || !interaction.member || !interaction.member.user.id) {
+                interaction.reply({ content: 'Ticket konnte nicht erstellt werden', ephemeral: true })
+                return;
+            }
+            let result = await createTicket(client, interaction.guild, interaction.member.user.id, logger.logger('ticket-system'))
+            if (typeof result == 'string') {
+                interaction.reply({ content: 'Ticket konnte nicht erstellt werden.', ephemeral: true })
+                return;
+            }
+            interaction.reply({ content: `Ticket erstellt. <#${result.id}>`, ephemeral: true})
             return;
     }
 

@@ -47,5 +47,17 @@ export default [
         .addStringOption(option =>
             option.setName('answers')
                 .setDescription('Die Antworten, mit Kommata getrennt')
-                .setRequired(true))
+                .setRequired(true)),
+    /*
+    Ticket-System
+    */
+    new SlashCommandBuilder().setName('ticket-create')
+            .setDescription('Erstellt einen Channel, wo du mit dem Support-Team kommunizieren kannst'),
+    new SlashCommandBuilder().setName('ticket-add')
+            .setDescription('Ein Mitglied in den Channel einladen')
+            .addUserOption(option => option.setName('target')
+                .setDescription('Der Nutzer, der hinzugefügt werden soll')
+                .setRequired(true)),
+    new SlashCommandBuilder().setName('ticket-close')
+            .setDescription('Das Ticket schließen')
 ]
