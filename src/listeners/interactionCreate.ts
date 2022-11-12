@@ -1,4 +1,4 @@
-import { CommandInteraction, Client, Interaction, ButtonInteraction, ContextMenuCommandInteraction, ApplicationCommandType, UserContextMenuCommandInteraction, ModalSubmitInteraction, SelectMenuInteraction, MessageContextMenuCommandInteraction, EmbedBuilder, InteractionType } from "discord.js";
+import { CommandInteraction, Client, Interaction, ButtonInteraction, ContextMenuCommandInteraction, ApplicationCommandType, UserContextMenuCommandInteraction, ModalSubmitInteraction, SelectMenuInteraction, MessageContextMenuCommandInteraction, EmbedBuilder, InteractionType, Guild, ChannelType, TextChannel, GuildBasedChannel, ActionRow, ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 import LogManager from "src/logger/logger";
 import { codeblocks, metafrage, about, ping } from "../action/infoMessages";
 import { createRoleInterface } from '../action/roles_buttons_create'
@@ -11,7 +11,7 @@ import finishReport from "../action/finishReport";
 import messageReport from "../action/messageReport";
 import voting from "../action/voting";
 import { fourthPage, helpIntroduction, mainHelpPage, secondPage, thirdPage } from "../action/help";
-import { createTicket } from "../action/ticket-system";
+import { createTicket, ticketAdd, ticketClose } from "../action/ticket-system";
 import { resourceUsage } from "process";
 
 export default (client: Client, logger: LogManager, db: Database): void => {
@@ -38,6 +38,7 @@ export default (client: Client, logger: LogManager, db: Database): void => {
 };
 
 const handleSlashCommand = async (client: Client, interaction: CommandInteraction, logger: LogManager) => {
+    let channel: GuildBasedChannel | null;
     // handle slash command here
     switch (interaction.commandName) {
         case 'metafrage':
@@ -77,7 +78,49 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
                 interaction.reply({ content: 'Ticket konnte nicht erstellt werden.', ephemeral: true })
                 return;
             }
-            interaction.reply({ content: `Ticket erstellt. <#${result.id}>`, ephemeral: true})
+            interaction.reply({ content: `Ticket erstellt. <#${result.id}>`, ephemeral: true })
+            return;
+        case 'ticket-add':
+            if (!interaction.guild || !interaction.member || !interaction.member.user.id) {
+                interaction.reply({ content: 'Ticket konnte nicht erstellt werden', ephemeral: true })
+                return;
+            }
+            channel = await interaction.guild.channels.fetch(interaction.channelId)
+            if (!channel || !/ticket-[0-9]{4}/.test(channel?.name || "")) {
+                interaction.reply({
+                    content: 'Du kannst den Befehl nur in Tickets nutzen',
+                    ephemeral: true
+                })
+                return;
+            }
+
+            if (channel.type != ChannelType.GuildText) return;
+            ticketAdd(interaction.options?.get('target')?.value?.toString() ?? interaction.member.user.id, channel)
+            interaction.reply({
+                content: 'Fertig!',
+                ephemeral: true,
+            })
+            return;
+        case 'ticket-close':
+            if (!interaction.guild || !interaction.member || !interaction.member.user.id) {
+                interaction.reply({ content: 'Ticket konnte nicht erstellt werden', ephemeral: true })
+                return;
+            }
+            channel = await interaction.guild.channels.fetch(interaction.channelId)
+            if (!channel || !/ticket-[0-9]{4}/.test(channel?.name || "")) {
+                interaction.reply({
+                    content: 'Du kannst den Befehl nur in Tickets nutzen',
+                    ephemeral: true
+                })
+                return;
+            }
+
+            if (channel.type != ChannelType.GuildText) return;
+            ticketClose(channel)
+            interaction.reply({
+                content: 'Fertig!',
+                ephemeral: true,
+            })
             return;
     }
 
@@ -98,6 +141,25 @@ const handleButtonInteraction = async (client: Client, interaction: ButtonIntera
     }
     if (interaction.customId == 'help-page4') {
         fourthPage(interaction)
+    }
+    if (interaction.customId == 'ticket-delete') {
+        interaction.reply({
+            content: 'Lösche Ticket',
+            ephemeral: true,
+            components: [
+                new ActionRowBuilder<ButtonBuilder>()
+                    .addComponents(
+                        new ButtonBuilder()
+                            .setLabel('Bestätigen')
+                            .setStyle(ButtonStyle.Danger)
+                            .setCustomId('ticket-delete-confirm')
+                    )
+            ]
+        })
+        
+    }
+    if (interaction.customId == 'ticket-delete-confirm') {
+        interaction.message.channel.delete()
     }
 
 };

@@ -1,10 +1,10 @@
-import { ChannelType, Client, Guild, GuildMember, Message, PermissionFlagsBits } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, Guild, GuildChannel, GuildMember, GuildTextBasedChannel, Message, PermissionFlagsBits, TextChannel } from 'discord.js'
 import { readFileSync } from 'fs'
 import { Logger } from 'src/logger/logger'
 
 
-export async function createTicket(client:Client, guild:Guild, memberId: string, logger: Logger, name:string | undefined = undefined) {
-    
+export async function createTicket(client: Client, guild: Guild, memberId: string, logger: Logger, name: string | undefined = undefined) {
+
 
     if (name == undefined) name = name_gen()
 
@@ -17,7 +17,7 @@ export async function createTicket(client:Client, guild:Guild, memberId: string,
 
     let channel = await guild.channels.create({
         type: ChannelType.GuildText,
-        name: `${name}--ticket`,
+        name: `ticket-${name}`,
         permissionOverwrites: [
             {
                 id: guild.roles.everyone.id,
@@ -28,18 +28,6 @@ export async function createTicket(client:Client, guild:Guild, memberId: string,
                     PermissionFlagsBits.SendMessages,
                     // Keine Nachrichten lesen
                     PermissionFlagsBits.ReadMessageHistory
-                ]
-            },
-            {
-                id: supporter_role.id,
-                allow: [
-                    PermissionFlagsBits.ViewChannel,
-                    PermissionFlagsBits.ReadMessageHistory,
-                    PermissionFlagsBits.SendMessages,
-                    PermissionFlagsBits.AddReactions,
-                    PermissionFlagsBits.AttachFiles,
-                    PermissionFlagsBits.EmbedLinks,
-                    PermissionFlagsBits.ManageChannels
                 ]
             },
             {
@@ -56,7 +44,19 @@ export async function createTicket(client:Client, guild:Guild, memberId: string,
                     PermissionFlagsBits.CreatePrivateThreads,
                     PermissionFlagsBits.CreatePublicThreads
                 ]
-            }
+            },
+            {
+                id: supporter_role.id,
+                allow: [
+                    PermissionFlagsBits.ViewChannel,
+                    PermissionFlagsBits.ReadMessageHistory,
+                    PermissionFlagsBits.SendMessages,
+                    PermissionFlagsBits.AddReactions,
+                    PermissionFlagsBits.AttachFiles,
+                    PermissionFlagsBits.EmbedLinks,
+                    PermissionFlagsBits.ManageChannels
+                ]
+            },
         ]
     })
 
@@ -69,22 +69,54 @@ ${supporter_role.toString()} <@${memberId}>`
 
 }
 
+export async function ticketAdd(memberId: string, channel: TextChannel) {
+
+    channel.permissionOverwrites.create(memberId, {
+        ViewChannel: true,
+        ReadMessageHistory: true,
+        AttachFiles: true,
+        EmbedLinks: true,
+        SendMessages: true,
+        CreatePublicThreads: false,
+        CreatePrivateThreads: false,
+        CreateInstantInvite: false,
+    })
+
+    channel.send(`<@${memberId}> wurde hinzugefügt.`)
+
+}
+
+export async function ticketClose(channel: TextChannel) {
+
+    channel.edit({ name: 'closed-' + channel.name.split('-')[1], })
+    channel.permissionOverwrites.cache.forEach((perms) => {
+        perms.edit({
+            SendMessages: false
+        })
+    })
+
+    channel.send({
+        content: 'Ticket geschlossen.\nDas Ticket kann frühstens nach einem Tag gelöscht werden.',
+        components: [
+            new ActionRowBuilder<ButtonBuilder>()
+                .addComponents(
+                    new ButtonBuilder()
+                        .setCustomId('ticket-delete')
+                        .setLabel('Löschen')
+                        .setEmoji('🗑️')
+                        .setStyle(ButtonStyle.Danger),
+                )
+        ]
+    })
+
+}
+
 function name_gen() {
 
-    let animals: string[] = readFileSync('./utils/animals.txt', {
-        encoding: 'utf-8'
-    }).split('\n')
+    let number1 = Math.floor(Math.random() * 10)
+    let number2 = Math.floor(Math.random() * 10)
+    let number3 = Math.floor(Math.random() * 10)
+    let number4 = Math.floor(Math.random() * 10)
 
-    let animal1 = animals[Math.floor(Math.random() * animals.length)]
-    let animal2;
-    do {
-        animal2 = animals[Math.floor(Math.random() * animals.length)]
-    } while (animal1 === animal2)
-    let animal3;
-    do {
-        animal3 = animals[Math.floor(Math.random() * animals.length)]
-    } while (animal1 === animal3 || animal2 == animal3)
-
-    return `${animal1}-${animal2}-${animal3}`
-
+    return `${number1}${number2}${number3}${number4}`
 }
