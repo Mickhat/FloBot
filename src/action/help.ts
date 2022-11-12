@@ -69,6 +69,7 @@ export async function secondPage(interaction: ButtonInteraction) {
                     { name: '/codeblocks', value: 'Diese Nachricht erklärt die Nutzung und Bedienung von Codeblocks.', inline: false },
                     { name: '/help', value: 'Die Hilfe-Seite dieses Bots', inline: false },
                     { name: '/metafrage', value: 'Diese Nachricht erklärt, was eine Metafrage ist und warum man sie nicht stellen sollte.', inline: false },
+                    { name: '/ping', value: 'Prüft, ob der Bot online ist', inline: false },
                 )
                 .setFooter({
                     text: 'Seite 2/4'
@@ -143,7 +144,7 @@ export async function fourthPage(interaction: ButtonInteraction) {
                     .setLabel('Vorherige Seite')
                     .setEmoji('◀️')
                     .setStyle(ButtonStyle.Primary)
-                    .setCustomId(`help-page2`)
+                    .setCustomId(`help-page3`)
                 )
         ]
     })
