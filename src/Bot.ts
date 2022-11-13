@@ -7,6 +7,7 @@ import interactionCreate from "./listeners/interactionCreate";
 import { Logger, LogManager } from './logger/logger';
 import registerCommands from './action/registerCommands'
 import { verbose } from 'sqlite3';
+import message from "./listeners/message";
 
 const sqlite = verbose()
 
@@ -42,7 +43,8 @@ const client = new Client({
     intents: [
         IntentsBitField.Flags.Guilds,
         IntentsBitField.Flags.GuildMessageReactions,
-        IntentsBitField.Flags.MessageContent
+        IntentsBitField.Flags.MessageContent,
+        IntentsBitField.Flags.GuildMessages,
     ]
 });
 
@@ -50,5 +52,6 @@ ready(client, logManager)
 status(client, logManager) // set the status to Testing and Playing as the activity
 interactionCreate(client, logManager, db)
 registerCommands(client, logManager.logger('Command-Registrierung'))
+message(client, logManager.logger('Message-Logger'))
 
 client.login(token);
