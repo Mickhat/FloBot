@@ -1,6 +1,7 @@
 import { Client, CommandInteraction } from 'discord.js'
 import { Logger } from 'src/logger/logger'
 import { EmbedBuilder } from 'discord.js';
+import fs from 'fs'
 
 export async function metafrage(client: Client, interaction: CommandInteraction, logger: Logger) {
 
@@ -60,6 +61,15 @@ export async function about(client: Client, interaction: CommandInteraction, log
         return;
     }
 
+    let buildInfo = ""
+
+    if (fs.existsSync('./.build-info')) {
+        buildInfo = fs.readFileSync('./.build-info', { encoding: 'utf-8' })
+    }
+    else {
+        buildInfo = `.build-info konnte nicht gefunden werden`
+    }
+
     let exampleEmbed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle('Etwas über mich')
@@ -72,7 +82,7 @@ export async function about(client: Client, interaction: CommandInteraction, log
             { name: 'oglimmer', value: '<@441658607818375183>\noglimmer#4256', inline: true },
             { name: 'Mickhat', value: '<@226223176269561857>\nMickhat#1337', inline: true },
             { name: '\u200B', value: '\u200B' },
-            { name: 'Github Repo:', value: 'nicht öffentlich' },
+            { name: 'Github Build:', value: buildInfo },
         )
         .setTimestamp()
         .setFooter({ text: '\u200B', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
