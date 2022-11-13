@@ -28,14 +28,14 @@ export default async (client: Client, logger: Logger) => {
                     .setAuthor({
                         name: `${oldMsg.author?.username}#${oldMsg.author?.discriminator} - #${oldMsg.author?.id}`,
                     })
-                    .setDescription(oldMsg.content)
+                    .setDescription(oldMsg.content || '<kein Inhalt>')
                     .setColor(Colors.Yellow)
                     .setTimestamp(oldMsg.createdTimestamp),
                 new EmbedBuilder()
                     .setAuthor({
                         name: `${newMsg.author?.username}#${newMsg.author?.discriminator}`,
                     })
-                    .setDescription(newMsg.content)
+                    .setDescription(newMsg.content || '<kein Inhalt>')
                     .setColor(Colors.Green)
                     .setTimestamp(newMsg.editedTimestamp),
             ],
@@ -68,7 +68,7 @@ export default async (client: Client, logger: Logger) => {
                     .setAuthor({
                         name: `${msg.author?.username}#${msg.author?.discriminator} - #${msg.author?.id}`,
                     })
-                    .setDescription(msg.content)
+                    .setDescription(msg.content || '<kein Inhalt>')
                     .setColor(Colors.Red)
                     .setTimestamp(msg.createdTimestamp),
             ],
