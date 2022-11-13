@@ -1,0 +1,17 @@
+name: continuous-deploy
+
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Trigger Re-Deploy Stage
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'http://mickhat.xyz:60010/cgi-bin/redeploy?type=flo-bot'
+          method: 'GET'
