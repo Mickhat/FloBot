@@ -28,7 +28,6 @@ export default [
         .setDescription('Was kann ich?'),
     new SlashCommandBuilder().setName('ping')
         .setDescription('ping'),
-    ,
     /*
     Toggle-Role-Commands
     */
@@ -60,5 +59,5 @@ export default [
                 .setDescription('Der Nutzer, der hinzugefügt werden soll')
                 .setRequired(true)),
     new SlashCommandBuilder().setName('ticket-close')
-            .setDescription('Das Ticket schließen')
+            .setDescription('Das Ticket schließen') /* */
 ]

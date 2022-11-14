@@ -9,7 +9,7 @@ import { Logger } from '../logger/logger';
  */
 export async function createRoleInterface(interaction: discord.CommandInteraction, mode: "global" | "once", logger: Logger) {
 
-    let toggleRoles: Array<string> = process.env.TOGGLE_ROLES?.split(',') || [];
+    let toggleRoles: Array<string> = process.env.TOGGLE_ROLES?.split(',').filter(val => val != "") || [];
     let buttons: Array<discord.ActionRowBuilder<ButtonBuilder>> = [];
 
     logger.logSync("DEBUG", `Verfügbare Rollen: ${JSON.stringify(toggleRoles)}`)
@@ -28,7 +28,7 @@ export async function createRoleInterface(interaction: discord.CommandInteractio
             return;
         }
         let role = await interaction.guild.roles.fetch(rId)
-        if (role == null) {
+        if (role == null || role.name == null) {
             logger.logSync("ERROR", "Rolle nicht gefunden")
             return;
         }
