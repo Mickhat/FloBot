@@ -1,4 +1,4 @@
-import { CommandInteraction, Client, Interaction, ButtonInteraction, ContextMenuCommandInteraction, ApplicationCommandType, UserContextMenuCommandInteraction, ModalSubmitInteraction, SelectMenuInteraction, MessageContextMenuCommandInteraction, EmbedBuilder, InteractionType, Guild, ChannelType, TextChannel, GuildBasedChannel, ActionRow, ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+import { CommandInteraction, Client, Interaction, ButtonInteraction, ContextMenuCommandInteraction, ApplicationCommandType, UserContextMenuCommandInteraction, ModalSubmitInteraction, SelectMenuInteraction, MessageContextMenuCommandInteraction, EmbedBuilder, InteractionType, Guild, ChannelType, TextChannel, GuildBasedChannel, ActionRow, ActionRowBuilder, ButtonBuilder, ButtonStyle, AutocompleteInteraction } from "discord.js";
 import LogManager from "src/logger/logger";
 import { codeblocks, metafrage, about, ping } from "../action/infoMessages";
 import { createRoleInterface } from '../action/roles_buttons_create'
@@ -33,6 +33,9 @@ export default (client: Client, logger: LogManager, db: Database): void => {
         }
         if (interaction.isModalSubmit()) {
             handleModalSubmit(client, interaction, logger, db)
+        }
+        if (interaction.type == InteractionType.ApplicationCommandAutocomplete) {
+            handleAutoComplete(client, interaction, logger, db)
         }
     });
 };
@@ -186,4 +189,8 @@ const handleModalSubmit = async (client: Client, interaction: ModalSubmitInterac
     if (/report_.+_finish/.test(interaction.customId)) {
         finishReport(interaction, client, db, logger.logger('Report'))
     }
+}
+
+const handleAutoComplete = async (client: Client, interaction: AutocompleteInteraction, logger: LogManager, db: Database) => {
+    
 }
