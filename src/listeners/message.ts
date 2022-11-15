@@ -7,6 +7,9 @@ export default async (client: Client, logger: Logger) => {
 
     client.on('messageUpdate', async (oldMsg, newMsg) => {
 
+        if (oldMsg.author?.bot) return;
+        if (newMsg.author?.bot) return;
+
         logger.logSync("INFO", "messageUpdate")
 
         let logChannel = await newMsg.guild?.channels.fetch(process.env.MESSAGE_LOGS ?? "")

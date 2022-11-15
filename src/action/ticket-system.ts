@@ -56,7 +56,7 @@ export async function createTicket(client: Client, guild: Guild, memberId: strin
                     PermissionFlagsBits.EmbedLinks,
                     PermissionFlagsBits.ManageChannels
                 ]
-            },
+            }
         ]
     })
 

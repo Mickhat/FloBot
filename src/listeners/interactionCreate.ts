@@ -17,7 +17,7 @@ import { resourceUsage } from "process";
 export default (client: Client, logger: LogManager, db: Database): void => {
     client.on("interactionCreate", async (interaction: Interaction) => {
         if (interaction.isCommand()) {
-            await handleSlashCommand(client, interaction, logger);
+            handleSlashCommand(client, interaction, logger);
         }
         if (interaction.isButton()) {
             handleButtonInteraction(client, interaction, logger)
@@ -76,6 +76,7 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
                 interaction.reply({ content: 'Ticket konnte nicht erstellt werden', ephemeral: true })
                 return;
             }
+            console.log(interaction.member.user.id)
             let result = await createTicket(client, interaction.guild, interaction.member.user.id, logger.logger('ticket-system'))
             if (typeof result == 'string') {
                 interaction.reply({ content: 'Ticket konnte nicht erstellt werden.', ephemeral: true })
