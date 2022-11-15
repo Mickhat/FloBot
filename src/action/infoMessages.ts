@@ -21,7 +21,7 @@ __Stelle deine Frage direkt, ohne erstmal nach einem Experten zu suchen. Dies er
     }).then(() => {
         logger.logSync("INFO", "Metafragen-Info gesendet.")
     }).catch(() => {
-        logger.logSync("ERROR", "Metafragen-Info konnte nicht gesendet werden.")
+        logger.logSync("ERROR", "Metafragen-Info konnte nicht gesendet werden!")
     })
 
 }
