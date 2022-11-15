@@ -1,4 +1,11 @@
-import { CommandInteraction, Client, Interaction, ButtonInteraction, ContextMenuCommandInteraction, ApplicationCommandType, UserContextMenuCommandInteraction, ModalSubmitInteraction, SelectMenuInteraction, MessageContextMenuCommandInteraction, EmbedBuilder, InteractionType, Guild, ChannelType, TextChannel, GuildBasedChannel, ActionRow, ActionRowBuilder, ButtonBuilder, ButtonStyle, AutocompleteInteraction } from "discord.js";
+import {
+    CommandInteraction, Client, Interaction,
+    ButtonInteraction, ApplicationCommandType, UserContextMenuCommandInteraction,
+    ModalSubmitInteraction, SelectMenuInteraction, MessageContextMenuCommandInteraction,
+    InteractionType, ChannelType, GuildBasedChannel,
+    ActionRowBuilder, ButtonBuilder, ButtonStyle,
+    AutocompleteInteraction
+} from "discord.js";
 import LogManager from "src/logger/logger";
 import { codeblocks, metafrage, about, ping } from "../action/infoMessages";
 import { createRoleInterface } from '../action/roles_buttons_create'
@@ -12,7 +19,6 @@ import messageReport from "../action/messageReport";
 import voting from "../action/voting";
 import { fourthPage, helpIntroduction, mainHelpPage, secondPage, thirdPage } from "../action/help";
 import { createTicket, ticketAdd, ticketClose } from "../action/ticket-system";
-import { resourceUsage } from "process";
 
 export default (client: Client, logger: LogManager, db: Database): void => {
     client.on("interactionCreate", async (interaction: Interaction) => {
@@ -160,7 +166,7 @@ const handleButtonInteraction = async (client: Client, interaction: ButtonIntera
                     )
             ]
         })
-        
+
     }
     if (interaction.customId == 'ticket-delete-confirm') {
         interaction.message.channel.delete()
@@ -193,5 +199,5 @@ const handleModalSubmit = async (client: Client, interaction: ModalSubmitInterac
 }
 
 const handleAutoComplete = async (client: Client, interaction: AutocompleteInteraction, logger: LogManager, db: Database) => {
-    
+
 }
