@@ -28,7 +28,6 @@ export default [
         .setDescription('Was kann ich?'),
     new SlashCommandBuilder().setName('ping')
         .setDescription('ping'),
-    ,
     /*
     Toggle-Role-Commands
     */
