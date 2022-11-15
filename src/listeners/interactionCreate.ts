@@ -19,6 +19,7 @@ import messageReport from "../action/messageReport";
 import voting from "../action/voting";
 import { fourthPage, helpIntroduction, mainHelpPage, secondPage, thirdPage } from "../action/help";
 import { createTicket, ticketAdd, ticketClose } from "../action/ticket-system";
+import { meme }  from "../action/meme";
 
 export default (client: Client, logger: LogManager, db: Database): void => {
     client.on("interactionCreate", async (interaction: Interaction) => {
@@ -76,6 +77,9 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
             return;
         case 'ping':
             ping(client, interaction, logger.logger('Ping'));
+            return;
+        case 'meme':
+            meme(client, interaction, logger.logger('meme'));
             return;
         case 'ticket-create':
             if (!interaction.guild || !interaction.member || !interaction.member.user.id) {
