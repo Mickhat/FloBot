@@ -9,12 +9,96 @@ export default [
     new ContextMenuCommandBuilder().setType(ApplicationCommandType.User)
         .setName('REPORT').setDMPermission(false),
     /*
-    Captcha-System-Commands
+    Mod-Commands
     */
-    new SlashCommandBuilder().setName('verify').setDescription('Dich verifizieren lassen')
-        .setDMPermission(false),
-    new SlashCommandBuilder().setName('verify-button').setDescription('Einen Verifizieren-Button erstellen')
-        .setDMPermission(false),
+    new SlashCommandBuilder().setName('warn')
+        .setDescription('Verwarnt eine Person')
+        .addUserOption(
+            opt => opt.setName('target')
+                .setDescription('Die Person, die verwarnt werden soll')
+                .setRequired(true)
+        )
+        .addStringOption(
+            opt => opt.setName('reason')
+                .setDescription('Der Grund für den /warn')
+                .setRequired(true)
+        )
+        .addIntegerOption(
+            opt => opt.setName('weight')
+                .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden.')
+                .setMinValue(0)
+                .setMaxValue(1)
+                .setRequired(true)
+        ),
+    new SlashCommandBuilder().setName('strike')
+        .setDescription('Verwarnt eine Person und erteilt einen Strike.')
+        .addUserOption(
+            opt => opt.setName('target')
+                .setDescription('Die Person, die einen Strike bekommen soll')
+                .setRequired(true)
+        )
+        .addStringOption(
+            opt => opt.setName('reason')
+                .setDescription('Der Grund für den /strike')
+                .setRequired(true)
+        )
+        .addIntegerOption(
+            opt => opt.setName('weight')
+                .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden')
+                .setMinValue(1)
+                .setMaxValue(4)
+                .setRequired(true)
+        ),
+    new SlashCommandBuilder().setName('mute')
+        .setDescription('Verbietet einer Person das Schreiben innerhalb eines Zeitraumes.')
+        .addUserOption(
+            opt => opt.setName('target')
+                .setDescription('Die Person, die gemuted werden soll')
+                .setRequired(true)
+        )
+        .addStringOption(
+            opt => opt.setName('reason')
+                .setDescription('Der Grund für den /mute')
+                .setRequired(true)
+        )
+        .addIntegerOption(
+            opt => opt.setName('weight')
+                .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden')
+                .setMinValue(2)
+                .setMaxValue(6)
+                .setRequired(true)
+        ),
+    new SlashCommandBuilder().setName('kick')
+        .setDescription('Schließt eine Person vom Server aus.')
+        .addUserOption(
+            opt => opt.setName('target')
+                .setDescription('Die Person, die gebannt werden soll')
+                .setRequired(true)
+        )
+        .addStringOption(
+            opt => opt.setName('reason')
+                .setDescription('Der Grund für den /ban')
+                .setRequired(true)
+        )
+        .addIntegerOption(
+            opt => opt.setName('weight')
+                .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden')
+                .setMinValue(6)
+                .setMaxValue(11)
+                .setRequired(true)
+        ),
+    new SlashCommandBuilder().setName('ban')
+        .setDescription('Entfernt eine Person final vom Server')
+        .addUserOption(
+            opt => opt.setName('target')
+                .setDescription('Die Person, die gebannt werden soll')
+                .setRequired(true)
+        )
+        .addStringOption(
+            opt => opt.setName('reason')
+                .setDescription('Der Grund für den /ban')
+                .setRequired(true)
+        ),
     /*
     Info-Text-Commands
     */
@@ -52,12 +136,12 @@ export default [
     Ticket-System
     */
     new SlashCommandBuilder().setName('ticket-create')
-            .setDescription('Erstellt einen Channel, wo du mit dem Support-Team kommunizieren kannst'),
+        .setDescription('Erstellt einen Channel, wo du mit dem Support-Team kommunizieren kannst'),
     new SlashCommandBuilder().setName('ticket-add')
-            .setDescription('Ein Mitglied in den Channel einladen')
-            .addUserOption(option => option.setName('target')
-                .setDescription('Der Nutzer, der hinzugefügt werden soll')
-                .setRequired(true)),
+        .setDescription('Ein Mitglied in den Channel einladen')
+        .addUserOption(option => option.setName('target')
+            .setDescription('Der Nutzer, der hinzugefügt werden soll')
+            .setRequired(true)),
     new SlashCommandBuilder().setName('ticket-close')
-            .setDescription('Das Ticket schließen') /* */
+        .setDescription('Das Ticket schließen') /* */
 ]
