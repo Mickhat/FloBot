@@ -85,7 +85,7 @@ export async function about(client: Client, interaction: CommandInteraction, log
             { name: 'Github Build:', value: buildInfo },
         )
         .setTimestamp()
-        .setFooter({ text: '\u200B', iconURL: 'https://i.imgur.com/AfFp7pu.png' });
+        .setFooter({ text: '\u200B', iconURL: 'https://cdn.discordapp.com/attachments/959462282939756624/1041868727613927424/flobot.png' });
 
     await interaction.reply({
         embeds: [exampleEmbed]
