@@ -3,11 +3,7 @@ name: continuous-deploy
 on:
   push:
     branches:
-<<<<<<< HEAD
       - 'master' 
-=======
-      - 'prod'
->>>>>>> 8bda48c215525b4587423222378d67457dc3a541
 
 jobs:
   docker:
@@ -17,5 +13,5 @@ jobs:
       - name: Trigger Re-Deploy Stage
         uses: fjogeleit/http-request-action@v1
         with:
-          url: 'http://mickhat.xyz:60100/cgi-bin/redeploy?type=flo-bot'
+          url: 'http://mickhat.xyz:60010/cgi-bin/redeploy?type=flo-bot'
           method: 'GET'

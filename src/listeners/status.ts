@@ -10,7 +10,7 @@ export default (client: Client, logger: LogManager): void => {
                 // You can find more information here: 
                 //https://discord.com/developers/docs/topics/gateway-events#activity-object-activity-types
             }],
-            status: 'dnd'
+            status: 'online'
         });
         logger.logSync("INFO", "Status wurde gesetzt.")
     })
