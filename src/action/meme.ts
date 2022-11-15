@@ -10,19 +10,28 @@ export async function meme(client: Client, interaction: CommandInteraction, logg
         return;
     }
 
-    let {data }  = await axios.get("https://meme-api.herokuapp.com/gimme/programmerhumor");
+    let subReddit = [
+        'techhumor',
+        'programmerhumor',
+        'ITMemes'
+    ]
+    
+    let pickSubReddit = subReddit[Math.floor(Math.random() * subReddit.length)]
+    let {data }  = await axios.get(`https://meme-api.herokuapp.com/gimme/${pickSubReddit}`);
 
     let postMeme = new EmbedBuilder()
     .setTitle(data.title)
     .setImage(data.url)
     .setURL(data.postLink)
     .setColor(Colors.Green)
+    .setTimestamp()
+    .setFooter({ text: `Meme von: ${data.subreddit}  • Upvotes: ${data.ups} ` })
 
     interaction.reply({
         embeds: [postMeme]
     }).then(() => {
         logger.logSync("INFO", "Meme wurde erfolgreich gesendet.")
     }).catch(() => {
-        logger.logSync("ERROR", "Ping konnte nicht gesendet werden.")
+        logger.logSync("ERROR", "Meme konnte nicht gesendet werden.")
     })
 }
