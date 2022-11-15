@@ -13,7 +13,7 @@ export async function metafrage(client: Client, interaction: CommandInteraction,
     interaction.reply({
         content: `**Metafragen** sind Fragen, welche oft vor einer richtigen Frage gestellt werden.
 Klassische Beispiele für Metafragen sind:
-- Kann mit jemand mit JavaScript helfen?
+- Kann mir jemand mit JavaScript helfen?
 - Wer kennt sich mit IP-Adressen aus?
 Solche Fragen verhindern eine schnelle Antwort auf die eigentliche Frage. Oft denkt jemand nicht, im Fachgebiet "gut genug" zu sein, kennt aber die Antwort und könnte trotzdem nicht antworten. Auch wenn sich jemand meldet, muss er erst auf die Antwort des Fragestellers warten, bis er antworten kann.
 __Stelle deine Frage direkt, ohne erstmal nach einem Experten zu suchen. Dies erspart dir Zeit und erhöht die Chance auf eine Antwort.__
