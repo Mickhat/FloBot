@@ -1,5 +1,4 @@
-import { Client, CommandInteraction, Emoji, escapeMarkdown, parseEmoji, ReactionEmoji } from 'discord.js'
-import { CLIENT_RENEG_WINDOW } from 'node:tls'
+import { Client, CommandInteraction, Emoji, escapeMarkdown } from 'discord.js'
 
 export default async (client: Client, interaction: CommandInteraction) => {
 

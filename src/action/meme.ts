@@ -1,6 +1,6 @@
 import { Client, CommandInteraction, DiscordAPIError } from 'discord.js'
 import { Logger } from 'src/logger/logger'
-import { EmbedBuilder, Message, Colors } from 'discord.js';
+import { EmbedBuilder, Colors } from 'discord.js';
 import axios from 'axios'
 
 export async function meme(client: Client, interaction: CommandInteraction, logger: Logger) {

@@ -1,4 +1,4 @@
-import { ChannelType, Client, Colors, EmbedBuilder, ModalSubmitInteraction, TextBasedChannel, TextBasedChannelMixin } from 'discord.js'
+import { ChannelType, Client, Colors, EmbedBuilder, ModalSubmitInteraction } from 'discord.js'
 import { Database } from 'sqlite3'
 import { Logger } from '../logger/logger';
 
