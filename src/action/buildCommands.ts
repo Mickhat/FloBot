@@ -112,7 +112,7 @@ export default [
         .setDescription('Was kann ich?'),
     new SlashCommandBuilder().setName('ping')
         .setDescription('ping'),
-        new SlashCommandBuilder().setName('meme')
+    new SlashCommandBuilder().setName('meme')
         .setDescription('Random memes von Reddit.'),
     /*
     Toggle-Role-Commands
