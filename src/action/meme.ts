@@ -17,9 +17,14 @@ export async function meme(client: Client, interaction: CommandInteraction, logg
     ]
     
     let pickSubReddit = subReddit[Math.floor(Math.random() * subReddit.length)]
+    
+    interaction.deferReply()
     let {data }  = await axios.get(`https://meme-api.herokuapp.com/gimme/${pickSubReddit}`);
 
     let postMeme = new EmbedBuilder()
+    .setAuthor({
+        name: data.author,
+    })
     .setTitle(data.title)
     .setImage(data.url)
     .setURL(data.postLink)
