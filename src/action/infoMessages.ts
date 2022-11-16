@@ -70,7 +70,7 @@ export async function about(client: Client, interaction: CommandInteraction, log
         buildInfo = `.build-info konnte nicht gefunden werden`
     }
 
-    let exampleEmbed = new EmbedBuilder()
+    let aboutEmbed = new EmbedBuilder()
         .setColor(0x0099FF)
         .setTitle('Etwas über mich')
         .setAuthor({ name: 'Moderation Bot', url: 'https://discord.js.org' })
@@ -87,13 +87,14 @@ export async function about(client: Client, interaction: CommandInteraction, log
         .setTimestamp()
         .setFooter({ text: '\u200B', iconURL: 'https://cdn.discordapp.com/attachments/959462282939756624/1041868727613927424/flobot.png' });
 
-    await interaction.reply({
-        embeds: [exampleEmbed]
-    }).then(() => {
+    try {
+        await interaction.reply({
+            embeds: [aboutEmbed]
+        });
         logger.logSync("INFO", "About-info gesendet.")
-    }).catch(() => {
-        logger.logSync("ERROR", "About-Info konnte nicht gesendet werden.")
-    })
+    } catch (err) {
+        logger.logSync("ERROR", `About-Info konnte nicht gesendet werden. ${err}`)
+    }
 }
 
 export async function ping(client: Client, interaction: CommandInteraction, logger: Logger) {
