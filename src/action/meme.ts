@@ -15,28 +15,29 @@ export async function meme(client: Client, interaction: CommandInteraction, logg
         'programmerhumor',
         'ITMemes'
     ]
-    
+
     let pickSubReddit = subReddit[Math.floor(Math.random() * subReddit.length)]
-    
+
     interaction.deferReply()
-    let {data }  = await axios.get(`https://meme-api.herokuapp.com/gimme/${pickSubReddit}`);
+    let { data } = await axios.get(`https://meme-api.herokuapp.com/gimme/${pickSubReddit}`);
 
     let postMeme = new EmbedBuilder()
-    .setAuthor({
-        name: data.author,
-    })
-    .setTitle(data.title)
-    .setImage(data.url)
-    .setURL(data.postLink)
-    .setColor(Colors.Green)
-    .setTimestamp()
-    .setFooter({ text: `Meme von: ${data.subreddit}  • Upvotes: ${data.ups} ` })
+        .setAuthor({
+            name: `/u/${data.author}`,
+        })
+        .setTitle(data.title)
+        .setImage(data.url)
+        .setURL(data.postLink)
+        .setColor(Colors.Green)
+        .setTimestamp()
+        .setFooter({ text: `/r/${data.subreddit}  • Upvotes: ${data.ups} ` })
 
-    interaction.reply({
-        embeds: [postMeme]
-    }).then(() => {
-        logger.logSync("INFO", "Meme wurde erfolgreich gesendet.")
-    }).catch(() => {
-        logger.logSync("ERROR", "Meme konnte nicht gesendet werden.")
-    })
+    try {
+        await interaction.reply({
+            embeds: [postMeme]
+        })
+        logger.logSync('INFO', 'Meme versendet')
+    } catch (e) {
+        logger.logSync('ERROR', `Meme konnte nicht gesendet werden. ${e}`)
+    }
 }
