@@ -70,7 +70,7 @@ export default [
         ),
     new SlashCommandBuilder().setName('kick')
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
-        .setDescription('Schließt eine Person vom Server aus.')
+        .setDescription('Kickt eine Person vom Server.')
         .addUserOption(
             opt => opt.setName('target')
                 .setDescription('Die Person, die gekickt werden soll')
