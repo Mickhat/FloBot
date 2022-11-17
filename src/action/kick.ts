@@ -20,7 +20,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: L
         client.guilds.fetch()
         client.users.fetch(target).then((dm =>
         dm.send(`Du wurdest von Florian Dalwigk's Server gekickt.\nGrund: ${reason}`))).catch(e => logger.logSync("ERROR", e))
-        //await interaction.guild?.members.kick(target, reason)
+        await interaction.guild?.members.kick(target, reason)
 
         interaction.reply({ embeds: [kickEmbed] })
         logger.logSync("Info", "Kick wurde erfolgreich ausgefuehrt")
