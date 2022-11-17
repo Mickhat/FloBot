@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, DiscordAPIError } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, CommandInteraction, DiscordAPIError } from 'discord.js'
 import { Logger } from 'src/logger/logger'
 import { EmbedBuilder, Colors } from 'discord.js';
 import axios from 'axios'
@@ -33,7 +33,15 @@ export async function meme(client: Client, interaction: CommandInteraction, logg
 
     try {
         await interaction.reply({
-            embeds: [postMeme]
+            embeds: [postMeme],
+            components: [
+                new ActionRowBuilder<ButtonBuilder>().addComponents(
+                    new ButtonBuilder().setCustomId('share')
+                        .setLabel('mit anderen Teilen')
+                        .setStyle(ButtonStyle.Primary)
+                )
+            ],
+            ephemeral: true,
         })
         logger.logSync('INFO', 'Meme versendet')
     } catch (e) {

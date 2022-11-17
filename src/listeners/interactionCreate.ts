@@ -6,7 +6,7 @@ import {
     ActionRowBuilder, ButtonBuilder, ButtonStyle,
     AutocompleteInteraction
 } from "discord.js";
-import LogManager from "src/logger/logger";
+import LogManager from "../logger/logger";
 import { codeblocks, metafrage, about, ping } from "../action/infoMessages";
 import { createRoleInterface } from '../action/roles_buttons_create'
 import { toggleRoles } from "../action/toggleRole";
@@ -20,6 +20,7 @@ import voting from "../action/voting";
 import { fourthPage, helpIntroduction, mainHelpPage, secondPage, thirdPage } from "../action/help";
 import { createTicket, ticketAdd, ticketClose } from "../action/ticket-system";
 import { meme }  from "../action/meme";
+import { autocomplete } from "../action/youtube";
 
 export default (client: Client, logger: LogManager, db: Database): void => {
     client.on("interactionCreate", async (interaction: Interaction) => {
@@ -175,6 +176,14 @@ const handleButtonInteraction = async (client: Client, interaction: ButtonIntera
     if (interaction.customId == 'ticket-delete-confirm') {
         interaction.message.channel.delete()
     }
+    if (interaction.customId == 'share') {
+        interaction.reply({
+            content: interaction.message.content ?? undefined,
+            embeds: [
+                ...interaction.message.embeds
+            ]
+        })
+    }
 
 };
 
@@ -203,5 +212,5 @@ const handleModalSubmit = async (client: Client, interaction: ModalSubmitInterac
 }
 
 const handleAutoComplete = async (client: Client, interaction: AutocompleteInteraction, logger: LogManager, db: Database) => {
-
+    autocomplete(client, interaction, db, logger.logger('yt-autocomplete'))
 }
