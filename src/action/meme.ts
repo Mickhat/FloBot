@@ -37,12 +37,12 @@ export async function meme(client: Client, interaction: CommandInteraction, logg
             components: [
                 new ActionRowBuilder<ButtonBuilder>().addComponents(
                     new ButtonBuilder().setCustomId('delete')
-                        .setLabel('mit anderen Teilen')
+                        .setLabel('Löschen')
                         .setStyle(ButtonStyle.Danger)
                         .setEmoji('🗑️')
                 )
             ],
-            ephemeral: true,
+            ephemeral: false,
         })
         logger.logSync('INFO', 'Meme versendet')
     } catch (e) {
