@@ -84,7 +84,7 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
             meme(client, interaction, logger.logger('meme'));
             return;
          case 'kick':
-            kick(client, interaction, logger.logger('meme'));
+            kick(client, interaction, logger.logger('kick'));
             return;
         case 'ticket-create':
             if (!interaction.guild || !interaction.member || !interaction.member.user.id) {
