@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType } from 'discord.js';
+import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType, PermissionFlagsBits  } from 'discord.js';
 
 export default [
     /*
@@ -69,24 +69,25 @@ export default [
                 .setRequired(true)
         ),
     new SlashCommandBuilder().setName('kick')
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
         .setDescription('Schließt eine Person vom Server aus.')
         .addUserOption(
             opt => opt.setName('target')
-                .setDescription('Die Person, die gebannt werden soll')
+                .setDescription('Die Person, die gekickt werden soll')
                 .setRequired(true)
         )
         .addStringOption(
             opt => opt.setName('reason')
-                .setDescription('Der Grund für den /ban')
-                .setRequired(true)
-        )
-        .addIntegerOption(
-            opt => opt.setName('weight')
-                .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden')
-                .setMinValue(6)
-                .setMaxValue(11)
+                .setDescription('Der Grund für den kick')
                 .setRequired(true)
         ),
+     //   .addIntegerOption(
+     //       opt => opt.setName('weight')
+     //           .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden')
+     //           .setMinValue(6)
+     //           .setMaxValue(11)
+     //           .setRequired(true)
+     //   ),
     new SlashCommandBuilder().setName('ban')
         .setDescription('Entfernt eine Person final vom Server')
         .addUserOption(
