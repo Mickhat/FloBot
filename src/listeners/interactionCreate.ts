@@ -20,7 +20,7 @@ import voting from "../action/voting";
 import { fourthPage, helpIntroduction, mainHelpPage, secondPage, thirdPage } from "../action/help";
 import { createTicket, ticketAdd, ticketClose } from "../action/ticket-system";
 import { meme }  from "../action/meme";
-import { autocomplete } from "../action/youtube";
+// import { autocomplete } from "../action/youtube";
 
 export default (client: Client, logger: LogManager, db: Database): void => {
     client.on("interactionCreate", async (interaction: Interaction) => {
@@ -212,5 +212,5 @@ const handleModalSubmit = async (client: Client, interaction: ModalSubmitInterac
 }
 
 const handleAutoComplete = async (client: Client, interaction: AutocompleteInteraction, logger: LogManager, db: Database) => {
-    autocomplete(client, interaction, db, logger.logger('yt-autocomplete'))
+    // autocomplete(client, interaction, db, logger.logger('yt-autocomplete'))
 }
