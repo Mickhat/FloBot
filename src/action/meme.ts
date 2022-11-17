@@ -36,9 +36,10 @@ export async function meme(client: Client, interaction: CommandInteraction, logg
             embeds: [postMeme],
             components: [
                 new ActionRowBuilder<ButtonBuilder>().addComponents(
-                    new ButtonBuilder().setCustomId('share')
+                    new ButtonBuilder().setCustomId('delete')
                         .setLabel('mit anderen Teilen')
-                        .setStyle(ButtonStyle.Primary)
+                        .setStyle(ButtonStyle.Danger)
+                        .setEmoji('🗑️')
                 )
             ],
             ephemeral: true,

@@ -176,13 +176,8 @@ const handleButtonInteraction = async (client: Client, interaction: ButtonIntera
     if (interaction.customId == 'ticket-delete-confirm') {
         interaction.message.channel.delete()
     }
-    if (interaction.customId == 'share') {
-        interaction.reply({
-            content: interaction.message.content ?? undefined,
-            embeds: [
-                ...interaction.message.embeds
-            ]
-        })
+    if (interaction.customId == 'delete') {
+        interaction.message.delete()
     }
 
 };
