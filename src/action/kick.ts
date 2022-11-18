@@ -16,10 +16,10 @@ export default async (client: Client, interaction: CommandInteraction, logger: L
     let kickEmbed = new EmbedBuilder()
     .setDescription(`<@${target.toString()}> wurde erfolgreich gekickt. Angegebener Grund:  ${reason}`)
     
-    client.guilds.fetch()
+    const sleep = (ms: number | undefined) => new Promise(r => setTimeout(r, ms));
     client.users.fetch(target).then((dm =>
     dm.send(`Du wurdest von Florian Dalwigk's Server gekickt.\nGrund: ${reason}`))).catch(e => logger.logSync("ERROR", e))
-
+    await sleep(250)
     try {
         
         await interaction.guild?.members.kick(target, reason)
