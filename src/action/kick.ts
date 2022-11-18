@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, EmbedBuilder, escapeMarkdown, GuildMember } from 'discord.js'
+import { Client, CommandInteraction, EmbedBuilder, escapeMarkdown } from 'discord.js'
 import message from 'src/listeners/message';
 import { Logger } from '../logger/logger'
 
@@ -14,7 +14,11 @@ export default async (client: Client, interaction: CommandInteraction, logger: L
     let reason = escapeMarkdown(interaction.options.get('reason', true).value?.toString() || "")
 
     let kickEmbed = new EmbedBuilder()
+    .setTitle("User wurde gekickt")
     .setDescription(`<@${target.toString()}> wurde erfolgreich gekickt. Angegebener Grund:  ${reason}`)
+    .setColor('Yellow')
+    .setAuthor({name: `Gekickt von: ${interaction.user.tag}`,})
+    .setTimestamp()
     
     const sleep = (ms: number | undefined) => new Promise(r => setTimeout(r, ms));
     client.users.fetch(target).then((dm =>
