@@ -31,7 +31,7 @@ export async function meme(client: Client, interaction: CommandInteraction, logg
         .setTimestamp()
         .setFooter({ text: `/r/${data.subreddit}  • Upvotes: ${data.ups} ` })
 
-    try {
+    try {      
         await interaction.reply({
             embeds: [postMeme],
             components: [
@@ -44,7 +44,7 @@ export async function meme(client: Client, interaction: CommandInteraction, logg
             ],
             ephemeral: false,
         })
-        logger.logSync('INFO', 'Meme versendet')
+        logger.logSync('INFO', 'Meme versendet') 
     } catch (e) {
         logger.logSync('ERROR', `Meme konnte nicht gesendet werden. ${e}`)
     }
