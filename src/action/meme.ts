@@ -31,7 +31,7 @@ export async function meme(client: Client, interaction: CommandInteraction, logg
         .setTimestamp()
         .setFooter({ text: `/r/${data.subreddit}  • Upvotes: ${data.ups} ` })
 
-    try {
+    try {      
         await interaction.reply({
             embeds: [postMeme],
             components: [
