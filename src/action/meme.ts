@@ -45,6 +45,12 @@ export async function meme(client: Client, interaction: CommandInteraction, logg
             ephemeral: false,
         })
         logger.logSync('INFO', 'Meme versendet')
+        setTimeout(() => {
+
+            interaction.editReply({ components: [] })
+            logger.logSync('INFO', 'Deleted delete-button')
+
+        }, 30000)
     } catch (e) {
         logger.logSync('ERROR', `Meme konnte nicht gesendet werden. ${e}`)
     }
