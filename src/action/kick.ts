@@ -1,5 +1,4 @@
 import { Client, CommandInteraction, EmbedBuilder, escapeMarkdown } from 'discord.js'
-import message from 'src/listeners/message';
 import { Logger } from '../logger/logger'
 
 
