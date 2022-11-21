@@ -8,6 +8,7 @@ import { Logger, LogManager } from './logger/logger';
 import registerCommands from './action/registerCommands'
 import { verbose } from 'sqlite3';
 import message from "./listeners/message";
+import path from "path";
 
 const sqlite = verbose()
 
@@ -19,25 +20,27 @@ dotenv.config()
 
 const token = process.env.BOT_TOKEN;
 
-const db = new sqlite.Database(process.env.DB_PATH ?? "./sqlite3.db",
-    (err) => {
-        if (err) {
-            db_logger.logSync("ERROR", `DB-Open failed: ${JSON.stringify(err)}`)
-            return;
-        }
-        db_logger.logSync("INFO", "DB opened.")
-        db.run(`CREATE TABLE IF NOT EXISTS reports (
-identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-uuid TEXT NOT NULL UNIQUE,
-creator_id TEXT NOT NULL,
-reported_id TEXT NOT NULL,
-category TEXT NOT NULL,
-description TEXT,
-message TEXT,
-status INT NOT NULL)`)
+const dbFile = process.env.DB_PATH ?? "./sqlite3.db";
 
-    })
+const db = new sqlite.Database(dbFile, (err) => {
+    if (err) {
+        db_logger.logSync("ERROR", `DB-Open failed. Tried to open ${path.resolve(dbFile)}, error: ${JSON.stringify(err)}`)
+        return;
+    }
+    db_logger.logSync("INFO", `DB opened ${path.resolve(dbFile)}`)
+})
 
+db.serialize(() => {
+    db.run(`CREATE TABLE IF NOT EXISTS reports (
+        identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+        uuid TEXT NOT NULL UNIQUE,
+        creator_id TEXT NOT NULL,
+        reported_id TEXT NOT NULL,
+        category TEXT NOT NULL,
+        description TEXT,
+        message TEXT,
+        status INT NOT NULL)`)
+})
 
 const client = new Client({
     intents: [
