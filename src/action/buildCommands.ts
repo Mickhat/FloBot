@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType, PermissionFlagsBits  } from 'discord.js';
+import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType, PermissionFlagsBits } from 'discord.js';
 
 export default [
     /*
@@ -81,7 +81,7 @@ export default [
                 .setDescription('Der Grund für den kick')
                 .setRequired(true)
         ),
-        new SlashCommandBuilder().setName('timeout')
+    new SlashCommandBuilder().setName('timeout')
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
         .setDescription('Versetzt eine Person in einem Timeout..')
         .addUserOption(
@@ -93,19 +93,19 @@ export default [
             opt => opt.setName('reason')
                 .setDescription('Der Grund für den Timeout')
                 .setRequired(true)
-                )
+        )
         .addStringOption(
             opt => opt.setName('zeit')
                 .setDescription('Wie lange soll der Timeout sein?')
                 .setRequired(true)
         ),
-     //   .addIntegerOption(
-     //       opt => opt.setName('weight')
-     //           .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden')
-     //           .setMinValue(6)
-     //           .setMaxValue(11)
-     //           .setRequired(true)
-     //   ),
+    //   .addIntegerOption(
+    //       opt => opt.setName('weight')
+    //           .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden')
+    //           .setMinValue(6)
+    //           .setMaxValue(11)
+    //           .setRequired(true)
+    //   ),
     new SlashCommandBuilder().setName('ban')
         .setDescription('Entfernt eine Person final vom Server')
         .addUserOption(
@@ -116,6 +116,18 @@ export default [
         .addStringOption(
             opt => opt.setName('reason')
                 .setDescription('Der Grund für den /ban')
+                .setRequired(true)
+        ),
+    new SlashCommandBuilder().setName('unban')
+        .setDescription('Entfernt eine Person von der Blacklist')
+        .addUserOption(
+            opt => opt.setName('target')
+                .setDescription('Die Person, die unbannt werden soll')
+                .setRequired(true)
+        )
+        .addStringOption(
+            opt => opt.setName('reason')
+                .setDescription('Der Grund für den /unban')
                 .setRequired(true)
         ),
     /*
