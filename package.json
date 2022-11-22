@@ -23,6 +23,7 @@
     "start": "ts-node src/Bot.ts"
   },
   "devDependencies": {
+    "@types/ms": "^0.7.31",
     "nodemon": "^2.0.20"
   }
 }
