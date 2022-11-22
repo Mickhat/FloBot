@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, EmbedBuilder, escapeMarkdown } from 'discord.js'
+import { Client, CommandInteraction, EmbedBuilder, escapeMarkdown, Colors } from 'discord.js'
 import { Logger } from '../logger/logger'
 
 
@@ -15,7 +15,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: L
     let unbanEmbed = new EmbedBuilder()
     .setTitle("User wurde entbannt")
     .setDescription(`<@${target.toString()}> wurde erfolgreich entbannt. Angegebener Grund:  ${reason}`)
-    .setColor('Red')
+    .setColor(Colors.Green)
     .setAuthor({name: `Entbannt von: ${interaction.user.tag}`,})
     .setTimestamp()
     
