@@ -107,6 +107,7 @@ export default [
     //           .setRequired(true)
     //   ),
     new SlashCommandBuilder().setName('ban')
+    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
         .setDescription('Entfernt eine Person final vom Server')
         .addUserOption(
             opt => opt.setName('target')
@@ -119,6 +120,7 @@ export default [
                 .setRequired(true)
         ),
     new SlashCommandBuilder().setName('unban')
+    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
         .setDescription('Entfernt eine Person von der Blacklist')
         .addUserOption(
             opt => opt.setName('target')
