@@ -19,8 +19,10 @@ import messageReport from "../action/messageReport";
 import voting from "../action/voting";
 import { fourthPage, helpIntroduction, mainHelpPage, secondPage, thirdPage } from "../action/help";
 import { createTicket, ticketAdd, ticketClose } from "../action/ticket-system";
-import { meme }  from "../action/meme";
+import { meme } from "../action/meme";
 import kick from "../action/kick";
+import ban from "../action/ban";
+import unban from "../action/unban";
 import timeout from "../action/timeout";
 // import { autocomplete } from "../action/youtube";
 
@@ -84,8 +86,14 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
         case 'meme':
             meme(client, interaction, logger.logger('meme'));
             return;
-         case 'kick':
+        case 'kick':
             kick(client, interaction, logger.logger('kick'));
+            return;
+        case 'ban':
+            ban(client, interaction, logger.logger('ban'));
+            return;
+        case 'unban':
+            unban(client, interaction, logger.logger('unban'));
             return;
         case 'timeout':
             timeout(client, interaction, logger.logger('timeout'));
