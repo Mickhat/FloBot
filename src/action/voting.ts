@@ -1,45 +1,39 @@
-import { Client, CommandInteraction, Emoji, escapeMarkdown } from 'discord.js'
+import { Client, CommandInteraction, escapeMarkdown } from 'discord.js'
 
-export default async (client: Client, interaction: CommandInteraction) => {
+export default async (client: Client, interaction: CommandInteraction): Promise<void> => {
+  const question = escapeMarkdown(interaction.options.get('question', true).value?.toString() ?? '')
+  const answers = escapeMarkdown(interaction.options.get('answers', true).value?.toString() ?? '').split(',')
 
-    let question = escapeMarkdown(interaction.options.get('question', true).value?.toString() || "")
-    let answers = escapeMarkdown(interaction.options.get('answers', true).value?.toString() ?? "").split(',')
+  const emojis = [
+    '🟥', '🟨', '🟦', '🟩', '🟪', '⬛'
+  ]
 
-    const emojis = [
-        '🟥', '🟨', '🟦', '🟩', '🟪', '⬛'
-    ]
+  if (question === '' || answers.length < 2) {
+    await interaction.reply({
+      content: 'Die Parameter wurden falsch ausgefüllt.',
+      ephemeral: true
+    })
+    return
+  }
+  if (answers.length > 6) {
+    await interaction.reply({
+      content: 'Die maximale Anzahl an Antwortmöglichkeiten ist 6',
+      ephemeral: true
+    })
+    return
+  }
 
-    if (question == "" || answers.length < 2) {
-        interaction.reply({
-            content: 'Die Parameter wurden falsch ausgefüllt.',
-            ephemeral: true,
-        })
-        return;
-    }
-    if (answers.length > 6) {
-        interaction.reply({
-            content: 'Die maximale Anzahl an Antwortmöglichkeiten ist 6',
-            ephemeral: true,
-        })
-        return;
-    }
+  const messageString = `**${interaction.member?.user.username as string}** _fragt_: ${question}
 
-
-
-    let message_string = `**${interaction.member?.user.username}** _fragt_: ${question}
-
-${answers.map((value, index) => `${emojis[index]} ${value}`).join("\n")}
+${answers.map((value, index) => `${emojis[index]} ${value}`).join('\n')}
 `
 
+  const message = await interaction.reply({
+    content: messageString,
+    fetchReply: true
+  })
 
-    let message = await interaction.reply({
-        content: message_string,
-        fetchReply: true,
-    })
-
-    for (let i in answers) {
-        message.react(emojis[i])
-    }
-
-
+  for (const i of answers) {
+    await message.react(i)
+  }
 }
