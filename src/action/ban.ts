@@ -12,7 +12,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: L
     let target = interaction.options.get('target', true).value?.toString() || ""
     let reason = escapeMarkdown(interaction.options.get('reason', true).value?.toString() || "")
 
-    let kickEmbed = new EmbedBuilder()
+    let banEmbed = new EmbedBuilder()
     .setTitle("User wurde gebannt")
     .setDescription(`<@${target.toString()}> wurde erfolgreich gebannt. Angegebener Grund:  ${reason}`)
     .setColor('Red')
@@ -25,7 +25,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: L
         
         await interaction.guild?.members.ban(target)
 
-        await interaction.reply({ embeds: [kickEmbed] })
+        await interaction.reply({ embeds: [banEmbed] })
         logger.logSync("Info", "Ban wurde erfolgreich ausgefuehrt")
         logger.logSync("Info", `User <@${target.toString()}> wurde gebannt.Grund: ${reason}`)
     } catch (err) {
