@@ -81,6 +81,24 @@ export default [
                 .setDescription('Der Grund für den kick')
                 .setRequired(true)
         ),
+        new SlashCommandBuilder().setName('timeout')
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+        .setDescription('Versetzt eine Person in einem Timeout..')
+        .addUserOption(
+            opt => opt.setName('target')
+                .setDescription('Die Person, die einen Timeout erhalten soll')
+                .setRequired(true)
+        )
+        .addStringOption(
+            opt => opt.setName('reason')
+                .setDescription('Der Grund für den Timeout')
+                .setRequired(true)
+                )
+        .addStringOption(
+            opt => opt.setName('zeit')
+                .setDescription('Wie lange soll der Timeout sein?')
+                .setRequired(true)
+        ),
      //   .addIntegerOption(
      //       opt => opt.setName('weight')
      //           .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden')

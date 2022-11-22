@@ -21,6 +21,7 @@ import { fourthPage, helpIntroduction, mainHelpPage, secondPage, thirdPage } fro
 import { createTicket, ticketAdd, ticketClose } from "../action/ticket-system";
 import { meme }  from "../action/meme";
 import kick from "../action/kick";
+import timeout from "../action/timeout";
 // import { autocomplete } from "../action/youtube";
 
 export default (client: Client, logger: LogManager, db: Database): void => {
@@ -85,6 +86,9 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
             return;
          case 'kick':
             kick(client, interaction, logger.logger('kick'));
+            return;
+        case 'timeout':
+            timeout(client, interaction, logger.logger('timeout'));
             return;
         case 'ticket-create':
             if (!interaction.guild || !interaction.member || !interaction.member.user.id) {
