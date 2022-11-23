@@ -72,6 +72,7 @@ export async function about (client: Client, interaction: CommandInteraction, lo
     .addFields(
       { name: 'heeecker', value: '<@768872955500953710>\nheeecker#5770', inline: true },
       { name: 'oglimmer', value: '<@441658607818375183>\noglimmer#4256', inline: true },
+      { name: 'Christian.exe', value: '<@779419763938951228>\nChristian.exe#2486', inline: true },
       { name: 'Mickhat', value: '<@226223176269561857>\nMickhat#1337', inline: true },
       { name: '\u200B', value: '\u200B' },
       { name: 'Github Build:', value: buildInfo }
