@@ -124,7 +124,7 @@ export default [
     .setDescription('Entfernt eine Person von der Blacklist')
     .addUserOption(
       opt => opt.setName('target')
-        .setDescription('Die Person, die unbannt werden soll')
+        .setDescription('Die Person, die entbannt werden soll')
         .setRequired(true)
     ),
   /*
