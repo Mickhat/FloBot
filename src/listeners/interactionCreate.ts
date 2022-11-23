@@ -11,7 +11,6 @@ import { codeblocks, metafrage, about, ping } from '../action/infoMessages'
 import { createRoleInterface } from '../action/roles_buttons_create'
 import { toggleRoles } from '../action/toggleRole'
 import startUserReport from '../action/userReport'
-import { Database } from 'sqlite3'
 
 import continueReport from '../action/continueReport'
 import finishReport from '../action/finishReport'
@@ -24,9 +23,10 @@ import kick from '../action/kick'
 import ban from '../action/ban'
 import unban from '../action/unban'
 import timeout from '../action/timeout'
+import { AsyncDatabase } from 'src/sqlite/sqlite'
 // import { autocomplete } from "../action/youtube";
 
-export default (client: Client, logger: LogManager, db: Database): void => {
+export default (client: Client, logger: LogManager, db: AsyncDatabase): void => {
   client.on('interactionCreate', async (interaction: Interaction) => {
     if (interaction.isCommand()) {
       await handleSlashCommand(client, interaction, logger)
@@ -192,30 +192,30 @@ const handleButtonInteraction = async (client: Client, interaction: ButtonIntera
   }
 }
 
-const handleUserContextMenuCommand = async (client: Client, interaction: UserContextMenuCommandInteraction, logger: LogManager, db: Database): Promise<void> => {
+const handleUserContextMenuCommand = async (client: Client, interaction: UserContextMenuCommandInteraction, logger: LogManager, db: AsyncDatabase): Promise<void> => {
   if (interaction.commandType === ApplicationCommandType.User && interaction.commandName === 'REPORT') {
     await startUserReport(interaction, client, db, logger.logger('Report-System'))
   }
 }
 
-const handleMessageContextMenuCommand = async (client: Client, interaction: MessageContextMenuCommandInteraction, logger: LogManager, db: Database): Promise<void> => {
+const handleMessageContextMenuCommand = async (client: Client, interaction: MessageContextMenuCommandInteraction, logger: LogManager, db: AsyncDatabase): Promise<void> => {
   if (interaction.commandType === ApplicationCommandType.Message && interaction.commandName === 'REPORT') {
     await messageReport(interaction, client, db, logger.logger('Report-System'))
   }
 }
 
-const handleSelectMenu = async (client: Client, interaction: SelectMenuInteraction, logger: LogManager, db: Database): Promise<void> => {
+const handleSelectMenu = async (client: Client, interaction: SelectMenuInteraction, logger: LogManager, db: AsyncDatabase): Promise<void> => {
   if (/report_.+_category/.test(interaction.customId)) {
     await continueReport(interaction, client, db, logger.logger('Report'))
   }
 }
 
-const handleModalSubmit = async (client: Client, interaction: ModalSubmitInteraction, logger: LogManager, db: Database): Promise<void> => {
+const handleModalSubmit = async (client: Client, interaction: ModalSubmitInteraction, logger: LogManager, db: AsyncDatabase): Promise<void> => {
   if (/report_.+_finish/.test(interaction.customId)) {
     await finishReport(interaction, client, db, logger.logger('Report'))
   }
 }
 
-const handleAutoComplete = async (client: Client, interaction: AutocompleteInteraction, logger: LogManager, db: Database): Promise<void> => {
+const handleAutoComplete = async (client: Client, interaction: AutocompleteInteraction, logger: LogManager, db: AsyncDatabase): Promise<void> => {
   // autocomplete(client, interaction, db, logger.logger('yt-autocomplete'))
 }
