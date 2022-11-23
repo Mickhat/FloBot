@@ -80,7 +80,7 @@ export default async (interaction: ModalSubmitInteraction, client: Client, db: A
           },
           {
             name: 'Beschuldigt',
-            value: (((await interaction.guild?.members.fetch(result?.reported_id)) != null) || '<ERROR>').toString()
+            value: (await interaction.guild?.members.fetch(result?.reported_id ?? '') ?? '<ERROR>').toString()
           },
           {
             name: 'Regel',
