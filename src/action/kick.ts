@@ -25,7 +25,6 @@ export default async (client: Client, interaction: CommandInteraction, logger: L
     .setTimestamp()
 
   try {
-    await interaction.guild?.members.kick(target, reason)
     try {
       const dm = await client.users.fetch(target)
       await dm.send(`Du wurdest von Florian Dalwigk's Server gekickt.\nAngegebener Grund: ${reason}`)
@@ -33,6 +32,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: L
     } catch (err) {
       await interaction.reply({ embeds: [dmDisabled] })
     }
+    await interaction.guild?.members.kick(target, reason)
 
     logger.logSync('Info', 'Kick wurde erfolgreich ausgefuehrt')
     logger.logSync('Info', `User <@${target.toString()}> wurde gekickt.Grund: ${reason}`)
