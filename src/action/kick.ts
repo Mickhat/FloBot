@@ -17,9 +17,20 @@ export default async (client: Client, interaction: CommandInteraction, logger: L
     .setAuthor({ name: `Gekickt von: ${interaction.user.tag}` })
     .setTimestamp()
 
+  const dmDisabled = new EmbedBuilder()
+    .setTitle('User wurde gekickt')
+    .setDescription(`<@${target.toString()}> hat seine DMS deaktiviert.\nAngegebener Grund: ${reason}`)
+    .setColor('Yellow')
+    .setAuthor({ name: `Gekickt von: ${interaction.user.tag}` })
+    .setTimestamp()
+
   try {
-    const dm = await client.users.fetch(target)
-    await dm.send(`Du wurdest von Florian Dalwigk's Server gekickt.\nGrund: ${reason}`)
+    try {
+      const dm = await client.users.fetch(target)
+      await dm.send(`Du wurdest von Florian Dalwigk's Server gekickt.\nAngegebener Grund: ${reason}`)
+    } catch (err) {
+      await interaction.reply({ embeds: [dmDisabled] })
+    }
 
     await interaction.guild?.members.kick(target, reason)
 
