@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, EmbedBuilder, escapeMarkdown, Colors } from 'discord.js'
+import { Client, CommandInteraction, EmbedBuilder, Colors } from 'discord.js'
 import { Logger } from '../logger/logger'
 
 export default async (client: Client, interaction: CommandInteraction, logger: Logger): Promise<void> => {
@@ -8,24 +8,20 @@ export default async (client: Client, interaction: CommandInteraction, logger: L
   }
 
   const target = interaction.options.get('target', true).value?.toString() ?? ''
-  const reason = escapeMarkdown(interaction.options.get('reason', true).value?.toString() ?? '')
 
-  const unbanEmbed = new EmbedBuilder()
+  const dmDisabled = new EmbedBuilder()
     .setTitle('User wurde entbannt')
-    .setDescription(`<@${target.toString()}> wurde erfolgreich entbannt. Angegebener Grund:  ${reason}`)
+    .setDescription(`<@${target.toString()}> hat seine DMS deaktiviert.`)
     .setColor(Colors.Green)
     .setAuthor({ name: `Entbannt von: ${interaction.user.tag}` })
     .setTimestamp()
 
   try {
-    const dm = await client.users.fetch(target)
-    await dm.send(`Du wurdest von Florian Dalwigk's Server entbannt.\nGrund: ${reason}`)
-
     await interaction.guild?.members.unban(target)
+    await interaction.reply({ embeds: [dmDisabled] })
 
-    await interaction.reply({ embeds: [unbanEmbed] })
     logger.logSync('Info', 'Entbannung wurde erfolgreich ausgefuehrt')
-    logger.logSync('Info', `User <@${target.toString()}> wurde entbannt.Grund: ${reason}`)
+    logger.logSync('Info', `User <@${target.toString()}> wurde entbannt.`)
   } catch (err) {
     logger.logSync('ERROR', `Entbannung konnte nicht ausgefuehrt werden. ${JSON.stringify(err)}`)
   }

@@ -124,12 +124,7 @@ export default [
     .setDescription('Entfernt eine Person von der Blacklist')
     .addUserOption(
       opt => opt.setName('target')
-        .setDescription('Die Person, die unbannt werden soll')
-        .setRequired(true)
-    )
-    .addStringOption(
-      opt => opt.setName('reason')
-        .setDescription('Der Grund für den /unban')
+        .setDescription('Die Person, die entbannt werden soll')
         .setRequired(true)
     ),
   /*
