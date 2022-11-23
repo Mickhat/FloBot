@@ -17,13 +17,22 @@ export default async (client: Client, interaction: CommandInteraction, logger: L
     .setAuthor({ name: `Gebannt von: ${interaction.user.tag}` })
     .setTimestamp()
 
+  const dmDisabled = new EmbedBuilder()
+    .setTitle('User wurde gebannt')
+    .setDescription(`<@${target.toString()}> hat seine DMS deaktiviert.\nAngegebener Grund: ${reason}`)
+    .setColor(Colors.Red)
+    .setAuthor({ name: `Gebannt von: ${interaction.user.tag}` })
+    .setTimestamp()
+
   try {
-    const dm = await client.users.fetch(target)
-    await dm.send(`Du wurdest von Florian Dalwigk's Server gebannt.\nGrund: ${reason}`)
-
     await interaction.guild?.members.ban(target)
-
-    await interaction.reply({ embeds: [banEmbed] })
+    try {
+      const dm = await client.users.fetch(target)
+      await dm.send(`Du wurdest von Florian Dalwigk's Server gebannt.\nGrund: ${reason}`)
+      await interaction.reply({ embeds: [banEmbed] })
+    } catch (err) {
+      await interaction.reply({ embeds: [dmDisabled] })
+    }
     logger.logSync('Info', 'Ban wurde erfolgreich ausgefuehrt')
     logger.logSync('Info', `User <@${target.toString()}> wurde gebannt.Grund: ${reason}`)
   } catch (err) {

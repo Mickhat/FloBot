@@ -126,11 +126,6 @@ export default [
       opt => opt.setName('target')
         .setDescription('Die Person, die unbannt werden soll')
         .setRequired(true)
-    )
-    .addStringOption(
-      opt => opt.setName('reason')
-        .setDescription('Der Grund für den /unban')
-        .setRequired(true)
     ),
   /*
     Info-Text-Commands
