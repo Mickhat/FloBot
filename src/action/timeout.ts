@@ -1,6 +1,6 @@
 import { Client, CommandInteraction, EmbedBuilder, escapeMarkdown, GuildMember } from 'discord.js'
-import { Logger } from '../logger/logger'
 import ms from 'ms'
+import { Logger } from '../logger/logger'
 
 export default async (client: Client, interaction: CommandInteraction, logger: Logger): Promise<void> => {
   if (!interaction.isRepliable()) {
