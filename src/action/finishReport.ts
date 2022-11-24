@@ -14,7 +14,7 @@ export default async (interaction: ModalSubmitInteraction, client: Client, db: A
     return
   }
 
-  db.run('UPDATE reports SET description = ? WHERE uuid = ?', [
+  await db.runAsync('UPDATE reports SET description = ? WHERE uuid = ?', [
     interaction.fields.getTextInputValue('description'), uuid
   ])
 

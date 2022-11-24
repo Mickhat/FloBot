@@ -15,7 +15,7 @@ export default async (interaction: SelectMenuInteraction, client: Client, db: As
     const result = await db.allAsync('SELECT uuid, reported_id, status, category FROM reports WHERE uuid = ?', [uuid])
     logger.logSync('DEBUG', `Daten von sqlite erhalten. Ergebniss: ${JSON.stringify(result)}`)
     logger.logSync('DEBUG', 'Update daten')
-    db.run('UPDATE reports SET category = ? WHERE uuid = ?', [
+    await db.runAsync('UPDATE reports SET category = ? WHERE uuid = ?', [
       interaction.values[0], uuid
     ])
 
