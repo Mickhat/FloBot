@@ -1,4 +1,4 @@
-import sqlite3 from 'sqlite3'
+import sqlite3, { RunResult } from 'sqlite3'
 
 /**
  * AsyncDatabase extends the sqlite3.Database with methods returning a Promise
@@ -45,5 +45,29 @@ export class AsyncDatabase extends sqlite3.verbose().Database {
       }
       this.get(sql, params, callback)
     })
+  }
+
+  async runAsync (sql: string): Promise<RunResult>
+  async runAsync (sql: string, params: any): Promise<RunResult>
+
+  async runAsync (sql: string, params?: any): Promise<RunResult> {
+    return await new Promise((resolve, reject) => {
+      const callback = (runResult: RunResult, err: Error | null): void => {
+        if (err != null) {
+          reject(err)
+        } else {
+          resolve(runResult)
+        }
+      }
+      if (params !== undefined) {
+        this.run(sql, params, callback)
+      } else {
+        this.run(sql, callback)
+      }
+    })
+  }
+
+  async serializeAsync (callback?: () => Promise<void>): Promise<void> {
+    this.serialize(callback)
   }
 }

@@ -23,8 +23,8 @@ async function init (): Promise<void> {
     const db = await AsyncDatabase.open(dbFile)
     dbLogger.logSync('INFO', `DB opened ${path.resolve(dbFile)}`)
 
-    db.serialize(() => {
-      db.run(`CREATE TABLE IF NOT EXISTS reports (
+    await db.serializeAsync(async () => {
+      await db.runAsync(`CREATE TABLE IF NOT EXISTS reports (
             identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
             uuid TEXT NOT NULL UNIQUE,
             creator_id TEXT NOT NULL,

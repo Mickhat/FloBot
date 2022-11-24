@@ -114,7 +114,7 @@ Setzt Du den Report fort und das Team stellt fest, das dieser bewusst falsch ist
         )
     ]
   })
-  db.run(
+  await db.runAsync(
     'INSERT INTO reports (uuid, creator_id, reported_id, status, category) VALUES (?, ?, ?, ?, \'UNKNOWN\')',
     [reportId, interaction.member?.user.id, interaction.targetMember?.user.id, 0])
   // Status 0 = just created
