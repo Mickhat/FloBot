@@ -52,11 +52,11 @@ export class AsyncDatabase extends sqlite3.verbose().Database {
 
   async runAsync (sql: string, params?: any): Promise<RunResult> {
     return await new Promise((resolve, reject) => {
-      const callback = (runResult: RunResult, err: Error | null): void => {
+      function callback (this: RunResult, err: Error | null): void {
         if (err != null) {
           reject(err)
         } else {
-          resolve(runResult)
+          resolve(this)
         }
       }
       if (params !== undefined) {
