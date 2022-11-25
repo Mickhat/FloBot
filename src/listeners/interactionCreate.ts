@@ -6,7 +6,7 @@ import {
   ActionRowBuilder, ButtonBuilder, ButtonStyle,
   AutocompleteInteraction
 } from 'discord.js'
-import { ILogManager } from '../logger/logger'
+import { LogManager } from '../logger/logger'
 import { codeblocks, metafrage, about, ping } from '../action/infoMessages'
 import { createRoleInterface } from '../action/roles_buttons_create'
 import { toggleRoles } from '../action/toggleRole'
@@ -26,7 +26,7 @@ import timeout from '../action/timeout'
 import { AsyncDatabase } from 'src/sqlite/sqlite'
 // import { autocomplete } from "../action/youtube";
 
-export default (client: Client, logger: ILogManager, db: AsyncDatabase): void => {
+export default (client: Client, logger: LogManager, db: AsyncDatabase): void => {
   client.on('interactionCreate', async (interaction: Interaction) => {
     if (interaction.isCommand()) {
       await handleSlashCommand(client, interaction, logger)
@@ -52,7 +52,7 @@ export default (client: Client, logger: ILogManager, db: AsyncDatabase): void =>
   })
 }
 
-const handleSlashCommand = async (client: Client, interaction: CommandInteraction, logger: ILogManager): Promise<void> => {
+const handleSlashCommand = async (client: Client, interaction: CommandInteraction, logger: LogManager): Promise<void> => {
   let channel: GuildBasedChannel | null
   // handle slash command here
   switch (interaction.commandName) {
@@ -153,7 +153,7 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
   }
 }
 
-const handleButtonInteraction = async (client: Client, interaction: ButtonInteraction, logger: ILogManager): Promise<void> => {
+const handleButtonInteraction = async (client: Client, interaction: ButtonInteraction, logger: LogManager): Promise<void> => {
   if (/(addRole-|removeRole-)([0-9]+)/.test(interaction.customId)) {
     await toggleRoles(client, interaction, logger.logger('Toggle-Roles'))
   }
@@ -192,30 +192,30 @@ const handleButtonInteraction = async (client: Client, interaction: ButtonIntera
   }
 }
 
-const handleUserContextMenuCommand = async (client: Client, interaction: UserContextMenuCommandInteraction, logger: ILogManager, db: AsyncDatabase): Promise<void> => {
+const handleUserContextMenuCommand = async (client: Client, interaction: UserContextMenuCommandInteraction, logger: LogManager, db: AsyncDatabase): Promise<void> => {
   if (interaction.commandType === ApplicationCommandType.User && interaction.commandName === 'REPORT') {
     await startUserReport(interaction, client, db, logger.logger('Report-System'))
   }
 }
 
-const handleMessageContextMenuCommand = async (client: Client, interaction: MessageContextMenuCommandInteraction, logger: ILogManager, db: AsyncDatabase): Promise<void> => {
+const handleMessageContextMenuCommand = async (client: Client, interaction: MessageContextMenuCommandInteraction, logger: LogManager, db: AsyncDatabase): Promise<void> => {
   if (interaction.commandType === ApplicationCommandType.Message && interaction.commandName === 'REPORT') {
     await messageReport(interaction, client, db, logger.logger('Report-System'))
   }
 }
 
-const handleSelectMenu = async (client: Client, interaction: SelectMenuInteraction, logger: ILogManager, db: AsyncDatabase): Promise<void> => {
+const handleSelectMenu = async (client: Client, interaction: SelectMenuInteraction, logger: LogManager, db: AsyncDatabase): Promise<void> => {
   if (/report_.+_category/.test(interaction.customId)) {
     await continueReport(interaction, client, db, logger.logger('Report'))
   }
 }
 
-const handleModalSubmit = async (client: Client, interaction: ModalSubmitInteraction, logger: ILogManager, db: AsyncDatabase): Promise<void> => {
+const handleModalSubmit = async (client: Client, interaction: ModalSubmitInteraction, logger: LogManager, db: AsyncDatabase): Promise<void> => {
   if (/report_.+_finish/.test(interaction.customId)) {
     await finishReport(interaction, client, db, logger.logger('Report'))
   }
 }
 
-const handleAutoComplete = async (client: Client, interaction: AutocompleteInteraction, logger: ILogManager, db: AsyncDatabase): Promise<void> => {
+const handleAutoComplete = async (client: Client, interaction: AutocompleteInteraction, logger: LogManager, db: AsyncDatabase): Promise<void> => {
   // autocomplete(client, interaction, db, logger.logger('yt-autocomplete'))
 }

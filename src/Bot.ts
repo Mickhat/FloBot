@@ -3,13 +3,13 @@ import dotenv from 'dotenv'
 import ready from './listeners/ready'
 import status from './listeners/status'
 import interactionCreate from './listeners/interactionCreate'
-import { LogManager, ILogManager } from './logger/logger'
+import { LogManager } from './logger/logger'
 import registerCommands from './action/registerCommands'
 import { AsyncDatabase } from './sqlite/sqlite'
 import message from './listeners/message'
 import path from 'path'
 
-const logManager: ILogManager = new LogManager('./logs')
+const logManager: LogManager = LogManager.getInstance()
 
 dotenv.config()
 
@@ -51,7 +51,7 @@ async function init (): Promise<void> {
 
     await client.login(token)
   } catch (err) {
-    logManager.logSync('ERROR', `Failed to initialize system. Used db ${path.resolve(dbFile)}, error: ${JSON.stringify(err)}`)
+    logManager.logger().logSync('ERROR', `Failed to initialize system. Used db ${path.resolve(dbFile)}, error: ${JSON.stringify(err)}`)
   }
 }
 
