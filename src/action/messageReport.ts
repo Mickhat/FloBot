@@ -1,12 +1,12 @@
 import discord from 'discord.js'
-import { Logger } from '../logger/logger'
+import { ILogger } from '../logger/logger'
 import { v4 as uuid } from 'uuid'
 import { AsyncDatabase } from 'src/sqlite/sqlite'
 
 export default async (interaction: discord.MessageContextMenuCommandInteraction,
   client: discord.Client,
   db: AsyncDatabase,
-  logger: Logger): Promise<void> => {
+  logger: ILogger): Promise<void> => {
   logger.logSync('INFO', 'New user report')
 
   const reportId = uuid()

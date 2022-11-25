@@ -3,14 +3,13 @@ import dotenv from 'dotenv'
 import ready from './listeners/ready'
 import status from './listeners/status'
 import interactionCreate from './listeners/interactionCreate'
-import { LogManager } from './logger/logger'
+import { LogManager, ILogManager } from './logger/logger'
 import registerCommands from './action/registerCommands'
 import { AsyncDatabase } from './sqlite/sqlite'
 import message from './listeners/message'
 import path from 'path'
 
-const logManager: LogManager = new LogManager('./logs')
-const dbLogger = logManager.logger('sqlite3')
+const logManager: ILogManager = new LogManager('./logs')
 
 dotenv.config()
 
@@ -21,7 +20,7 @@ const dbFile = process.env.DB_PATH ?? './sqlite3.db'
 async function init (): Promise<void> {
   try {
     const db = await AsyncDatabase.open(dbFile)
-    dbLogger.logSync('INFO', `DB opened ${path.resolve(dbFile)}`)
+    logManager.logger('sqlite3').logSync('INFO', `DB opened ${path.resolve(dbFile)}`)
 
     await db.serializeAsync(async () => {
       await db.runAsync(`CREATE TABLE IF NOT EXISTS reports (
@@ -44,15 +43,15 @@ async function init (): Promise<void> {
       ]
     })
 
-    ready(client, logManager)
-    status(client, logManager) // set the status to Testing and Playing as the activity
+    ready(client, logManager.logger())
+    status(client, logManager.logger()) // set the status to Testing and Playing as the activity
     interactionCreate(client, logManager, db)
     registerCommands(client, logManager.logger('Command-Registrierung'))
     await message(client, logManager.logger('Message-Logger'))
 
     await client.login(token)
   } catch (err) {
-    dbLogger.logSync('ERROR', `Failed to initialize system. Used db ${path.resolve(dbFile)}, error: ${JSON.stringify(err)}`)
+    logManager.logSync('ERROR', `Failed to initialize system. Used db ${path.resolve(dbFile)}, error: ${JSON.stringify(err)}`)
   }
 }
 

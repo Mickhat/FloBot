@@ -2,79 +2,90 @@ import fs from 'node:fs'
 import { v4 as uuid } from 'uuid'
 import { join } from 'node:path'
 import { format as formatDate } from 'date-fns'
+import { promisify } from 'util'
 
-interface LogManager {
-  filename: string
+const appendFile = promisify(fs.appendFile)
+
+interface ILogManager {
+  logger: (name?: string) => Logger
+  log: (type: IType, text: string) => Promise<void>
+  logSync: (type: IType, text: string) => LogManager
+  close: (message: string) => void
 }
 
-interface Logger {
-  filename: string
-  logerName: string
+interface ILogger {
+  log: (type: IType, text: string) => Promise<void>
+  logSync: (type: IType, text: string) => Logger
 }
 
-class LogManager {
+type IType = 'WARN' | 'INFO' | 'DEBUG' | 'ERROR' | 'LOG'
+
+const DATE_FORMAT_STR = 'dd MM yyyy HH:mm:ss'
+
+class LogManager implements ILogManager {
+  private static readonly DEFAULT_LOGGER_NAME = 'master'
+
+  readonly filename: string
+
   constructor (path: string, name: string = uuid()) {
-    this.filename = join(path, `${formatDate(new Date(), 'yyyy-MM-dd--HH-mm')}--${name}.log`)
-    if (!fs.existsSync(path)) fs.mkdirSync(path)
-    fs.writeFileSync(this.filename, `${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')} Begin of log ${name}\n`)
+    this.filename = join(path, `${formatDate(new Date(), 'yyyy-MM-dd--HH-mm-ss')}--${name}.log`)
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path)
+    }
+    fs.writeFileSync(this.filename, `${formatDate(new Date(), DATE_FORMAT_STR)} Begin of log ${name}\n`)
   }
 
-  logger (name: string): Logger {
-    return new Logger(this.filename, name)
+  logger (name?: string): Logger {
+    if (name !== undefined) {
+      return new Logger(this.filename, name)
+    } else {
+      return new Logger(this.filename, LogManager.DEFAULT_LOGGER_NAME)
+    }
   }
 
-  async log (type: 'WARN' | 'INFO' | 'DEBUG' | 'ERROR' | 'LOG' | string, text: string): Promise<void> {
-    return await new Promise<void>((resolve, reject) => {
-      text = `${type} [master ${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')}] ${text}\n`
-      console.log(text)
-      fs.appendFile(this.filename, text, { encoding: 'utf-8' }, (err) => {
-        if (err != null) {
-          reject(err)
-        } else resolve()
-      })
-    })
+  async log (type: IType, text: string): Promise<void> {
+    return await this.logger(LogManager.DEFAULT_LOGGER_NAME).log(type, text)
   }
 
-  logSync (type: 'WARN' | 'INFO' | 'DEBUG' | 'ERROR' | 'LOG' | string, text: string): LogManager {
-    text = `${type} [master ${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')}] ${text}\n`
-    console.log(text)
-    fs.appendFileSync(this.filename, text, { encoding: 'utf-8' })
+  logSync (type: IType, text: string): LogManager {
+    this.logger(LogManager.DEFAULT_LOGGER_NAME).logSync(type, text)
     return this
   }
 
   close (message: string): void {
-    fs.appendFileSync(this.filename, `Log closed at ${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')}; ${message}`)
+    fs.appendFileSync(this.filename, `Log closed at ${formatDate(new Date(), DATE_FORMAT_STR)} - ${message}`)
   }
 }
 
-class Logger {
+class Logger implements ILogger {
+  private readonly filename: string
+  private readonly loggerName: string
+
   constructor (filename: string, logerName: string) {
     this.filename = filename
-    this.logerName = logerName
+    this.loggerName = logerName
   }
 
-  async log (type: 'WARN' | 'INFO' | 'DEBUG' | 'ERROR' | 'LOG' | string, text: string): Promise<void> {
-    return await new Promise<void>((resolve, reject) => {
-      text = `${type} [${this.logerName} ${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')}] ${text}\n`
-      console.log(text)
-      fs.appendFile(this.filename, text, { encoding: 'utf-8' }, (err) => {
-        if (err != null) {
-          reject(err)
-        } else resolve()
-      })
-    })
+  private buildLogStr (type: IType, text: string): string {
+    return `${type} [${this.loggerName} ${formatDate(new Date(), DATE_FORMAT_STR)}] ${text}\n`
   }
 
-  logSync (type: 'WARN' | 'INFO' | 'DEBUG' | 'ERROR' | 'LOG' | string, text: string): Logger {
-    text = `${type} [${this.logerName} ${formatDate(new Date(), 'dd MM yyyy HH:mm:ss')}] ${text}\n`
-    console.log(text)
-    fs.appendFileSync(this.filename, text, { encoding: 'utf-8' })
+  async log (type: IType, text: string): Promise<void> {
+    const toLog = this.buildLogStr(type, text)
+    console.log(toLog)
+    return await appendFile(this.filename, toLog, { encoding: 'utf-8' })
+  }
+
+  logSync (type: IType, text: string): Logger {
+    const toLog = this.buildLogStr(type, text)
+    console.log(toLog)
+    fs.appendFileSync(this.filename, toLog, { encoding: 'utf-8' })
     return this
   }
 }
 
 export {
-  LogManager, Logger
+  LogManager, Logger, ILogManager, ILogger, IType
 }
 
 export default LogManager

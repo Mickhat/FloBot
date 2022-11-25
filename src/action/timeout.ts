@@ -1,8 +1,8 @@
 import { Client, CommandInteraction, EmbedBuilder, escapeMarkdown, GuildMember } from 'discord.js'
 import ms from 'ms'
-import { Logger } from '../logger/logger'
+import { ILogger } from '../logger/logger'
 
-export default async (client: Client, interaction: CommandInteraction, logger: Logger): Promise<void> => {
+export default async (client: Client, interaction: CommandInteraction, logger: ILogger): Promise<void> => {
   if (!interaction.isRepliable()) {
     logger.logSync('ERROR', 'Gegebene interaction kann nicht beantwortet werden.')
     return

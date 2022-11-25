@@ -1,8 +1,8 @@
 import { Client, CommandInteraction, EmbedBuilder } from 'discord.js'
-import { Logger } from 'src/logger/logger'
+import { ILogger } from 'src/logger/logger'
 import fs from 'fs'
 
-export async function metafrage (client: Client, interaction: CommandInteraction, logger: Logger): Promise<void> {
+export async function metafrage (client: Client, interaction: CommandInteraction, logger: ILogger): Promise<void> {
   if (!interaction.isRepliable()) {
     logger.logSync('ERROR', 'Gegebene interaction kann nicht beantwortet werden.')
     return
@@ -23,7 +23,7 @@ __Stelle deine Frage direkt, ohne erstmal nach einem Experten zu suchen. Dies er
     logger.logSync('ERROR', `Metafragen-Info konnte nicht gesendet werden!. Error: ${JSON.stringify(err)}`)
   }
 }
-export async function codeblocks (client: Client, interaction: CommandInteraction, logger: Logger): Promise<void> {
+export async function codeblocks (client: Client, interaction: CommandInteraction, logger: ILogger): Promise<void> {
   if (!interaction.isRepliable()) {
     logger.logSync('ERROR', 'Gegebene interaction kann nicht beantwortet werden.')
     return
@@ -50,7 +50,7 @@ Codeblocks sind die beste Art, Code auf Discord zu teilen, und alle werden dir D
   }
 }
 
-export async function about (client: Client, interaction: CommandInteraction, logger: Logger): Promise<void> {
+export async function about (client: Client, interaction: CommandInteraction, logger: ILogger): Promise<void> {
   if (!interaction.isRepliable()) {
     logger.logSync('ERROR', 'Gegebene interaction kann nicht beantwortet werden.')
     return
@@ -92,7 +92,7 @@ export async function about (client: Client, interaction: CommandInteraction, lo
   }
 }
 
-export async function ping (client: Client, interaction: CommandInteraction, logger: Logger): Promise<void> {
+export async function ping (client: Client, interaction: CommandInteraction, logger: ILogger): Promise<void> {
   if (!interaction.isRepliable()) {
     logger.logSync('ERROR', 'Gegebene interaction kann nicht beantwortet werden.')
     return

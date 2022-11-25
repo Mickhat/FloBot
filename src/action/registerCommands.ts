@@ -1,9 +1,9 @@
 import { Routes, Client } from 'discord.js'
 import { REST } from '@discordjs/rest'
-import { Logger } from 'src/logger/logger'
+import { ILogger } from 'src/logger/logger'
 import CommandList from './buildCommands'
 
-export default (client: Client, logger: Logger): void => {
+export default (client: Client, logger: ILogger): void => {
   if (process.env?.BOT_TOKEN === undefined) {
     logger.logSync('ERROR', 'BOT_TOKEN fehlt.')
     return

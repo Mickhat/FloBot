@@ -1,8 +1,8 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, CommandInteraction, EmbedBuilder, Colors } from 'discord.js'
-import { Logger } from 'src/logger/logger'
+import { ILogger } from 'src/logger/logger'
 import axios from 'axios'
 
-export async function meme (client: Client, interaction: CommandInteraction, logger: Logger): Promise<void> {
+export async function meme (client: Client, interaction: CommandInteraction, logger: ILogger): Promise<void> {
   if (!interaction.isRepliable()) {
     logger.logSync('ERROR', 'Gegebene interaction kann nicht beantwortet werden.')
     return
