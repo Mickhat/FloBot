@@ -4,3 +4,7 @@ This project was programmed by some members of [Florian Dalwigk](https://discord
 
 # Function overview
 
+| Command      | Function |
+| :---        |    :----:   |
+| /kick      | Kicks a user       |
+| /ban   | Bans a user        |
