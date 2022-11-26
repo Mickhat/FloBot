@@ -16,3 +16,30 @@ This project was programmed by some members of [Florian Dalwigk](https://discord
 | /about          | about me   |
 
 </div>
+
+# Development
+
+To setup your bot, you have to copy the `env.example` to `.env` and set your TOKENs and IDs:
+
+```INI
+BOT_TOKEN=YOURTOKEN
+APPLICATION_ID=YOUR_APPLICATION_ID
+TOGGLE_ROLES= <ids von rollen, die sich Nutzer selbst geben können. Mit, getrennt. Maximal 5 (weil man nicht mehr buttons in eine Nachricht machen kann)>
+DB_PATH=<path to sqlite3 db>
+REPORT_CHANNEL_ID= <channel, in den Reports geschickt werden sollen>
+TICKET_SUPPORTER= <id der Rolle, die jedem Ticket hinzugefügt wird>
+```
+
+You can also configure the logging behavior in `logging.json`.
+
+## npm commands
+
+The bot is tested with Node Version 18.x
+
+```bash
+npm ci # to install dependencies
+npm run lint # this runs the code linter
+npm test # this executes the jest unit tests
+npm run dev # this starts the bot with nodemon
+npm run start # this starts the bot as in production
+```
