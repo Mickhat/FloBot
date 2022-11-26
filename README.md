@@ -10,5 +10,9 @@ This project was programmed by some members of [Florian Dalwigk](https://discord
 |   :---:       |    :----:     | 
 | /kick         | Kicks a user  | 
 | /ban          | Bans a user   |
+| /timeout          | timeout a user   |
+| /warn          | warns a user   |
+| /strike          | strikes a user   |
+| /about          | about me   |
 
 </div>
