@@ -1,0 +1,128 @@
+{
+    "report": "REPORT",
+    "warn": {
+        "name": "warn",
+        "description": "Verwant eine Person",
+        "target_option": {
+            "name": "target",
+            "description": "Die Person, die verwarnt werden soll."
+        },
+        "reason_option": {
+            "name": "reason",
+            "description": "Der Grund für den /warn"
+        },
+        "weight_option": {
+            "name": "weight",
+            "description": "Die Anzahl von Punkten, die der Person angerechnet werden sollen."
+        }
+    },
+    "warn": {
+        "name": "warn",
+        "description": "Verwant eine Person",
+        "target_option": {
+            "name": "target",
+            "description": "Die Person, die verwarnt werden soll."
+        },
+        "reason_option": {
+            "name": "reason",
+            "description": "Der Grund für den /warn"
+        },
+        "weight_option": {
+            "name": "weight",
+            "description": "Die Anzahl von Punkten, die der Person angerechnet werden sollen."
+        }
+    },
+    "strike": {
+        "name": "warn",
+        "description": "Verwant eine Person und erteilt einen Strike.",
+        "target_option": {
+            "name": "target",
+            "description": "Die Person, die einen Strike bekommen soll."
+        },
+        "reason_option": {
+            "name": "reason",
+            "description": "Der Grund für den /strike"
+        },
+        "weight_option": {
+            "name": "weight",
+            "description": "Die Anzahl von Punkten, die der Person angerechnet werden sollen."
+        }
+    },
+    "mute": {
+        "name": "timeout",
+        "description": "Versetzt eine Person in einem Timeout",
+        "target_option": {
+            "name": "target",
+            "description": "Die Person, die einen Timeout erhalten soll."
+        },
+        "reason_option": {
+            "name": "reason",
+            "description": "Der Grund für den /timeout"
+        },
+        "time_option": {
+            "name": "zeit",
+            "description": "Wie lange soll der timeout sein?"
+        }
+    },
+    "kick": {
+        "name": "kick",
+        "description": "",
+        "target_option": {
+            "name": "target",
+            "description": "Die Person, die gemuted werden soll."
+        },
+        "reason_option": {
+            "name": "reason",
+            "description": "Der Grund für den /mute"
+        },
+        "weight_option": {
+            "name": "weight",
+            "description": "Die Anzahl von Punkten, die der Person angerechnet werden sollen."
+        }
+    },
+    "ban": {
+        "name": "ban",
+        "description": "Entfernt eine Person final vom Server",
+        "target_option": {
+            "name": "target",
+            "description": "Die Person, die gebannt werden soll."
+        },
+        "reason_option": {
+            "name": "reason",
+            "description": "Der Grund für den /ban"
+        }
+    },
+    "unban": {
+        "name": "ban",
+        "description": "Entfernt eine Person von der Bannliste",
+        "target_option": {
+            "name": "target",
+            "description": "Die Person, die entbannt werden soll."
+        }
+    },
+    "metafrage": {
+        "name": "metafrage",
+        "description": "Ein Text über Metafragen."
+    },
+    "codeblocks": {
+        "name": "codeblocks",
+        "description": "Ein Text über Codeblocks"
+    },
+    "about": {
+        "name": "about",
+        "description": "About me"
+    },
+    "help": {
+        "name": "help",
+        "description": "Was kann ich?"
+    },
+    "ping": {
+        "name": "ping",
+        "description": "Pingt den Bot, zeigt die Latenz an."
+    },
+    "meme": {
+        "name": "meme",
+        "description": "Zeigt ein Meme"
+    }
+
+}

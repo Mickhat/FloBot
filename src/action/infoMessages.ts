@@ -8,19 +8,20 @@ export async function metafrage (client: Client, interaction: CommandInteraction
     return
   }
 
-  interaction.reply({
-    content: `**Metafragen** sind Fragen, welche oft vor einer richtigen Frage gestellt werden.
+  try {
+    await interaction.reply({
+      content: `**Metafragen** sind Fragen, welche oft vor einer richtigen Frage gestellt werden.
 Klassische Beispiele für Metafragen sind:
 - Kann mir jemand mit JavaScript helfen?
 - Wer kennt sich mit IP-Adressen aus?
 Solche Fragen verhindern eine schnelle Antwort auf die eigentliche Frage. Oft denkt jemand nicht, im Fachgebiet "gut genug" zu sein, kennt aber die Antwort und könnte trotzdem nicht antworten. Auch wenn sich jemand meldet, muss er erst auf die Antwort des Fragestellers warten, bis er antworten kann.
 __Stelle deine Frage direkt, ohne erstmal nach einem Experten zu suchen. Dies erspart dir Zeit und erhöht die Chance auf eine Antwort.__
 [mehr Informationen](http://metafrage.de/)`
-  }).then(() => {
+    })
     logger.logSync('INFO', 'Metafragen-Info gesendet.')
-  }).catch(() => {
-    logger.logSync('ERROR', 'Metafragen-Info konnte nicht gesendet werden!')
-  })
+  } catch (err) {
+    logger.logSync('ERROR', `Metafragen-Info konnte nicht gesendet werden!. Error: ${JSON.stringify(err)}`)
+  }
 }
 export async function codeblocks (client: Client, interaction: CommandInteraction, logger: Logger): Promise<void> {
   if (!interaction.isRepliable()) {
@@ -28,8 +29,9 @@ export async function codeblocks (client: Client, interaction: CommandInteractio
     return
   }
 
-  interaction.reply({
-    content: `**Codeblocks** sind in discord-Nachrichten integrierbare Blöcke, die Quellcode enthalten. Sie sehen so aus:
+  try {
+    await interaction.reply({
+      content: `**Codeblocks** sind in discord-Nachrichten integrierbare Blöcke, die Quellcode enthalten. Sie sehen so aus:
 \`\`\`py
 print("Hello World")
 \`\`\`
@@ -41,11 +43,11 @@ print("Hello World")
 Dadurch machst du deinen Code, im Vergleich zu normalem Text, besser lesbar für alle und kannst schneller eine Antwort auf deine Frage bekommen. Auch sind sie, im Vergleich zu Screenshots, sehr Datensparsam.
 Codeblocks sind die beste Art, Code auf Discord zu teilen, und alle werden dir Dankbar sein, wenn du sie nutzt.
 `
-  }).then(() => {
+    })
     logger.logSync('INFO', 'Codeblock-Info gesendet.')
-  }).catch(() => {
-    logger.logSync('ERROR', 'Codeblock-Info konnte nicht gesendet werden.')
-  })
+  } catch (err) {
+    logger.logSync('ERROR', `Codeblock-Info konnte nicht gesendet werden. Error: ${JSON.stringify(err)}`)
+  }
 }
 
 export async function about (client: Client, interaction: CommandInteraction, logger: Logger): Promise<void> {
@@ -98,11 +100,12 @@ export async function ping (client: Client, interaction: CommandInteraction, log
 
   const sent = await interaction.reply({ content: 'Pinging...', fetchReply: true })
 
-  interaction.editReply({
-    content: `PONG!\nCurrent Bot latency: ${client.ws.ping}ms\nRoundtrip latency: ${sent.createdTimestamp - interaction.createdTimestamp}ms`
-  }).then(() => {
+  try {
+    await interaction.editReply({
+      content: `PONG!\nCurrent Bot latency: ${client.ws.ping}ms\nRoundtrip latency: ${sent.createdTimestamp - interaction.createdTimestamp}ms`
+    })
     logger.logSync('INFO', 'Pong wurde erfolgreich gesendet.')
-  }).catch(() => {
-    logger.logSync('ERROR', 'Ping konnte nicht gesendet werden.')
-  })
+  } catch (err) {
+    logger.logSync('ERROR', `Ping konnte nicht gesendet werden. Error ${JSON.stringify(err)}`)
+  }
 }

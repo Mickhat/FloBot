@@ -1,11 +1,11 @@
 import discord from 'discord.js'
-import sqlite from 'sqlite3'
 import { Logger } from '../logger/logger'
 import { v4 as uuid } from 'uuid'
+import { AsyncDatabase } from 'src/sqlite/sqlite'
 
 export default async (interaction: discord.UserContextMenuCommandInteraction,
   client: discord.Client,
-  db: sqlite.Database,
+  db: AsyncDatabase,
   logger: Logger): Promise<void> => {
   logger.logSync('INFO', 'New user report')
 
@@ -114,7 +114,7 @@ Setzt Du den Report fort und das Team stellt fest, das dieser bewusst falsch ist
         )
     ]
   })
-  db.run(
+  await db.runAsync(
     'INSERT INTO reports (uuid, creator_id, reported_id, status, category) VALUES (?, ?, ?, ?, \'UNKNOWN\')',
     [reportId, interaction.member?.user.id, interaction.targetMember?.user.id, 0])
   // Status 0 = just created

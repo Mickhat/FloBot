@@ -49,25 +49,6 @@ export default [
         .setMaxValue(4)
         .setRequired(true)
     ),
-  new SlashCommandBuilder().setName('mute')
-    .setDescription('Verbietet einer Person das Schreiben innerhalb eines Zeitraumes.')
-    .addUserOption(
-      opt => opt.setName('target')
-        .setDescription('Die Person, die gemuted werden soll')
-        .setRequired(true)
-    )
-    .addStringOption(
-      opt => opt.setName('reason')
-        .setDescription('Der Grund für den /mute')
-        .setRequired(true)
-    )
-    .addIntegerOption(
-      opt => opt.setName('weight')
-        .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden')
-        .setMinValue(2)
-        .setMaxValue(6)
-        .setRequired(true)
-    ),
   new SlashCommandBuilder().setName('kick')
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .setDescription('Kickt eine Person vom Server.')
@@ -124,12 +105,7 @@ export default [
     .setDescription('Entfernt eine Person von der Blacklist')
     .addUserOption(
       opt => opt.setName('target')
-        .setDescription('Die Person, die unbannt werden soll')
-        .setRequired(true)
-    )
-    .addStringOption(
-      opt => opt.setName('reason')
-        .setDescription('Der Grund für den /unban')
+        .setDescription('Die Person, die entbannt werden soll')
         .setRequired(true)
     ),
   /*

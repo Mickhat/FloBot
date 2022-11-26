@@ -42,18 +42,16 @@ export async function toggleRoles (client: Client, interaction: ButtonInteractio
   }
 
   if (method === 'addRole') {
-    await guildMember.roles.add(role).then(async () => {
-      await interaction.reply({ content: 'Rolle wurde hinzugefügt!', ephemeral: true })
-      logger.logSync('INFO', `${guildMember?.user.username}#${guildMember?.user.discriminator} got role ${role?.name}`)
-    })
+    await guildMember.roles.add(role)
+    await interaction.reply({ content: 'Rolle wurde hinzugefügt!', ephemeral: true })
+    logger.logSync('INFO', `${guildMember?.user.username}#${guildMember?.user.discriminator} got role ${role?.name}`)
   }
   if (method === 'removeRole') {
-    await guildMember.roles.remove(role).then(async () => {
-      await interaction.reply({
-        content: 'Rolle wurde entfernt!',
-        ephemeral: true
-      })
-      logger.logSync('INFO', `${guildMember?.user.username}#${guildMember?.user.discriminator} got role ${role?.name}`)
+    await guildMember.roles.remove(role)
+    await interaction.reply({
+      content: 'Rolle wurde entfernt!',
+      ephemeral: true
     })
+    logger.logSync('INFO', `${guildMember?.user.username}#${guildMember?.user.discriminator} got role ${role?.name}`)
   }
 }
