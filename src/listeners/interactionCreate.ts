@@ -6,7 +6,7 @@ import {
   ActionRowBuilder, ButtonBuilder, ButtonStyle,
   AutocompleteInteraction
 } from 'discord.js'
-import LogManager from '../logger/logger'
+import { LogManager } from '../logger/logger'
 import { codeblocks, metafrage, about, ping } from '../action/infoMessages'
 import { createRoleInterface } from '../action/roles_buttons_create'
 import { toggleRoles } from '../action/toggleRole'

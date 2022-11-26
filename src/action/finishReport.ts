@@ -1,8 +1,8 @@
 import { ChannelType, Client, Colors, EmbedBuilder, ModalSubmitInteraction } from 'discord.js'
 import { AsyncDatabase } from 'src/sqlite/sqlite'
-import { Logger } from '../logger/logger'
+import { ILogger } from '../logger/logger'
 
-export default async (interaction: ModalSubmitInteraction, client: Client, db: AsyncDatabase, logger: Logger): Promise<void> => {
+export default async (interaction: ModalSubmitInteraction, client: Client, db: AsyncDatabase, logger: ILogger): Promise<void> => {
   const uuid = interaction.customId.split('_')[1]
   console.log(`Report ${interaction.customId} ${uuid}`)
 

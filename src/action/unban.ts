@@ -1,7 +1,7 @@
 import { Client, CommandInteraction, EmbedBuilder, Colors } from 'discord.js'
-import { Logger } from '../logger/logger'
+import { ILogger } from '../logger/logger'
 
-export default async (client: Client, interaction: CommandInteraction, logger: Logger): Promise<void> => {
+export default async (client: Client, interaction: CommandInteraction, logger: ILogger): Promise<void> => {
   if (!interaction.isRepliable()) {
     logger.logSync('ERROR', 'Gegebene interaction kann nicht beantwortet werden.')
     return
@@ -20,8 +20,8 @@ export default async (client: Client, interaction: CommandInteraction, logger: L
     await interaction.guild?.members.unban(target)
     await interaction.reply({ embeds: [dmDisabled] })
 
-    logger.logSync('Info', 'Entbannung wurde erfolgreich ausgefuehrt')
-    logger.logSync('Info', `User <@${target.toString()}> wurde entbannt.`)
+    logger.logSync('INFO', 'Entbannung wurde erfolgreich ausgefuehrt')
+    logger.logSync('INFO', `User <@${target.toString()}> wurde entbannt.`)
   } catch (err) {
     logger.logSync('ERROR', `Entbannung konnte nicht ausgefuehrt werden. ${JSON.stringify(err)}`)
   }
