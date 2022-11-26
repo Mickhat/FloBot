@@ -1,7 +1,7 @@
 import { ButtonInteraction, Client, Role } from 'discord.js'
-import { Logger } from 'src/logger/logger'
+import { ILogger } from 'src/logger/logger'
 
-export async function toggleRoles (client: Client, interaction: ButtonInteraction, logger: Logger): Promise<void> {
+export async function toggleRoles (client: Client, interaction: ButtonInteraction, logger: ILogger): Promise<void> {
   const [method, rId] = interaction.customId.split('-')
 
   const role: Role | null | undefined = await interaction.guild?.roles.fetch(rId)

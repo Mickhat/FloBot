@@ -2,9 +2,9 @@ import {
   ActionRowBuilder, ButtonBuilder, ButtonStyle,
   ChannelType, Client, Guild, PermissionFlagsBits, TextChannel
 } from 'discord.js'
-import { Logger } from 'src/logger/logger'
+import { ILogger } from 'src/logger/logger'
 
-export async function createTicket (client: Client, guild: Guild, memberId: string, logger: Logger, name: string | undefined = undefined): Promise<TextChannel | string> {
+export async function createTicket (client: Client, guild: Guild, memberId: string, logger: ILogger, name: string | undefined = undefined): Promise<TextChannel | string> {
   if (name === undefined) name = nameGen()
 
   const supporterRole = await guild.roles.fetch(process.env.TICKET_SUPPORTER ?? '')

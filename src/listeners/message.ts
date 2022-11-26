@@ -1,7 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, Colors, EmbedBuilder } from 'discord.js'
-import { Logger } from '../logger/logger'
+import { ILogger } from '../logger/logger'
 
-export default async (client: Client, logger: Logger): Promise<void> => {
+export default async (client: Client, logger: ILogger): Promise<void> => {
   logger.logSync('INFO', 'Initializing message logger')
 
   client.on('messageUpdate', async (oldMsg, newMsg) => {

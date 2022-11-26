@@ -1,7 +1,7 @@
 import { Client, CommandInteraction, EmbedBuilder, escapeMarkdown } from 'discord.js'
-import { Logger } from '../logger/logger'
+import { ILogger } from '../logger/logger'
 
-export default async (client: Client, interaction: CommandInteraction, logger: Logger): Promise<void> => {
+export default async (client: Client, interaction: CommandInteraction, logger: ILogger): Promise<void> => {
   if (!interaction.isRepliable()) {
     logger.logSync('ERROR', 'Gegebene interaction kann nicht beantwortet werden.')
     return
@@ -34,8 +34,8 @@ export default async (client: Client, interaction: CommandInteraction, logger: L
     }
     await interaction.guild?.members.kick(target, reason)
 
-    logger.logSync('Info', 'Kick wurde erfolgreich ausgefuehrt')
-    logger.logSync('Info', `User <@${target.toString()}> wurde gekickt.Grund: ${reason}`)
+    logger.logSync('INFO', 'Kick wurde erfolgreich ausgefuehrt')
+    logger.logSync('INFO', `User <@${target.toString()}> wurde gekickt.Grund: ${reason}`)
   } catch (err) {
     logger.logSync('ERROR', `Kick konnte nicht ausgefuehrt werden. ${JSON.stringify(err)}`)
   }

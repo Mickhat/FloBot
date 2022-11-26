@@ -1,12 +1,12 @@
 import discord, { ButtonBuilder } from 'discord.js'
-import { Logger } from '../logger/logger'
+import { ILogger } from '../logger/logger'
 
 /**
  * Creates a role choose panel with buttons
  * @param {discord.Interaction} interaction
  * @param { "global" | "once"} mode
  */
-export async function createRoleInterface (interaction: discord.CommandInteraction, mode: 'global' | 'once', logger: Logger): Promise<void> {
+export async function createRoleInterface (interaction: discord.CommandInteraction, mode: 'global' | 'once', logger: ILogger): Promise<void> {
   const toggleRoles: string[] = process.env.TOGGLE_ROLES?.split(',').filter(val => val !== '') ?? []
   const buttons: Array<discord.ActionRowBuilder<ButtonBuilder>> = []
 
