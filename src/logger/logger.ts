@@ -75,7 +75,7 @@ class FileConsoleLogger implements ILogger {
     this.loggerName = logerName
     this.minLevel = minLevel
     const path = configData.path
-    if (FileConsoleLogger.filename === undefined) {
+    if (!FileConsoleLogger.filename) {
       const name = uuid()
       FileConsoleLogger.filename = join(path, `${formatDate(new Date(), 'yyyy-MM-dd--HH-mm-ss')}--${name}.log`)
       if (!fs.existsSync(path)) {

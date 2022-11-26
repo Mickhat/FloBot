@@ -4,8 +4,12 @@ module.exports = {
     es2021: true
   },
   extends: 'standard-with-typescript',
-  overrides: [
-  ],
+  overrides: [{
+    files: ['./**/*.ts'],
+    rules: {
+      '@typescript-eslint/strict-boolean-expressions': 'off'
+    }
+  }],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
