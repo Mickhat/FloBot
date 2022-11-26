@@ -30,14 +30,20 @@ const db = new sqlite.Database(dbFile, (err) => {
 
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS reports (
-        identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-        uuid TEXT NOT NULL UNIQUE,
-        creator_id TEXT NOT NULL,
-        reported_id TEXT NOT NULL,
-        category TEXT NOT NULL,
-        description TEXT,
-        message TEXT,
-        status INT NOT NULL)`)
+identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+uuid TEXT NOT NULL UNIQUE,
+creator_id TEXT NOT NULL,
+reported_id TEXT NOT NULL,
+category TEXT NOT NULL,
+description TEXT,
+message TEXT,
+status INT NOT NULL)`)
+  db.run(`CREATE TABLE IF NOT EXISTS videoCache (
+identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+video_title TEXT NOT NULL,
+url TEXT NOT NULL UNIQUE,
+description TEXT NOT NULL
+)`)
 })
 
 const client = new Client({
