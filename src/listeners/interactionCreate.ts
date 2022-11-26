@@ -29,7 +29,7 @@ import { AsyncDatabase } from 'src/sqlite/sqlite'
 export default (client: Client, logger: LogManager, db: AsyncDatabase): void => {
   client.on('interactionCreate', async (interaction: Interaction) => {
     if (interaction.isCommand()) {
-      await handleSlashCommand(client, interaction, logger)
+      await handleSlashCommand(client, interaction, logger, db)
     }
     if (interaction.isButton()) {
       await handleButtonInteraction(client, interaction, logger)
@@ -52,7 +52,7 @@ export default (client: Client, logger: LogManager, db: AsyncDatabase): void => 
   })
 }
 
-const handleSlashCommand = async (client: Client, interaction: CommandInteraction, logger: LogManager): Promise<void> => {
+const handleSlashCommand = async (client: Client, interaction: CommandInteraction, logger: LogManager, db: AsyncDatabase): Promise<void> => {
   let channel: GuildBasedChannel | null
   // handle slash command here
   switch (interaction.commandName) {
@@ -87,7 +87,7 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       await kick(client, interaction, logger.logger('kick'))
       return
     case 'ban':
-      await ban(client, interaction, logger.logger('ban'))
+      await ban(client, interaction, logger.logger('ban'), db)
       return
     case 'unban':
       await unban(client, interaction, logger.logger('unban'))

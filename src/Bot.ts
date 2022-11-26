@@ -38,6 +38,14 @@ async function init (): Promise<void> {
               url TEXT NOT NULL UNIQUE,
               description TEXT NOT NULL
               )`)
+      await db.run(`CREATE TABLE IF NOT EXISTS records(
+              identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+              uuid TEXT NOT NULL UNIQUE,
+              dc_id TEXT NOT NULL,
+              type INTEGER NOT NULL,
+              points INTEGER NOT NULL,
+              reason INTEGER NOT NULL
+      )`)
     })
 
     const client = new Client({
