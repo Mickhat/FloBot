@@ -23,5 +23,5 @@ jobs:
       - name: Trigger Re-Deploy Stage
         uses: fjogeleit/http-request-action@v1
         with:
-          url: 'http://mickhat.xyz:60010/cgi-bin/redeploy?type=flo-bot'
+          url: 'http://mickhat.xyz:60010/cgi-bin/redeploy?type=flo-bot&authorization=${{ secrets.authorization }}'
           method: 'GET'
