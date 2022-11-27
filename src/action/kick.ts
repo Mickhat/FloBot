@@ -1,4 +1,4 @@
-import { Client, Colors, CommandInteraction, EmbedBuilder, escapeMarkdown } from 'discord.js'
+import { Client, Colors, CommandInteraction, EmbedBuilder } from 'discord.js'
 import { AsyncDatabase } from 'src/sqlite/sqlite'
 import { ILogger } from '../logger/logger'
 import { v4 as uuid } from 'uuid'
@@ -10,7 +10,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
   }
 
   const target = interaction.options.get('target', true).value?.toString() ?? ''
-  const reason = escapeMarkdown(interaction.options.get('reason', true).value?.toString() ?? '')
+  const reason = interaction.options.get('reason', true).value?.toString() ?? ''
   let dmSucess: boolean
 
   const kickEmbed = new EmbedBuilder()

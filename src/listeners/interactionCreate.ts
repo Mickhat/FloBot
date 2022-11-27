@@ -93,7 +93,7 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       await unban(client, interaction, logger.logger('unban'))
       return
     case 'timeout':
-      await timeout(client, interaction, logger.logger('timeout'))
+      await timeout(client, interaction, logger.logger('timeout'), db)
       return
     case 'ticket-create':
       if ((interaction.guild == null) || (interaction.member == null) || interaction.member.user.id != null) {
