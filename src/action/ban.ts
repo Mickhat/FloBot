@@ -33,6 +33,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
           .addFields(
             { name: 'Grund', value: reason }
           )
+          .setColor(Colors.Red)
       ]
     })
     dmSucess = true

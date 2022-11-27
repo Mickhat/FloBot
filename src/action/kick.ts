@@ -1,6 +1,7 @@
-import { Client, CommandInteraction, EmbedBuilder, escapeMarkdown } from 'discord.js'
+import { Client, Colors, CommandInteraction, EmbedBuilder, escapeMarkdown } from 'discord.js'
 import { AsyncDatabase } from 'src/sqlite/sqlite'
 import { ILogger } from '../logger/logger'
+import { v4 as uuid } from 'uuid'
 
 export default async (client: Client, interaction: CommandInteraction, logger: ILogger, db: AsyncDatabase): Promise<void> => {
   if (!interaction.isRepliable()) {
@@ -10,6 +11,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
 
   const target = interaction.options.get('target', true).value?.toString() ?? ''
   const reason = escapeMarkdown(interaction.options.get('reason', true).value?.toString() ?? '')
+  let dmSucess: boolean
 
   const kickEmbed = new EmbedBuilder()
     .setTitle('User wurde gekickt')
@@ -27,18 +29,48 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
     .addFields({ name: 'Grund', value: reason })
 
   try {
-    try {
-      const dm = await client.users.fetch(target)
-      await dm.send(`Du wurdest von Florian Dalwigk's Server gekickt.\nAngegebener Grund: ${reason}`)
-      await interaction.reply({ embeds: [kickEmbed] })
-    } catch (err) {
-      await interaction.reply({ embeds: [dmDisabled] })
-    }
-    await interaction.guild?.members.kick(target, reason)
+    await db.runAsync('INSERT INTO records (uuid, dc_id, type, points, reason) VALUES (?, ?, \'KICK\', 100, ?)', [
+      uuid(), target, reason
+    ])
+  } catch (e) {
+    logger.logSync("ERROR", `SQLITE-ERROR: ${JSON.stringify(e)}`)
+  }
 
-    logger.logSync('INFO', 'Kick wurde erfolgreich ausgefuehrt')
-    logger.logSync('INFO', `User <@${target.toString()}> wurde gekickt.Grund: ${reason}`)
-  } catch (err) {
-    logger.logSync('ERROR', `Kick konnte nicht ausgefuehrt werden. ${JSON.stringify(err)}`)
+  try {
+    await (await client.users.fetch(target)).send({
+      embeds: [
+        new EmbedBuilder()
+          .setTitle('Kick')
+          .setDescription('Aufgrund deines Verhaltens wurdest du vom Server gekickt. Wir bitten dich zukünftig unsere Regeln zu beachten. Bist du der Meinung, zu unrecht gekickt worden zu sein, melde dich bitte bei uns persönlich.')
+          .addFields({ name: 'Grund', value: reason })
+          .setColor(Colors.Red)
+      ]
+    })
+    dmSucess = true
+  } catch (e) {
+    dmSucess = false
+  }
+
+  try {
+    await interaction.guild?.members.kick(target, reason)
+    logger.logSync('INFO', `Nutzer mit ID ${target} wurde gekickt.`)
+  } catch (e) {
+    await interaction.reply({
+      embeds: [
+        new EmbedBuilder().setDescription('Der Kick ist fehlgeschlagen.')
+      ],
+      ephemeral: true
+    })
+    return
+  }
+
+  try {
+    if (dmSucess) {
+      await interaction.reply({ embeds: [kickEmbed], ephemeral: true })
+    } else {
+      await interaction.reply({ embeds: [dmDisabled], ephemeral: true })
+    }
+  } catch (e) {
+    logger.logSync('ERROR', 'Interaction konnte nicht beantwortet werden.')
   }
 }
