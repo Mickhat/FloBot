@@ -7,7 +7,8 @@ module.exports = {
   overrides: [{
     files: ['./**/*.ts'],
     rules: {
-      '@typescript-eslint/strict-boolean-expressions': 'off'
+      '@typescript-eslint/strict-boolean-expressions': 'off',
+      '@typescript-eslint/quotes': 'off'
     }
   }],
   parserOptions: {

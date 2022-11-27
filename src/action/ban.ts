@@ -11,28 +11,49 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
 
   const target = interaction.options.get('target', true).value?.toString() ?? ''
   const reason = interaction.options.get('reason', true).value?.toString() ?? ''
+  let dmSucess: boolean
+
+  // record
+  try {
+    await db.runAsync('INSERT INTO records (uuid, dc_id, type, points, reason) VALUES (?, ?, \'BAN\', 100, ?)', [
+      uuid(), target, reason
+    ])
+  } catch (e) {
+    logger.logSync('ERROR', `SQLITE-ERROR: ${JSON.stringify(e)}`)
+  }
+
+  // send dm
+  try {
+    const dm = await client.users.fetch(target)
+    await dm.send({
+      embeds: [
+        new EmbedBuilder()
+          .setTitle('Ban')
+          .setDescription('Es tut uns sehr leid, jedoch sind wir gezwungen dich aufgrund deines Verhaltens vom Server auszuschließen. Bist du der Meinung, zu unrecht gebannt worden zu sein, melde dich bitte bei uns persönlich.')
+          .addFields(
+            { name: 'Grund', value: reason }
+          )
+      ]
+    })
+    dmSucess = true
+  } catch (e) {
+    dmSucess = false
+  }
 
   try {
-    await interaction.guild?.members.ban(target)
-    try {
-      try {
-        await db.runAsync('INSERT INTO records (uuid, dc_id, type, points, reason) VALUES (?, ?, \'BAN\', 100, ?)', [
-          uuid(), target, reason
-        ])
-      } catch (e) {
-        logger.logSync('ERROR', `SQLITE-ERROR: ${JSON.stringify(e)}`)
-      }
-      const dm = await client.users.fetch(target)
-      await dm.send({
-        embeds: [
-          new EmbedBuilder()
-            .setTitle('Ban')
-            .setDescription('Es tut uns sehr leid, jedoch sind wir gezwungen dich aufgrund deines Verhaltens vom Server auszuschließen. Bist du der Meinung, zu unrecht gebannt worden zu sein, melde dich bitte bei uns persönlich.')
-            .addFields(
-              { name: 'Grund', value: reason }
-            )
-        ]
-      })
+    await interaction.guild?.members.ban(target, { reason })
+    logger.logSync("INFO", `Nutzer mit der ID ${target} wurde gebannt.`)
+  } catch (e) {
+    logger.logSync('ERROR', `Ban ${target} konnte nicht ausgefuehrt werden. ${JSON.stringify(e)}`)
+    await interaction.reply({
+      ephemeral: true,
+      content: 'Der Ban war erfolgslos.'
+    })
+    return
+  }
+
+  try {
+    if (dmSucess) {
       await interaction.reply({
         embeds: [new EmbedBuilder()
           .setTitle('User wurde gebannt')
@@ -43,7 +64,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
           .setTimestamp()],
         ephemeral: true
       })
-    } catch (err) {
+    } else {
       await interaction.reply({
         embeds: [new EmbedBuilder()
           .setTitle('User wurde gebannt')
@@ -55,9 +76,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
         ephemeral: true
       })
     }
-    logger.logSync('INFO', 'Ban wurde erfolgreich ausgefuehrt')
-    logger.logSync('INFO', `User <@${target.toString()}> wurde gebannt.Grund: ${reason}`)
-  } catch (err) {
-    logger.logSync('ERROR', `Ban konnte nicht ausgefuehrt werden. ${JSON.stringify(err)}`)
+  } catch (e) {
+    logger.logSync("ERROR", 'Interaction could not be replied.')
   }
 }

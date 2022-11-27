@@ -1,7 +1,8 @@
 import { Client, CommandInteraction, EmbedBuilder, escapeMarkdown } from 'discord.js'
+import { AsyncDatabase } from 'src/sqlite/sqlite'
 import { ILogger } from '../logger/logger'
 
-export default async (client: Client, interaction: CommandInteraction, logger: ILogger): Promise<void> => {
+export default async (client: Client, interaction: CommandInteraction, logger: ILogger, db: AsyncDatabase): Promise<void> => {
   if (!interaction.isRepliable()) {
     logger.logSync('ERROR', 'Gegebene interaction kann nicht beantwortet werden.')
     return
@@ -12,17 +13,18 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
 
   const kickEmbed = new EmbedBuilder()
     .setTitle('User wurde gekickt')
-    .setDescription(`<@${target.toString()}> wurde erfolgreich gekickt. Angegebener Grund:  ${reason}`)
+    .setDescription(`<@${target}> wurde erfolgreich gekickt und wurde benachrichtigt.`)
     .setColor('Yellow')
     .setAuthor({ name: `Gekickt von: ${interaction.user.tag}` })
     .setTimestamp()
 
   const dmDisabled = new EmbedBuilder()
     .setTitle('User wurde gekickt')
-    .setDescription(`<@${target.toString()}> hat seine DMS deaktiviert.\nAngegebener Grund: ${reason}`)
+    .setDescription(`<@${target}> wurde erfolgreich gekickt. Die Banachrichtigung konnte nicht verschickt werden.`)
     .setColor('Yellow')
     .setAuthor({ name: `Gekickt von: ${interaction.user.tag}` })
     .setTimestamp()
+    .addFields({ name: 'Grund', value: reason })
 
   try {
     try {

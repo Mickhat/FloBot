@@ -84,7 +84,7 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       await meme(client, interaction, logger.logger('meme'))
       return
     case 'kick':
-      await kick(client, interaction, logger.logger('kick'))
+      await kick(client, interaction, logger.logger('kick'), db)
       return
     case 'ban':
       await ban(client, interaction, logger.logger('ban'), db)
