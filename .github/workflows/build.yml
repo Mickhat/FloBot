@@ -20,6 +20,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm test
+      - run: npm run start
       - name: Trigger Re-Deploy Stage
         uses: fjogeleit/http-request-action@v1
         with:
