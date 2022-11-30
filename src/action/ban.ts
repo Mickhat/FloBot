@@ -15,7 +15,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
 
   // record
   try {
-    await db.runAsync('INSERT INTO records (uuid, dc_id, type, points, reason) VALUES (?, ?, \'BAN\', 100, ?)', [
+    await db.runAsync('INSERT INTO records (uuid, dc_id, type, points, reason) VALUES (?, ?, \'BAN\', 0, ?)', [
       uuid(), target, reason
     ])
   } catch (e) {

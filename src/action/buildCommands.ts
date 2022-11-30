@@ -22,13 +22,6 @@ export default [
       opt => opt.setName('reason')
         .setDescription('Der Grund für den /warn')
         .setRequired(true)
-    )
-    .addIntegerOption(
-      opt => opt.setName('weight')
-        .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden.')
-        .setMinValue(0)
-        .setMaxValue(1)
-        .setRequired(true)
     ),
   new SlashCommandBuilder().setName('strike')
     .setDescription('Verwarnt eine Person und erteilt einen Strike.')
@@ -40,13 +33,6 @@ export default [
     .addStringOption(
       opt => opt.setName('reason')
         .setDescription('Der Grund für den /strike')
-        .setRequired(true)
-    )
-    .addIntegerOption(
-      opt => opt.setName('weight')
-        .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden')
-        .setMinValue(1)
-        .setMaxValue(4)
         .setRequired(true)
     ),
   new SlashCommandBuilder().setName('kick')
