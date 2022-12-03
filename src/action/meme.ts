@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, CommandInteraction, EmbedBuilder, Colors } from 'discord.js'
+import { Client, CommandInteraction, EmbedBuilder, Colors } from 'discord.js'
 import { ILogger } from 'src/logger/logger'
 import axios, { AxiosError } from 'axios'
 import { decompress } from 'brotli'
@@ -35,22 +35,10 @@ export async function meme (client: Client, interaction: CommandInteraction, log
 
     await interaction.reply({
       embeds: [postMeme],
-      components: [
-        new ActionRowBuilder<ButtonBuilder>().addComponents(
-          new ButtonBuilder().setCustomId('delete')
-            .setLabel('Löschen')
-            .setStyle(ButtonStyle.Danger)
-            .setEmoji('🗑️')
-        )
-      ],
+      components: [],
       ephemeral: false
     })
     logger.logSync('INFO', 'Meme versendet')
-    setTimeout(() => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      interaction.editReply({ components: [] })
-      logger.logSync('INFO', 'Deleted delete-button')
-    }, 30000)
   } catch (err) {
     console.log(err)
     if (err instanceof AxiosError) {
