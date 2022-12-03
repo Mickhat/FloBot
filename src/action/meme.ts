@@ -1,6 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, CommandInteraction, EmbedBuilder, Colors } from 'discord.js'
 import { ILogger } from 'src/logger/logger'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
+import https from 'https'
 
 export async function meme (client: Client, interaction: CommandInteraction, logger: ILogger): Promise<void> {
   if (!interaction.isRepliable()) {
@@ -17,38 +18,54 @@ export async function meme (client: Client, interaction: CommandInteraction, log
   const pickSubReddit = subReddit[Math.floor(Math.random() * subReddit.length)]
 
   try {
-    const { data } = await axios.get(`https://meme-api.herokuapp.com/gimme/${pickSubReddit}`)
+    https.get(`https://meme-api.com/gimme/${pickSubReddit}`, res => {
+      const data = [] as any
 
-    const postMeme = new EmbedBuilder()
-      .setAuthor({
-        name: `/u/${data.author as string}`
+      res.on('data', chunk => {
+        data.push(chunk)
       })
-      .setTitle(data.title)
-      .setImage(data.url)
-      .setURL(data.postLink)
-      .setColor(Colors.Green)
-      .setTimestamp()
-      .setFooter({ text: `/r/${data.subreddit as string}  • Upvotes: ${data.ups as string} ` })
 
-    await interaction.reply({
-      embeds: [postMeme],
-      components: [
-        new ActionRowBuilder<ButtonBuilder>().addComponents(
-          new ButtonBuilder().setCustomId('delete')
-            .setLabel('Löschen')
-            .setStyle(ButtonStyle.Danger)
-            .setEmoji('🗑️')
-        )
-      ],
-      ephemeral: false
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      res.on('end', async () => {
+        console.log('Response ended: ')
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        const dataJson = JSON.parse(Buffer.concat(data).toString()) as any
+
+        const postMeme = new EmbedBuilder()
+          .setAuthor({
+            name: `/u/${dataJson.author as string}`
+          })
+          .setTitle(dataJson.title)
+          .setImage(dataJson.url)
+          .setURL(dataJson.postLink)
+          .setColor(Colors.Green)
+          .setTimestamp()
+          .setFooter({ text: `/r/${dataJson.subreddit as string}  • Upvotes: ${dataJson.ups as string} ` })
+
+        await interaction.reply({
+          embeds: [postMeme],
+          components: [
+            new ActionRowBuilder<ButtonBuilder>().addComponents(
+              new ButtonBuilder().setCustomId('delete')
+                .setLabel('Löschen')
+                .setStyle(ButtonStyle.Danger)
+                .setEmoji('🗑️')
+            )
+          ],
+          ephemeral: false
+        })
+        logger.logSync('INFO', 'Meme versendet')
+        setTimeout(() => {
+          // eslint-disable-next-line @typescript-eslint/no-floating-promises
+          interaction.editReply({ components: [] })
+          logger.logSync('INFO', 'Deleted delete-button')
+        }, 30000)
+      })
+    }).on('error', err => {
+      console.log('Error: ', err.message)
     })
-    logger.logSync('INFO', 'Meme versendet')
-    setTimeout(() => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      interaction.editReply({ components: [] })
-      logger.logSync('INFO', 'Deleted delete-button')
-    }, 30000)
   } catch (err) {
+    console.log(err)
     if (err instanceof AxiosError) {
       let errorText
       if (err.response) {
