@@ -47,11 +47,6 @@ export async function meme (client: Client, interaction: CommandInteraction, log
           ephemeral: false
         })
         logger.logSync('INFO', 'Meme versendet')
-        setTimeout(() => {
-          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-          interaction.editReply({ components: [] })
-          logger.logSync('INFO', 'Deleted delete-button')
-        }, 30000)
       })
     }).on('error', err => {
       console.log('Error: ', err.message)
