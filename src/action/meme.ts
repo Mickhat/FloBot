@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, CommandInteraction, EmbedBuilder, Colors } from 'discord.js'
+import { Client, CommandInteraction, EmbedBuilder, Colors } from 'discord.js'
 import { ILogger } from 'src/logger/logger'
 import { AxiosError } from 'axios'
 import https from 'https'
@@ -44,14 +44,6 @@ export async function meme (client: Client, interaction: CommandInteraction, log
 
         await interaction.reply({
           embeds: [postMeme],
-          components: [
-            new ActionRowBuilder<ButtonBuilder>().addComponents(
-              new ButtonBuilder().setCustomId('delete')
-                .setLabel('Löschen')
-                .setStyle(ButtonStyle.Danger)
-                .setEmoji('🗑️')
-            )
-          ],
           ephemeral: false
         })
         logger.logSync('INFO', 'Meme versendet')
