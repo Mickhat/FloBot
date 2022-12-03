@@ -57,7 +57,7 @@ export async function secondPage (interaction: ButtonInteraction): Promise<void>
   await interaction.update({
     embeds: [
       new EmbedBuilder().setTitle('Informationen erhalten')
-        .setDescription('Dieser Bot enthält Befehle, die nur eine Nachricht mir Informationen verschicken.')
+        .setDescription('Dieser Bot enthält Befehle, die nur eine Nachricht mit Informationen verschicken.')
         .addFields(
           { name: '/about', value: 'Dieser Befehl zeigt dir Informationen über diesen Bot an.', inline: false },
           { name: '/codeblocks', value: 'Diese Nachricht erklärt die Nutzung und Bedienung von Codeblocks.', inline: false },

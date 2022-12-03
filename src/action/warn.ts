@@ -26,7 +26,7 @@ export default async function (client: Client, interaction: CommandInteraction, 
       embeds: [
         new EmbedBuilder()
           .setTitle(type === "WARN" ? "Verwarnung" : "Verschärfte Warnung")
-          .setDescription('Wir sind der Meinung, du hast gegen eine unserer Regeln verstoßen. Hiermit erhällst du eine Warnung. Wir bitten dich zukünftig, dich an unsere Regeln zu halten.')
+          .setDescription('Wir sind der Meinung, du hast gegen eine unserer Regeln verstoßen. Hiermit erhälst du eine Warnung. Wir bitten dich zukünftig, dich an unsere Regeln zu halten.')
           .addFields({ name: 'Grund', value: reason })
           .setColor(Colors.Yellow)
       ]
