@@ -11,7 +11,16 @@ export default [
   /*
     Mod-Commands
     */
+  new SlashCommandBuilder().setName('history')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+    .setDescription('Sieht die Historie eines Users ein')
+    .addUserOption(
+      opt => opt.setName('target')
+        .setDescription('Die Person, dessen Historie eingesehen werden soll')
+        .setRequired(true)
+    ),
   new SlashCommandBuilder().setName('warn')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .setDescription('Verwarnt eine Person')
     .addUserOption(
       opt => opt.setName('target')
@@ -24,6 +33,7 @@ export default [
         .setRequired(true)
     ),
   new SlashCommandBuilder().setName('strike')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .setDescription('Verwarnt eine Person und erteilt einen Strike.')
     .addUserOption(
       opt => opt.setName('target')

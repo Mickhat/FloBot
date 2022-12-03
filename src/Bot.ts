@@ -32,13 +32,13 @@ async function init (): Promise<void> {
             description TEXT,
             message TEXT,
             status INT NOT NULL)`)
-      await db.run(`CREATE TABLE IF NOT EXISTS videoCache (
+      await db.runAsync(`CREATE TABLE IF NOT EXISTS videoCache (
               identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
               video_title TEXT NOT NULL,
               url TEXT NOT NULL UNIQUE,
               description TEXT NOT NULL
               )`)
-      await db.run(`CREATE TABLE IF NOT EXISTS records(
+      await db.runAsync(`CREATE TABLE IF NOT EXISTS records(
               identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
               uuid TEXT NOT NULL UNIQUE,
               dc_id TEXT NOT NULL,

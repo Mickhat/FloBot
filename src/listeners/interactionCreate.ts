@@ -24,6 +24,7 @@ import ban from '../action/ban'
 import unban from '../action/unban'
 import timeout from '../action/timeout'
 import warn from '../action/warn'
+import history from '../action/history'
 import { AsyncDatabase } from 'src/sqlite/sqlite'
 // import { autocomplete } from "../action/youtube";
 
@@ -89,6 +90,9 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       return
     case 'strike':
       await warn(client, interaction, logger.logger('warn-system'), db, 1, "STRIKE")
+      return
+    case 'history':
+      await history(client, interaction, logger.logger('history'), db)
       return
     case 'kick':
       await kick(client, interaction, logger.logger('kick'), db)
