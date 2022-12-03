@@ -23,7 +23,7 @@ import kick from '../action/kick'
 import ban from '../action/ban'
 import unban from '../action/unban'
 import timeout from '../action/timeout'
-import warn from '../action/warn'
+// import warn from '../action/warn'
 import { AsyncDatabase } from 'src/sqlite/sqlite'
 // import { autocomplete } from "../action/youtube";
 
@@ -41,7 +41,7 @@ export default (client: Client, logger: LogManager, db: AsyncDatabase): void => 
     if (interaction.isContextMenuCommand() && interaction.commandType === ApplicationCommandType.Message) {
       await handleMessageContextMenuCommand(client, interaction, logger, db)
     }
-    if (interaction.isSelectMenu()) {
+    if (interaction.isStringSelectMenu()) {
       await handleSelectMenu(client, interaction, logger, db)
     }
     if (interaction.isModalSubmit()) {
@@ -84,12 +84,12 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
     case 'meme':
       await meme(client, interaction, logger.logger('meme'))
       return
-    case 'warn':
-      await warn(client, interaction, logger.logger('warn-system'), db, 0, "WARN")
-      return
-    case 'strike':
-      await warn(client, interaction, logger.logger('warn-system'), db, 1, "STRIKE")
-      return
+    // case 'warn':
+    //   await warn(client, interaction, logger.logger('warn-system'), db, 0, "WARN")
+    //   return
+    // case 'strike':
+    //   await warn(client, interaction, logger.logger('warn-system'), db, 1, "STRIKE")
+    //   return
     case 'kick':
       await kick(client, interaction, logger.logger('kick'), db)
       return
