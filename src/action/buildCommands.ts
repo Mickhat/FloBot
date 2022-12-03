@@ -19,6 +19,14 @@ export default [
         .setDescription('Die Person, dessen Historie eingesehen werden soll')
         .setRequired(true)
     ),
+  new SlashCommandBuilder().setName('clear')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+    .setDescription('Leert die Historie eines Users')
+    .addUserOption(
+      opt => opt.setName('target')
+        .setDescription('Die Person, dessen Historie geleert werden soll')
+        .setRequired(true)
+    ),
   new SlashCommandBuilder().setName('warn')
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .setDescription('Verwarnt eine Person')
