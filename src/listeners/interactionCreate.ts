@@ -25,7 +25,7 @@ import unban from '../action/unban'
 import timeout from '../action/timeout'
 import warn from '../action/warn'
 import history from '../action/history'
-import clear from '../action/clear'
+import clear from '../action/clearHistory'
 import { AsyncDatabase } from 'src/sqlite/sqlite'
 // import { autocomplete } from "../action/youtube";
 
