@@ -158,5 +158,21 @@ export default [
       .setDescription('Der Nutzer, der hinzugefügt werden soll')
       .setRequired(true)),
   new SlashCommandBuilder().setName('ticket-close')
-    .setDescription('Das Ticket schließen') /* */
+    .setDescription('Das Ticket schließen'),
+  /*
+      Giveaway
+  */
+  new SlashCommandBuilder().setName('giveaway')
+    .setDescription('Etwas verlosen')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+    .addStringOption(
+      o => o.setName('item')
+        .setDescription('Was soll verlost werden.')
+        .setRequired(true)
+    )
+    .addStringOption(
+      o => o.setName('time')
+        .setDescription('Wie lange soll das Giveaway gehen? Default: 24h')
+        .setRequired(false)
+    )
 ]

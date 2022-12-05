@@ -26,7 +26,8 @@ import timeout from '../action/timeout'
 import warn from '../action/warn'
 import history from '../action/history'
 import clear from '../action/clearHistory'
-import { AsyncDatabase } from 'src/sqlite/sqlite'
+import { AsyncDatabase } from '../sqlite/sqlite'
+import { createGiveaway } from '../action/giveaway'
 // import { autocomplete } from "../action/youtube";
 
 export default (client: Client, logger: LogManager, db: AsyncDatabase): void => {
@@ -43,7 +44,7 @@ export default (client: Client, logger: LogManager, db: AsyncDatabase): void => 
     if (interaction.isContextMenuCommand() && interaction.commandType === ApplicationCommandType.Message) {
       await handleMessageContextMenuCommand(client, interaction, logger, db)
     }
-    if (interaction.isSelectMenu()) {
+    if (interaction.isStringSelectMenu()) {
       await handleSelectMenu(client, interaction, logger, db)
     }
     if (interaction.isModalSubmit()) {
@@ -165,6 +166,10 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
         content: 'Fertig!',
         ephemeral: true
       })
+      break
+    case 'giveaway':
+      await createGiveaway(client, interaction, db)
+      break
   }
 }
 
