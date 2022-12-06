@@ -47,7 +47,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
   } catch (e) {
     logger.logSync('ERROR', `Ban ${target} konnte nicht ausgefuehrt werden. ${JSON.stringify(e)}`)
     await interaction.reply({
-      ephemeral: true,
+      ephemeral: false,
       content: 'Der Ban war erfolgslos.'
     })
     return

@@ -59,7 +59,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
       embeds: [
         new EmbedBuilder().setDescription('Der Kick ist fehlgeschlagen.')
       ],
-      ephemeral: true
+      ephemeral: false
     })
     return
   }
