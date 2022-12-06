@@ -47,7 +47,7 @@ export default async function (client: Client, interaction: CommandInteraction, 
           .setDescription(`${target.toString()} wurde verwarnt, konnte aber nicht benachrichtigt werden.`)
           .setColor(Colors.Yellow)
       ],
-      ephemeral: true
+      ephemeral: false
     })
   }
 
@@ -56,6 +56,6 @@ export default async function (client: Client, interaction: CommandInteraction, 
       new EmbedBuilder()
         .setDescription(`${target.toString()} wurde erfolgreich verwant.`)
     ],
-    ephemeral: true
+    ephemeral: false
   })
 }
