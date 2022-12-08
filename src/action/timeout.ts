@@ -23,7 +23,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
 
   try {
     await member?.timeout(zeit, reason)
-    await interaction.reply({ embeds: [embed], ephemeral: true })
+    await interaction.reply({ embeds: [embed], ephemeral: false })
   } catch (err) {
     logger.logSync('ERROR', `Timeout konnte nicht ausgefuehrt werden. ${JSON.stringify(err)}`)
     await interaction.reply({
