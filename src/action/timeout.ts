@@ -27,7 +27,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
   } catch (err) {
     logger.logSync('ERROR', `Timeout konnte nicht ausgefuehrt werden. ${JSON.stringify(err)}`)
     await interaction.reply({
-      embeds: [new EmbedBuilder().setDescription('Timeout fehlgeschlagen')], ephemeral: true
+      embeds: [new EmbedBuilder().setDescription('Timeout fehlgeschlagen')], ephemeral: false
     })
   }
 }
