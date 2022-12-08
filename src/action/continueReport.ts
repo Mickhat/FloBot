@@ -1,5 +1,5 @@
 import {
-  SelectMenuInteraction, Client,
+  StringSelectMenuInteraction, Client,
   ModalBuilder, ActionRowBuilder,
   TextInputBuilder, TextInputStyle,
   EmbedBuilder
@@ -7,7 +7,7 @@ import {
 import { AsyncDatabase } from '../sqlite/sqlite'
 import { ILogger } from '../logger/logger'
 
-export default async (interaction: SelectMenuInteraction, client: Client, db: AsyncDatabase, logger: ILogger): Promise<void> => {
+export default async (interaction: StringSelectMenuInteraction, client: Client, db: AsyncDatabase, logger: ILogger): Promise<void> => {
   const uuid = interaction.customId.split('_')[1]
   logger.logSync('DEBUG', `User-Report ${uuid} continue`)
 
