@@ -33,7 +33,7 @@ ${answers.map((value, index) => `${emojis[index]} ${value}`).join('\n')}
     fetchReply: true
   })
 
-  for (const i of answers) {
-    await message.react(i)
+  for (let i = 0; i < answers.length; i++) {
+    await message.react(emojis[i])
   }
 }

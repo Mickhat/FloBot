@@ -1,24 +1,34 @@
 import { expect, test } from '@jest/globals'
 import { AsyncDatabase } from './sqlite'
+import os from 'os'
 import fs from 'fs'
 
+const createDBName = (num: number): string => {
+  return `${os.tmpdir()}/test-sqlite-${num}.db`
+}
+
+const unlink = (num: number): void => {
+  // windows has problem with unlinkSync (possibly due to Anti-Virus)
+  fs.unlink(createDBName(num), () => {})
+}
+
 test('open DB', async () => {
-  const db = await AsyncDatabase.open('test-sqlite.db')
+  const db = await AsyncDatabase.open(createDBName(0))
   expect(db).toBeDefined()
-  expect(fs.existsSync('./test-sqlite.db')).toBeTruthy()
-  fs.unlinkSync('./test-sqlite.db')
+  expect(fs.existsSync(createDBName(0))).toBeTruthy()
+  unlink(0)
 })
 
 test('create table', async () => {
-  const db = await AsyncDatabase.open('test-sqlite-2.db')
+  const db = await AsyncDatabase.open(createDBName(1))
   const runResult = await db.runAsync('create table if not exists foo (id int, name varchar(255))')
   expect(runResult.changes).toBe(0)
   expect(runResult.lastID).toBe(0)
-  fs.unlinkSync('./test-sqlite-2.db')
+  unlink(1)
 })
 
 test('insert', async () => {
-  const db = await AsyncDatabase.open('test-sqlite-3.db')
+  const db = await AsyncDatabase.open(createDBName(2))
   await db.runAsync('create table if not exists foo (id int, name varchar(255))')
   const runResult = await db.runAsync('insert into foo (id, name) values (?,?)', [1, 'mega'])
   expect(runResult.changes).toBe(1)
@@ -26,11 +36,11 @@ test('insert', async () => {
   const runResult2 = await db.runAsync('insert into foo (id, name) values (?,?)', [2, 'giga'])
   expect(runResult2.changes).toBe(1)
   expect(runResult2.lastID).toBe(2)
-  fs.unlinkSync('./test-sqlite-3.db')
+  unlink(2)
 })
 
 test('query', async () => {
-  const db = await AsyncDatabase.open('test-sqlite-4.db')
+  const db = await AsyncDatabase.open(createDBName(3))
   await db.runAsync('create table if not exists foo (id int, name varchar(255))')
   await db.runAsync('delete from foo', [])
   await db.runAsync('insert into foo (id, name) values (?,?), (?,?), (?,?)', [1, 'mega', 2, 'giga', 3, 'exa'])
@@ -45,5 +55,5 @@ test('query', async () => {
   const one = await db.getAsync('select * from foo where id = ?', [1])
   expect(one.id).toBe(1)
   expect(one.name).toBe('mega')
-  fs.unlinkSync('./test-sqlite-4.db')
+  unlink(3)
 })

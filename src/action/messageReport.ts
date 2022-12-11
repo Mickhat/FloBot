@@ -38,9 +38,9 @@ Setzt Du den Report fort und das Team stellt fest, das dieser bewusst falsch ist
     ],
     ephemeral: true,
     components: [
-      new discord.ActionRowBuilder<discord.SelectMenuBuilder>()
+      new discord.ActionRowBuilder<discord.StringSelectMenuBuilder>()
         .addComponents(
-          new discord.SelectMenuBuilder()
+          new discord.StringSelectMenuBuilder()
             .setCustomId(`report_${reportId}_category`)
             .setPlaceholder('Verstoßene Regel / Kategorie angeben')
             .addOptions(

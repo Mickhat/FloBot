@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType, PermissionFlagsBits } from 'discord.js'
+import { registerBlackJackCommands } from './blackjack/registerCommands'
 
 export default [
   /*
@@ -11,7 +12,24 @@ export default [
   /*
     Mod-Commands
     */
+  new SlashCommandBuilder().setName('history')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+    .setDescription('Sieht die Historie eines Users ein')
+    .addUserOption(
+      opt => opt.setName('target')
+        .setDescription('Die Person, dessen Historie eingesehen werden soll')
+        .setRequired(true)
+    ),
+  new SlashCommandBuilder().setName('clear')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+    .setDescription('Leert die Historie eines Users')
+    .addUserOption(
+      opt => opt.setName('target')
+        .setDescription('Die Person, dessen Historie geleert werden soll')
+        .setRequired(true)
+    ),
   new SlashCommandBuilder().setName('warn')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .setDescription('Verwarnt eine Person')
     .addUserOption(
       opt => opt.setName('target')
@@ -22,15 +40,9 @@ export default [
       opt => opt.setName('reason')
         .setDescription('Der Grund für den /warn')
         .setRequired(true)
-    )
-    .addIntegerOption(
-      opt => opt.setName('weight')
-        .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden.')
-        .setMinValue(0)
-        .setMaxValue(1)
-        .setRequired(true)
     ),
   new SlashCommandBuilder().setName('strike')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .setDescription('Verwarnt eine Person und erteilt einen Strike.')
     .addUserOption(
       opt => opt.setName('target')
@@ -40,32 +52,6 @@ export default [
     .addStringOption(
       opt => opt.setName('reason')
         .setDescription('Der Grund für den /strike')
-        .setRequired(true)
-    )
-    .addIntegerOption(
-      opt => opt.setName('weight')
-        .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden')
-        .setMinValue(1)
-        .setMaxValue(4)
-        .setRequired(true)
-    ),
-  new SlashCommandBuilder().setName('mute')
-    .setDescription('Verbietet einer Person das Schreiben innerhalb eines Zeitraumes.')
-    .addUserOption(
-      opt => opt.setName('target')
-        .setDescription('Die Person, die gemuted werden soll')
-        .setRequired(true)
-    )
-    .addStringOption(
-      opt => opt.setName('reason')
-        .setDescription('Der Grund für den /mute')
-        .setRequired(true)
-    )
-    .addIntegerOption(
-      opt => opt.setName('weight')
-        .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden')
-        .setMinValue(2)
-        .setMaxValue(6)
         .setRequired(true)
     ),
   new SlashCommandBuilder().setName('kick')
@@ -173,5 +159,25 @@ export default [
       .setDescription('Der Nutzer, der hinzugefügt werden soll')
       .setRequired(true)),
   new SlashCommandBuilder().setName('ticket-close')
-    .setDescription('Das Ticket schließen') /* */
+    .setDescription('Das Ticket schließen'),
+  /*
+      Giveaway
+  */
+  new SlashCommandBuilder().setName('giveaway')
+    .setDescription('Etwas verlosen')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+    .addStringOption(
+      o => o.setName('item')
+        .setDescription('Was soll verlost werden.')
+        .setRequired(true)
+    )
+    .addStringOption(
+      o => o.setName('time')
+        .setDescription('Wie lange soll das Giveaway gehen? Default: 24h')
+        .setRequired(false)
+    ),
+  /*
+      Blackjack
+  */
+  registerBlackJackCommands()
 ]

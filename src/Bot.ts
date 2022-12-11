@@ -8,6 +8,7 @@ import registerCommands from './action/registerCommands'
 import { AsyncDatabase } from './sqlite/sqlite'
 import message from './listeners/message'
 import path from 'path'
+import { PersistentDataStorage } from './action/blackjack/persistentDataStorage'
 
 const logManager: LogManager = LogManager.getInstance()
 
@@ -32,6 +33,21 @@ async function init (): Promise<void> {
             description TEXT,
             message TEXT,
             status INT NOT NULL)`)
+      await db.runAsync(`CREATE TABLE IF NOT EXISTS videoCache (
+              identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+              video_title TEXT NOT NULL,
+              url TEXT NOT NULL UNIQUE,
+              description TEXT NOT NULL
+              )`)
+      await db.runAsync(`CREATE TABLE IF NOT EXISTS records(
+              identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+              uuid TEXT NOT NULL UNIQUE,
+              dc_id TEXT NOT NULL,
+              type INTEGER NOT NULL,
+              points INTEGER NOT NULL,
+              reason INTEGER NOT NULL
+      )`)
+      await (await PersistentDataStorage.instance()).initBlackJack(db)
     })
 
     const client = new Client({

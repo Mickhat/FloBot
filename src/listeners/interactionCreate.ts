@@ -23,13 +23,18 @@ import kick from '../action/kick'
 import ban from '../action/ban'
 import unban from '../action/unban'
 import timeout from '../action/timeout'
-import { AsyncDatabase } from 'src/sqlite/sqlite'
+import warn from '../action/warn'
+import history from '../action/history'
+import clear from '../action/clearHistory'
+import { AsyncDatabase } from '../sqlite/sqlite'
+import { createGiveaway } from '../action/giveaway'
+import { handleBlackJackCommands } from '../action/blackjack/handleCommands'
 // import { autocomplete } from "../action/youtube";
 
 export default (client: Client, logger: LogManager, db: AsyncDatabase): void => {
   client.on('interactionCreate', async (interaction: Interaction) => {
     if (interaction.isCommand()) {
-      await handleSlashCommand(client, interaction, logger)
+      await handleSlashCommand(client, interaction, logger, db)
     }
     if (interaction.isButton()) {
       await handleButtonInteraction(client, interaction, logger)
@@ -40,7 +45,7 @@ export default (client: Client, logger: LogManager, db: AsyncDatabase): void => 
     if (interaction.isContextMenuCommand() && interaction.commandType === ApplicationCommandType.Message) {
       await handleMessageContextMenuCommand(client, interaction, logger, db)
     }
-    if (interaction.isSelectMenu()) {
+    if (interaction.isStringSelectMenu()) {
       await handleSelectMenu(client, interaction, logger, db)
     }
     if (interaction.isModalSubmit()) {
@@ -52,7 +57,7 @@ export default (client: Client, logger: LogManager, db: AsyncDatabase): void => 
   })
 }
 
-const handleSlashCommand = async (client: Client, interaction: CommandInteraction, logger: LogManager): Promise<void> => {
+const handleSlashCommand = async (client: Client, interaction: CommandInteraction, logger: LogManager, db: AsyncDatabase): Promise<void> => {
   let channel: GuildBasedChannel | null
   // handle slash command here
   switch (interaction.commandName) {
@@ -83,17 +88,29 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
     case 'meme':
       await meme(client, interaction, logger.logger('meme'))
       return
+    case 'warn':
+      await warn(client, interaction, logger.logger('warn-system'), db, 0, "WARN")
+      return
+    case 'clear':
+      await clear(client, interaction, logger.logger('clear'), db)
+      return
+    case 'strike':
+      await warn(client, interaction, logger.logger('warn-system'), db, 1, "STRIKE")
+      return
+    case 'history':
+      await history(client, interaction, logger.logger('history'), db)
+      return
     case 'kick':
-      await kick(client, interaction, logger.logger('kick'))
+      await kick(client, interaction, logger.logger('kick'), db)
       return
     case 'ban':
-      await ban(client, interaction, logger.logger('ban'))
+      await ban(client, interaction, logger.logger('ban'), db)
       return
     case 'unban':
       await unban(client, interaction, logger.logger('unban'))
       return
     case 'timeout':
-      await timeout(client, interaction, logger.logger('timeout'))
+      await timeout(client, interaction, logger.logger('timeout'), db)
       return
     case 'ticket-create':
       if ((interaction.guild == null) || (interaction.member == null) || interaction.member.user.id != null) {
@@ -150,6 +167,12 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
         content: 'Fertig!',
         ephemeral: true
       })
+      break
+    case 'giveaway':
+      await createGiveaway(client, interaction, db)
+      break
+    case 'bj':
+      await handleBlackJackCommands(interaction, logger)
   }
 }
 
