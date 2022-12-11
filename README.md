@@ -14,6 +14,8 @@ This project was programmed by some members of [Florian Dalwigk](https://discord
 | /warn          | warns a user   |
 | /strike          | strikes a user   |
 | /about          | about me   |
+| /help          | shows a multi page information widget   |
+| /bj help       | shows the help information for the BlackJack sub commands   |
 
 </div>
 
