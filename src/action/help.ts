@@ -63,7 +63,8 @@ export async function secondPage (interaction: ButtonInteraction): Promise<void>
           { name: '/codeblocks', value: 'Diese Nachricht erklärt die Nutzung und Bedienung von Codeblocks.', inline: false },
           { name: '/help', value: 'Die Hilfe-Seite dieses Bots', inline: false },
           { name: '/metafrage', value: 'Diese Nachricht erklärt, was eine Metafrage ist und warum man sie nicht stellen sollte.', inline: false },
-          { name: '/ping', value: 'Prüft, ob der Bot online ist', inline: false }
+          { name: '/ping', value: 'Prüft, ob der Bot online ist', inline: false },
+          { name: '/bj help', value: 'Einstieg in das CodingGame BlackJack', inline: false }
         )
         .setFooter({
           text: 'Seite 2/4'

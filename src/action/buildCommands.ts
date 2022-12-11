@@ -1,4 +1,5 @@
 import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType, PermissionFlagsBits } from 'discord.js'
+import { registerBlackJackCommands } from './blackjack/registerCommands'
 
 export default [
   /*
@@ -174,5 +175,9 @@ export default [
       o => o.setName('time')
         .setDescription('Wie lange soll das Giveaway gehen? Default: 24h')
         .setRequired(false)
-    )
+    ),
+  /*
+      Blackjack
+  */
+  registerBlackJackCommands()
 ]
