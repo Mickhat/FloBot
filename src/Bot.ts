@@ -8,6 +8,7 @@ import registerCommands from './action/registerCommands'
 import { AsyncDatabase } from './sqlite/sqlite'
 import message from './listeners/message'
 import path from 'path'
+import { PersistentDataStorage } from './action/blackjack/persistentDataStorage'
 
 const logManager: LogManager = LogManager.getInstance()
 
@@ -46,6 +47,7 @@ async function init (): Promise<void> {
               points INTEGER NOT NULL,
               reason INTEGER NOT NULL
       )`)
+      await (await PersistentDataStorage.instance()).initBlackJack(db)
     })
 
     const client = new Client({

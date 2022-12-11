@@ -4,7 +4,7 @@ import os from 'os'
 import fs from 'fs'
 
 const createDBName = (num: number): string => {
-  return `${os.tmpdir()}/test-sqlite.db`
+  return `${os.tmpdir()}/test-sqlite-${num}.db`
 }
 
 const unlink = (num: number): void => {
