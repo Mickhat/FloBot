@@ -113,11 +113,11 @@ export default [
         .setDescription('Die Person, die entbannt werden soll')
         .setRequired(true)
     ),
-    new SlashCommandBuilder().setName('google')
+  new SlashCommandBuilder().setName('google')
     .setDescription('Google-Suche')
-    .addStringOption( option => option.setName('query')
-    .setDescription('Was soll gesucht werden?')
-    .setRequired(true)),
+    .addStringOption(option => option.setName('query')
+      .setDescription('Was soll gesucht werden?')
+      .setRequired(true)),
   /*
     Info-Text-Commands
     */
