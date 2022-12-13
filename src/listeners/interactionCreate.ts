@@ -25,6 +25,7 @@ import unban from '../action/unban'
 import timeout from '../action/timeout'
 import warn from '../action/warn'
 import history from '../action/history'
+import { google }  from '../action/google'
 import clear from '../action/clearHistory'
 import { AsyncDatabase } from '../sqlite/sqlite'
 import { createGiveaway } from '../action/giveaway'
@@ -99,6 +100,9 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       return
     case 'history':
       await history(client, interaction, logger.logger('history'), db)
+      return
+    case 'google':
+      await google(client, interaction, logger.logger('history'))
       return
     case 'kick':
       await kick(client, interaction, logger.logger('kick'), db)
