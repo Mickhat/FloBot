@@ -86,7 +86,7 @@ Setzt Du den Report fort und das Team stellt fest, das dieser bewusst falsch ist
                 value: '8'
               },
               {
-                label: '10 - Starfumgehung',
+                label: '10 - Strafumgehung',
                 value: '10'
               },
               {
