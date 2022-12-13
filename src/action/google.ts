@@ -8,8 +8,6 @@ export async function google (client: Client, interaction: CommandInteraction, l
   }
 
   const query = encodeURIComponent(interaction.options.get('query', true).value?.toString() ?? '')
- 
-
 
   try {
     await interaction.reply({
