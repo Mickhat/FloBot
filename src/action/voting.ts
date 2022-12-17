@@ -5,7 +5,7 @@ export default async (client: Client, interaction: CommandInteraction): Promise<
   const answers = escapeMarkdown(interaction.options.get('answers', true).value?.toString() ?? '').split(',')
 
   const emojis = [
-    '🟥', '🟨', '🟦', '🟩', '🟪', '⬛'
+    '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'
   ]
 
   if (question === '' || answers.length < 2) {
@@ -15,9 +15,9 @@ export default async (client: Client, interaction: CommandInteraction): Promise<
     })
     return
   }
-  if (answers.length > 6) {
+  if (answers.length > 10) {
     await interaction.reply({
-      content: 'Die maximale Anzahl an Antwortmöglichkeiten ist 6',
+      content: 'Die maximale Anzahl an Antwortmöglichkeiten ist 10',
       ephemeral: true
     })
     return
