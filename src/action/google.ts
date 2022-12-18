@@ -7,14 +7,15 @@ export async function google (client: Client, interaction: CommandInteraction, l
     return
   }
 
-  const query = encodeURIComponent(interaction.options.get('query', true).value?.toString() ?? '')
+  const query = interaction.options.get('query', true).value?.toString() ?? ''
+  const encodedQuery = encodeURIComponent(query)
+  const engine = interaction.options.get('engine', false)?.value?.toString() ?? 'g'
 
   try {
     await interaction.reply({
       embeds: [new EmbedBuilder()
         .setTitle('Let me google that for you')
-
-        .setDescription(`https://lmrgtfy.davwheat.dev/?q=${query}`)
+        .setDescription(`[_${query}_ auf ${engine === 'g' ? 'google' : 'duckduckgo'} suchen](https://lmrgtfy.davwheat.dev/?q=${encodedQuery}&se=${engine})`)
         .setColor(Colors.Blue)
       ]
     })
