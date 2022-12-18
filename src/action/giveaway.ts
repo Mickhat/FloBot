@@ -12,7 +12,6 @@ export async function createGiveaway (client: Client, interaction: CommandIntera
   const giveawayItem = interaction.options.get('item', true).value?.toString() ?? 'nothing'
   const timestap = Math.floor((new Date().getTime() + giveawayTime) / 1000)
   const giveawayMessage = await interaction.reply({
-    content: 'Giveaway Vorschau. Das System ist nicht aktiv.',
     ephemeral: false,
     components: [
       new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -87,6 +86,9 @@ export async function evalGiveaway (client: Client, interaction: CommandInteract
   const teilnehmer = await db.allAsync(`SELECT giveaway_message_id, dc_id FROM giveaway_participants WHERE giveaway_message_id = ?`, [ga_id])
   let winner = 'niemand'
   if (teilnehmer.length > 0) winner = teilnehmer[randomInt(teilnehmer.length)]?.dc_id
+  await db.runAsync(`UPDATE giveaways SET status = ? WHERE message_id = ? AND organizer_id = ?`, [GIVEAWAY_STATUS.CLOSED, ga_id, dc_id])
+  await db.runAsync(`DELETE FROM giveaways WHERE message_id = ? AND organizer_id = ? AND status = ?`, [ga_id, dc_id, GIVEAWAY_STATUS.CLOSED])
+  await db.runAsync(`DELETE FROM giveaway_participants WHERE giveaway_message_id = ?`, [ga_id])
   await message.edit({
     components: [
       new ActionRowBuilder<ButtonBuilder>().addComponents(
