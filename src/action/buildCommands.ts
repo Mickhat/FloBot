@@ -159,6 +159,12 @@ export default [
       option.setName('answers')
         .setDescription('Die Antworten, mit Kommata getrennt')
         .setRequired(true)),
+  new SlashCommandBuilder().setName('poll')
+    .setDescription('Eine Umfrage / Abstimmung machen.')
+    .addStringOption(option =>
+      option.setName('question')
+        .setDescription('Die Frage')
+        .setRequired(true)),
   /*
     Ticket-System
     */

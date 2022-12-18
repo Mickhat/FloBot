@@ -30,6 +30,7 @@ import clear from '../action/clearHistory'
 import { AsyncDatabase } from '../sqlite/sqlite'
 import { createGiveaway, evalGiveaway, newParticipant } from '../action/giveaway'
 import { handleBlackJackCommands } from '../action/blackjack/handleCommands'
+import poll from '../action/poll'
 // import { autocomplete } from "../action/youtube";
 
 export default (client: Client, logger: LogManager, db: AsyncDatabase): void => {
@@ -79,6 +80,9 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       return
     case 'voting':
       await voting(client, interaction)
+      return
+    case 'poll':
+      await poll(client, interaction)
       return
     case 'help':
       await helpIntroduction(interaction)
