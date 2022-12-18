@@ -47,6 +47,21 @@ async function init (): Promise<void> {
               points INTEGER NOT NULL,
               reason INTEGER NOT NULL
       )`)
+      await db.runAsync(`CREATE TABLE IF NOT EXISTS giveaways(
+        identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+        winner_id TEXT,
+        message_id TEXT NOT NULL UNIQUE,
+        organizer_id TEXT NOT NULL,
+        timestamp TEXT NOT NULL,
+        status INTEGER NOT NULL,
+        prize TEXT NOT NULL
+      )`)
+      await db.runAsync(`CREATE TABLE IF NOT EXISTS giveaway_participants(
+        identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+        giveaway_message_id TEXT NOT NULL,
+        dc_id TEXT NOT NULL,
+        hash TEXT NOT NULL UNIQUE ON CONFLICT REPLACE${'' /* Sollte mal ein Hash sein, ist aber keiner (nicht wundern) */}
+      )`)
       await (await PersistentDataStorage.instance()).initBlackJack(db)
     })
 

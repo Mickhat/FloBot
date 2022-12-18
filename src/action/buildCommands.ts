@@ -117,7 +117,13 @@ export default [
     .setDescription('Google-Suche')
     .addStringOption(option => option.setName('query')
       .setDescription('Was soll gesucht werden?')
-      .setRequired(true)),
+      .setRequired(true))
+    .addStringOption(o => o
+      .setName('engine')
+      .addChoices({ name: 'google', value: 'g' }, { name: 'duckduckgo', value: 'ddg' })
+      .setDescription('Welche Suchmaschine soll verwendet werden?')
+      .setRequired(false)
+    ),
   /*
     Info-Text-Commands
     */
@@ -180,6 +186,14 @@ export default [
       o => o.setName('time')
         .setDescription('Wie lange soll das Giveaway gehen? Default: 24h')
         .setRequired(false)
+    ),
+  new SlashCommandBuilder().setName('giveaway-eval')
+    .setDescription('Ein Giveaway auswerten')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+    .addStringOption(
+      o => o.setName('messageid')
+        .setDescription('Die ID der Nachricht vom Bot in dem der Giveaway verkündet wurde')
+        .setRequired(true)
     ),
   /*
       Blackjack
