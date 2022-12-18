@@ -22,7 +22,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
 
   const dmDisabled = new EmbedBuilder()
     .setTitle('User wurde gekickt')
-    .setDescription(`<@${target}> wurde erfolgreich gekickt. Die Banachrichtigung konnte nicht verschickt werden.`)
+    .setDescription(`<@${target}> wurde erfolgreich gekickt. Die Benachrichtigung konnte nicht verschickt werden.`)
     .setColor('Yellow')
     .setAuthor({ name: `Gekickt von: ${interaction.user.tag}` })
     .setTimestamp()
@@ -66,9 +66,9 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
 
   try {
     if (dmSucess) {
-      await interaction.reply({ embeds: [kickEmbed], ephemeral: true })
+      await interaction.reply({ embeds: [kickEmbed], ephemeral: false })
     } else {
-      await interaction.reply({ embeds: [dmDisabled], ephemeral: true })
+      await interaction.reply({ embeds: [dmDisabled], ephemeral: false })
     }
   } catch (e) {
     logger.logSync('ERROR', 'Interaction konnte nicht beantwortet werden.')
