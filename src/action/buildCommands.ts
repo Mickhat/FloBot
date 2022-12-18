@@ -181,6 +181,14 @@ export default [
         .setDescription('Wie lange soll das Giveaway gehen? Default: 24h')
         .setRequired(false)
     ),
+  new SlashCommandBuilder().setName('giveaway-eval')
+    .setDescription('Ein Giveaway auswerten')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+    .addStringOption(
+      o => o.setName('messageid')
+        .setDescription('Die ID der Nachricht vom Bot in dem der Giveaway verkündet wurde')
+        .setRequired(true)
+    ),
   /*
       Blackjack
   */

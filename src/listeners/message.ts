@@ -3,7 +3,6 @@ import { ILogger } from '../logger/logger'
 
 export default async (client: Client, logger: ILogger): Promise<void> => {
   logger.logSync('INFO', 'Initializing message logger')
-
   client.on('messageUpdate', async (oldMsg, newMsg) => {
     if (oldMsg.author?.bot === true) return
     if (newMsg.author?.bot === true) return

@@ -28,7 +28,7 @@ import history from '../action/history'
 import { google } from '../action/google'
 import clear from '../action/clearHistory'
 import { AsyncDatabase } from '../sqlite/sqlite'
-import { createGiveaway } from '../action/giveaway'
+import { createGiveaway, evalGiveaway, newParticipant } from '../action/giveaway'
 import { handleBlackJackCommands } from '../action/blackjack/handleCommands'
 // import { autocomplete } from "../action/youtube";
 
@@ -38,7 +38,7 @@ export default (client: Client, logger: LogManager, db: AsyncDatabase): void => 
       await handleSlashCommand(client, interaction, logger, db)
     }
     if (interaction.isButton()) {
-      await handleButtonInteraction(client, interaction, logger)
+      await handleButtonInteraction(client, interaction, db, logger) // Beste Grüße von heeecker und Christian.exe: Das bleibt da um zu triggern
     }
     if (interaction.isContextMenuCommand() && interaction.commandType === ApplicationCommandType.User) {
       await handleUserContextMenuCommand(client, interaction, logger, db)
@@ -175,14 +175,20 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
     case 'giveaway':
       await createGiveaway(client, interaction, db)
       break
+    case 'giveaway-eval':
+      await evalGiveaway(client, interaction, db)
+      break
     case 'bj':
       await handleBlackJackCommands(interaction, logger)
   }
 }
 
-const handleButtonInteraction = async (client: Client, interaction: ButtonInteraction, logger: LogManager): Promise<void> => {
+const handleButtonInteraction = async (client: Client, interaction: ButtonInteraction, db: AsyncDatabase, logger: LogManager): Promise<void> => {
   if (/(addRole-|removeRole-)([0-9]+)/.test(interaction.customId)) {
     await toggleRoles(client, interaction, logger.logger('Toggle-Roles'))
+  }
+  if (interaction.customId === 'giveaway-participate') {
+    await newParticipant(client, interaction, db)
   }
   if (interaction.customId === 'help-page1') {
     await mainHelpPage(interaction)
