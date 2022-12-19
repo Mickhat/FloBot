@@ -41,6 +41,14 @@ export default [
         .setDescription('Der Grund für den /warn')
         .setRequired(true)
     ),
+  new SlashCommandBuilder().setName('rename')
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+    .setDescription('Ändert deinen Benutzernamen in einen random Namen auf dem Server')
+    .addUserOption(
+      opt => opt.setName('target')
+        .setDescription('Die Person, dessen Name geändert werden soll')
+        .setRequired(true)
+    ),
   new SlashCommandBuilder().setName('strike')
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .setDescription('Verwarnt eine Person und erteilt einen Strike.')
