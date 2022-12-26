@@ -43,3 +43,4 @@ yarn.lock
 .github/workflows/build.yml
 
 test-sqlite*.db
+sqlite3.db
