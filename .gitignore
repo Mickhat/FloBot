@@ -44,3 +44,5 @@ yarn.lock
 
 test-sqlite*.db
 sqlite3.db
+
+.vscode
