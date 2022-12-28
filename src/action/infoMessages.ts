@@ -77,7 +77,7 @@ export async function about (client: Client, interaction: CommandInteraction, lo
       { name: 'Christian.exe', value: '<@779419763938951228>\nChristian.exe#2486', inline: true },
       { name: 'Mickhat', value: '<@226223176269561857>\nMickhat#1337', inline: true },
       { name: '\u200B', value: '\u200B' },
-      { name: 'Github Build:', value: buildInfo }
+      { name: 'Github Build:', value: buildInfo },
       { name: 'Github Repo:', value: 'https://github.com/Mickhat/FloBot' }
     )
     .setTimestamp()
