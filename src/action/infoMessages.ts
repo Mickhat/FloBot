@@ -78,6 +78,7 @@ export async function about (client: Client, interaction: CommandInteraction, lo
       { name: 'Mickhat', value: '<@226223176269561857>\nMickhat#1337', inline: true },
       { name: '\u200B', value: '\u200B' },
       { name: 'Github Build:', value: buildInfo }
+      { name: 'Github Repo:', value: 'https://github.com/Mickhat/FloBot' }
     )
     .setTimestamp()
     .setFooter({ text: '\u200B', iconURL: 'https://cdn.discordapp.com/attachments/959462282939756624/1041868727613927424/flobot.png' })
