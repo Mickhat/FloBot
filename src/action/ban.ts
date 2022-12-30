@@ -63,7 +63,7 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
           .setAuthor({ name: `Gebannt von: ${interaction.user.tag}` })
           .addFields({ name: 'Grund', value: reason })
           .setTimestamp()],
-        ephemeral: true
+        ephemeral: false
       })
     } else {
       await interaction.reply({
