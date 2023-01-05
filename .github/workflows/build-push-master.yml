@@ -1,0 +1,81 @@
+name: continuous-deploy
+
+on:
+  push:
+    branches:
+      - 'master'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # build, lint, test, test-run first, to fail early
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run start
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # USE THIS FOR BUILD ON PUSH A GIT TAG
+      # - name: Extract metadata (tags, labels) for Docker
+      #   id: meta
+      #   uses: docker/metadata-action@v4
+      #   with:
+      #     images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      #     tags: |
+      #       type=ref,event=tag
+      #       type=semver,pattern={{version}}
+
+      - name: package.json info
+        id: meta
+        uses: jaywcjlove/github-action-package@main
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: "${{ env.REGISTRY }}/${{ github.repository }}:${{ GITHUB_BASE_REF }},${{ env.REGISTRY }}/${{ github.repository }}:${{ steps.meta.outputs.version }},${{ env.REGISTRY }}/${{ github.repository }}:${{ GITHUB_SHA }},${{ env.REGISTRY }}/${{ github.repository }}:latest"
+          # tags: ${{ steps.meta.outputs.tags }}  #TAG from metadata-action
+          # labels: ${{ steps.meta.outputs.labels }} #TAG from metadata-action
+          platforms: linux/amd64,linux/arm64
+
+      - name: Trigger Re-Deploy Stage
+        env:
+          SECRET_UPDATE_URL: ${{ secrets.UPDATE_URL }}
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: "${{ env.SECRET_UPDATE_URL }}"
+          method: 'GET'
+        if: env.SECRET_UPDATE_URL != null
