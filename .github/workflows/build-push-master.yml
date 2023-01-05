@@ -2,12 +2,14 @@ name: continuous-deploy
 
 on:
   push:
-    branches-ignore:
+    branches:
       - 'master'
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  BRANCH_NAME: ${{ github.ref_name }}
+  COMMIT_SHA: ${{ github.sha }}
 
 jobs:
   build-and-push-image:
@@ -61,12 +63,16 @@ jobs:
         id: meta
         uses: jaywcjlove/github-action-package@main
 
+      - name: preparing variales to be lowercase
+        run: |
+          echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: .
           push: true
-          tags: "${{ env.REGISTRY }}/${{ github.repository }}:${{ GITHUB_BASE_REF }},${{ env.REGISTRY }}/${{ github.repository }}:${{ steps.meta.outputs.version }},${{ env.REGISTRY }}/${{ github.repository }}:${{ GITHUB_SHA }},${{ env.REGISTRY }}/${{ github.repository }}:latest"
+          tags: "${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:${{ env.BRANCH_NAME }},${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.meta.outputs.version }},${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:${{ env.COMMIT_SHA }},${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY }}:latest"
           # tags: ${{ steps.meta.outputs.tags }}  #TAG from metadata-action
           # labels: ${{ steps.meta.outputs.labels }} #TAG from metadata-action
           platforms: linux/amd64,linux/arm64
