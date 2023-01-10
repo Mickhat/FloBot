@@ -109,7 +109,7 @@ class FileConsoleLogger implements ILogger {
     if (this.filter(type)) {
       const toLog = this.buildLogStr(type, text)
       console.log(toLog)
-      return await appendFile(FileConsoleLogger.filename as string, toLog, { encoding: 'utf-8' })
+      await appendFile(FileConsoleLogger.filename as string, toLog, { encoding: 'utf-8' })
     }
   }
 
