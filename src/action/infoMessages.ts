@@ -74,10 +74,11 @@ export async function about (client: Client, interaction: CommandInteraction, lo
     .addFields(
       { name: 'heeecker', value: '<@768872955500953710>\nheeecker#5770', inline: true },
       { name: 'oglimmer', value: '<@441658607818375183>\noglimmer#4256', inline: true },
-      { name: 'Christian.exe', value: '<@779419763938951228>\nChristian.exe#2486', inline: true },
+      { name: 'Christian.sh', value: '<@779419763938951228>\nChristian.sh#2486', inline: true },
       { name: 'Mickhat', value: '<@226223176269561857>\nMickhat#1337', inline: true },
       { name: '\u200B', value: '\u200B' },
-      { name: 'Github Build:', value: buildInfo }
+      { name: 'Github Build:', value: buildInfo },
+      { name: 'Github Repo:', value: 'https://github.com/Mickhat/FloBot' }
     )
     .setTimestamp()
     .setFooter({ text: '\u200B', iconURL: 'https://cdn.discordapp.com/attachments/959462282939756624/1041868727613927424/flobot.png' })
