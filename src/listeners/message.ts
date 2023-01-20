@@ -1,4 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, Colors, EmbedBuilder } from 'discord.js'
+import { urlFilter } from '../action/checkMessage'
 import { ILogger } from '../logger/logger'
 
 export default async (client: Client, logger: ILogger): Promise<void> => {
@@ -73,5 +74,9 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
           .setTimestamp(msg.createdTimestamp)
       ]
     })
+  })
+
+  client.on('messageCreate', async (msg) => {
+    await urlFilter(client, msg)
   })
 }
