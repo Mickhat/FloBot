@@ -54,29 +54,16 @@ export default async (client: Client, interaction: CommandInteraction, logger: I
   }
 
   try {
-    if (dmSucess) {
-      await interaction.reply({
-        embeds: [new EmbedBuilder()
-          .setTitle('User wurde gebannt')
-          .setDescription(`<@${target.toString()}> wurde erfolgreich benachrichtigt und gebannt.`)
-          .setColor(Colors.Red)
-          .setAuthor({ name: `Gebannt von: ${interaction.user.tag}` })
-          .addFields({ name: 'Grund', value: reason })
-          .setTimestamp()],
-        ephemeral: false
-      })
-    } else {
-      await interaction.reply({
-        embeds: [new EmbedBuilder()
-          .setTitle('User wurde gebannt')
-          .setDescription(`<@${target.toString()}> wurde erfolgreich gebannt. Die Benachrichtigung konnte nicht versendet werden.`)
-          .setColor(Colors.Red)
-          .setAuthor({ name: `Gebannt von: ${interaction.user.tag}` })
-          .setTimestamp()
-          .addFields({ name: 'Grund', value: reason })],
-        ephemeral: true
-      })
-    }
+    await interaction.reply({
+      embeds: [new EmbedBuilder()
+        .setTitle('User wurde gebannt')
+        .setDescription((dmSucess) ? `<@${target.toString()}> wurde erfolgreich benachrichtigt und gebannt.` : `<@${target.toString()}> wurde erfolgreich gebannt. Die Benachrichtigung konnte nicht versendet werden.`)
+        .setColor(Colors.Red)
+        .setAuthor({ name: `Gebannt von: ${interaction.user.tag}` })
+        .addFields({ name: 'Grund', value: reason })
+        .setTimestamp()],
+      ephemeral: false
+    })
   } catch (e) {
     logger.logSync("ERROR", 'Interaction could not be replied.')
   }
