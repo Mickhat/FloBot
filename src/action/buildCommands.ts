@@ -77,7 +77,7 @@ export default [
     ),
   new SlashCommandBuilder().setName('timeout')
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
-    .setDescription('Versetzt eine Person in einem Timeout..')
+    .setDescription('Versetzt eine Person in einem Timeout.')
     .addUserOption(
       opt => opt.setName('target')
         .setDescription('Die Person, die einen Timeout erhalten soll')
