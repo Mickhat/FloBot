@@ -84,13 +84,13 @@ export default [
         .setRequired(true)
     )
     .addStringOption(
-      opt => opt.setName('reason')
-        .setDescription('Der Grund für den Timeout')
+      opt => opt.setName('zeit')
+        .setDescription('Wie lange soll der Timeout sein?')
         .setRequired(true)
     )
     .addStringOption(
-      opt => opt.setName('zeit')
-        .setDescription('Wie lange soll der Timeout sein?')
+      opt => opt.setName('reason')
+        .setDescription('Der Grund für den Timeout')
         .setRequired(true)
     ),
   //   .addIntegerOption(
