@@ -1,7 +1,7 @@
 import { Client, CommandInteraction, EmbedBuilder, Colors } from 'discord.js'
 import { ILogger } from 'src/logger/logger'
 import axios, { AxiosError } from 'axios'
-import { decompress } from 'brotli'
+// import { decompress } from 'brotli'
 
 export async function meme (client: Client, interaction: CommandInteraction, logger: ILogger): Promise<void> {
   if (!interaction.isRepliable()) {
@@ -19,8 +19,9 @@ export async function meme (client: Client, interaction: CommandInteraction, log
 
   try {
     const { data: brotliEncoded } = await axios.get(`https://meme-api.com/gimme/${pickSubReddit}`, { responseType: 'arraybuffer' })
-    const textDecoder = new TextDecoder()
-    const data = JSON.parse(textDecoder.decode(decompress(brotliEncoded)))
+    const data = JSON.parse(brotliEncoded.toString())
+    // const textDecoder = new TextDecoder()
+    // const data = JSON.parse(textDecoder.decode(decompress(brotliEncoded)))
 
     const postMeme = new EmbedBuilder()
       .setAuthor({
