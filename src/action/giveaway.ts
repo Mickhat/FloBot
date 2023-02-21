@@ -125,3 +125,32 @@ export async function evalGiveaway (client: Client, interaction: CommandInteract
       ephemeral: true
     })
 }
+
+export async function getStatistics (client: Client, interaction: CommandInteraction, db: AsyncDatabase): Promise<void> {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const dc_id = interaction.user.id
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const ga_id = interaction.options.get('messageid', true).value?.toString() ?? 'ERROR'
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const giveaway_obj = await db.getAsync(`SELECT message_id, prize, timestamp, status, organizer_id FROM giveaways WHERE message_id = ? AND organizer_id = ?`, [ga_id, dc_id])
+  if (!giveaway_obj || giveaway_obj.status !== GIVEAWAY_STATUS.OPENED) {
+    await interaction.reply({ content: 'ERROR. Dir fehlt die Berechtigung oder das Giveaway existiert nicht. Wer weiß?', ephemeral: true })
+    return
+  }
+  const message = await interaction.channel?.messages.fetch(ga_id)
+  if (!message) {
+    await interaction.reply({ content: 'ERROR. Giveaway gibt es nicht', ephemeral: true })
+    return
+  }
+  const teilnehmer = await db.allAsync(`SELECT count(*) as count FROM giveaway_participants WHERE giveaway_message_id = ?`, [ga_id])
+  const numberOfParticipants = teilnehmer[0]?.count as number
+  await interaction.reply(
+    {
+      embeds: [
+        new EmbedBuilder()
+          .setColor(Colors.Green)
+          .setTitle(`Aktuell gibt es ${numberOfParticipants} Teilnehmer.`)
+      ],
+      ephemeral: true
+    })
+}
