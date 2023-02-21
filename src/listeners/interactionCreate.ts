@@ -28,7 +28,7 @@ import history from '../action/history'
 import { google } from '../action/google'
 import clear from '../action/clearHistory'
 import { AsyncDatabase } from '../sqlite/sqlite'
-import { createGiveaway, evalGiveaway, newParticipant } from '../action/giveaway'
+import { createGiveaway, evalGiveaway, newParticipant, getStatistics } from '../action/giveaway'
 import { handleBlackJackCommands } from '../action/blackjack/handleCommands'
 import poll from '../action/poll'
 import rename from '../action/rename'
@@ -185,6 +185,9 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       break
     case 'giveaway-eval':
       await evalGiveaway(client, interaction, db)
+      break
+    case 'giveaway-stats':
+      await getStatistics(client, interaction, db)
       break
     case 'bj':
       await handleBlackJackCommands(interaction, logger)
