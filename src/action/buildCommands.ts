@@ -209,14 +209,6 @@ export default [
         .setDescription('Die ID der Nachricht vom Bot in dem der Giveaway verkündet wurde')
         .setRequired(true)
     ),
-  new SlashCommandBuilder().setName('giveaway-stats')
-    .setDescription('Den aktullen Zwischenstand eines Giveaway einsehen.')
-    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
-    .addStringOption(
-      o => o.setName('messageid')
-        .setDescription('Die ID der Nachricht vom Bot in dem der Giveaway verkündet wurde')
-        .setRequired(true)
-    ),
   /*
       Blackjack
   */
