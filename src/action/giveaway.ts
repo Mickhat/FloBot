@@ -67,7 +67,8 @@ export async function newParticipant (client: Client, interaction: ButtonInterac
     await interaction.reply({ content: 'Du bist zu spät.', ephemeral: true })
     return
   }
-  const message = await interaction.channel?.messages.fetch(ga_id)
+  const channel = interaction.channel as TextChannel
+  const message = await channel?.messages.fetch(ga_id)
   if (!message) {
     await interaction.reply({ content: 'ERROR. Giveaway gibt es nicht', ephemeral: true })
     return
@@ -112,7 +113,8 @@ export async function evalGiveaway (client: Client, interaction: CommandInteract
     await interaction.reply({ content: 'ERROR. Dir fehlt die Berechtigung oder das Giveaway existiert nicht. Wer weiß?', ephemeral: true })
     return
   }
-  const message = await interaction.channel?.messages.fetch(ga_id)
+  const channel = interaction.channel as TextChannel
+  const message = await channel?.messages.fetch(ga_id)
   if (!message) {
     await interaction.reply({ content: 'ERROR. Giveaway gibt es nicht', ephemeral: true })
     return
