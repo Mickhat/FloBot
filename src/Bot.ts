@@ -9,6 +9,7 @@ import { AsyncDatabase } from './sqlite/sqlite'
 import message from './listeners/message'
 import path from 'path'
 import { PersistentDataStorage } from './action/blackjack/persistentDataStorage'
+import { evalGiveawayBackground } from './action/giveaway'
 
 const logManager: LogManager = LogManager.getInstance()
 
@@ -62,6 +63,11 @@ async function init (): Promise<void> {
         dc_id TEXT NOT NULL,
         hash TEXT NOT NULL UNIQUE ON CONFLICT REPLACE${'' /* Sollte mal ein Hash sein, ist aber keiner (nicht wundern) */}
       )`)
+      if ((await db.getAsync("select count(*) as count from pragma_table_info('giveaways') where name = 'channel_id';", [])).count === 0) {
+        await db.runAsync(`ALTER TABLE giveaways add channel_id TEXT NULL`)
+        await db.runAsync(`ALTER TABLE giveaways add author_display_name TEXT NULL`)
+        await db.runAsync(`ALTER TABLE giveaways add author_avatar_url TEXT NULL`)
+      }
       await (await PersistentDataStorage.instance()).initBlackJack(db)
     })
 
@@ -81,6 +87,11 @@ async function init (): Promise<void> {
     await message(client, logManager.logger('Message-Logger'))
 
     await client.login(token)
+
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    setInterval(async () => {
+      await evalGiveawayBackground(client, db, logManager)
+    }, 1000 * 60 * 5) // every 5 minutes
   } catch (err) {
     logManager.logger().logSync('ERROR', `Failed to initialize system. Used db ${path.resolve(dbFile)}, error: ${JSON.stringify(err)}`)
   }
