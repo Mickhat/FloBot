@@ -121,14 +121,14 @@ export default [
         .setDescription('Die Person, die entbannt werden soll')
         .setRequired(true)
     ),
-  new SlashCommandBuilder().setName('google')
-    .setDescription('Google-Suche')
+  new SlashCommandBuilder().setName('search')
+    .setDescription('Internet-Suche')
     .addStringOption(option => option.setName('query')
       .setDescription('Was soll gesucht werden?')
       .setRequired(true))
     .addStringOption(o => o
       .setName('engine')
-      .addChoices({ name: 'google', value: 'g' }, { name: 'duckduckgo', value: 'ddg' })
+      .addChoices({ name: 'searxng', value: 'x' }, { name: 'google', value: 'g' }, { name: 'duckduckgo', value: 'ddg' })
       .setDescription('Welche Suchmaschine soll verwendet werden?')
       .setRequired(false)
     ),
