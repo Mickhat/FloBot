@@ -8,11 +8,10 @@ export async function helpIntroduction (interaction: CommandInteraction): Promis
         .addFields(
           { name: 'Informationen', value: 'Nachrichten, in denen Nutzer Informationen erhalten - Seite 2', inline: false },
           { name: 'Nutzer reporten', value: 'Nutzer, die gegen die Regeln dieses Servers verstoßen melden - Seite 3', inline: false },
-          { name: 'Umfragen', value: 'Umfragen auf diesem Server - Seite 4', inline: false },
-          { name: 'LaTeX', value: 'LaTeX Code in Nachrichten rendern', inline: false }
+          { name: 'Umfragen', value: 'Umfragen auf diesem Server - Seite 4', inline: false }
         )
         .setFooter({
-          text: 'Seite 1/5'
+          text: 'Seite 1/4'
         })
     ],
     components: [
@@ -36,11 +35,10 @@ export async function mainHelpPage (interaction: ButtonInteraction): Promise<voi
         .addFields(
           { name: 'Informationen', value: 'Nachrichten, in denen Nutzer Informationen erhalten - Seite 2', inline: false },
           { name: 'Nutzer reporten', value: 'Nutzer, die gegen die Regeln dieses Servers verstoßen melden - Seite 3', inline: false },
-          { name: 'Umfragen', value: 'Umfragen auf diesem Server - Seite 4', inline: false },
-          { name: 'LaTeX', value: 'LaTeX Code in Nachrichten rendern - Seite 5', inline: false }
+          { name: 'Umfragen', value: 'Umfragen auf diesem Server - Seite 4', inline: false }
         )
         .setFooter({
-          text: 'Seite 1/5'
+          text: 'Seite 1/4'
         })
     ],
     components: [
@@ -69,7 +67,7 @@ export async function secondPage (interaction: ButtonInteraction): Promise<void>
           { name: '/bj help', value: 'Einstieg in das CodingGame BlackJack', inline: false }
         )
         .setFooter({
-          text: 'Seite 2/5'
+          text: 'Seite 2/4'
         })
     ],
     components: [
@@ -101,7 +99,7 @@ export async function thirdPage (interaction: ButtonInteraction): Promise<void> 
                 'Bezieht sich der Report nicht auf eine konkrete Nachricht des Nutzers, kannst du auch den Nutzer melden. Suche ihn dafür in der Nutzer-Liste, drücke Rechtsklick > Apps > REPORT ' +
                 'Auch hier sind Beweise über den Vorfall von Vorteil. Sind wir uns unsicher, werden wir bei dir noch nachfragen.')
         .setFooter({
-          text: 'Seite 3/5'
+          text: 'Seite 3/4'
         })
     ],
     components: [
@@ -129,7 +127,7 @@ export async function fourthPage (interaction: ButtonInteraction): Promise<void>
                 'Um eine Umfrage zu erstellen, nutze **/voting**. Gebe dort nun deine Frage ein.\n' +
                 'Anschließen musst du deine Antwortmöglichkeiten eingeben. Gebe diese mit Komata getrennt __ohne Leerzeichen__ nach dem Komma ein. Du kannst bis zu 6 Antwortmöglichkeiten eintragen')
         .setFooter({
-          text: 'Seite 4/5'
+          text: 'Seite 4/4'
         })
     ],
     components: [
@@ -139,36 +137,7 @@ export async function fourthPage (interaction: ButtonInteraction): Promise<void>
             .setLabel('Vorherige Seite')
             .setEmoji('◀️')
             .setStyle(ButtonStyle.Primary)
-            .setCustomId('help-page3'),
-          new ButtonBuilder()
-            .setLabel('Nächste Seite')
-            .setEmoji('▶️')
-            .setStyle(ButtonStyle.Primary)
-            .setCustomId('help-page5')
-        )
-    ]
-  })
-}
-export async function fifthPage (interaction: ButtonInteraction): Promise<void> {
-  await interaction.update({
-    embeds: [
-      new EmbedBuilder().setTitle('LaTeX')
-        .setDescription('Wenn du mathematische Ausdrücke teilen möchtest, kann es sein, dass du mit LaTeX arbeiten möchtest' +
-                '\n' +
-                'Schreibe dazu in eine beliebige Nachricht deinen LaTeX Code zwischen zwei $$.' +
-                'Alternativ kannst du den /tex command benutzen.')
-        .setFooter({
-          text: 'Seite 5/5'
-        })
-    ],
-    components: [
-      new ActionRowBuilder<ButtonBuilder>()
-        .addComponents(
-          new ButtonBuilder()
-            .setLabel('Vorherige Seite')
-            .setEmoji('◀️')
-            .setStyle(ButtonStyle.Primary)
-            .setCustomId('help-page4')
+            .setCustomId('help-page3')
         )
     ]
   })

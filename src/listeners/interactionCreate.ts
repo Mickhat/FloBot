@@ -16,7 +16,7 @@ import continueReport from '../action/continueReport'
 import finishReport from '../action/finishReport'
 import messageReport from '../action/messageReport'
 import voting from '../action/voting'
-import { fifthPage, fourthPage, helpIntroduction, mainHelpPage, secondPage, thirdPage } from '../action/help'
+import { fourthPage, helpIntroduction, mainHelpPage, secondPage, thirdPage } from '../action/help'
 import { createTicket, ticketAdd, ticketClose } from '../action/ticket-system'
 import { meme } from '../action/meme'
 import kick from '../action/kick'
@@ -32,7 +32,6 @@ import { createGiveaway, evalGiveaway, newParticipant } from '../action/giveaway
 import { handleBlackJackCommands } from '../action/blackjack/handleCommands'
 import poll from '../action/poll'
 import rename from '../action/rename'
-import { renderSlashCommand } from '../action/latex'
 // import { autocomplete } from "../action/youtube";
 
 export default (client: Client, logger: LogManager, db: AsyncDatabase): void => {
@@ -189,10 +188,6 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       break
     case 'bj':
       await handleBlackJackCommands(interaction, logger)
-      break
-    case 'tex':
-      await renderSlashCommand(interaction)
-      break
   }
 }
 
@@ -214,9 +209,6 @@ const handleButtonInteraction = async (client: Client, interaction: ButtonIntera
   }
   if (interaction.customId === 'help-page4') {
     await fourthPage(interaction)
-  }
-  if (interaction.customId === 'help-page5') {
-    await fifthPage(interaction)
   }
   if (interaction.customId === 'ticket-delete') {
     await interaction.reply({

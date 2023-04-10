@@ -212,15 +212,5 @@ export default [
   /*
       Blackjack
   */
-  registerBlackJackCommands(),
-  /*
-      Latex
-  */
-  new SlashCommandBuilder().setName('tex')
-    .setDescription('Renders LaTeX Code')
-    .addStringOption(
-      o => o.setName('tex')
-        .setDescription('Der LaTeX Code')
-        .setRequired(true)
-    )
+  registerBlackJackCommands()
 ]
