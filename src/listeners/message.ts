@@ -1,12 +1,14 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, Client, Colors, EmbedBuilder } from 'discord.js'
-import { urlFilter } from '../action/checkMessage'
 import { ILogger } from '../logger/logger'
+import { editMessage, renderNewLatexMessage } from '../action/latex'
 
 export default async (client: Client, logger: ILogger): Promise<void> => {
   logger.logSync('INFO', 'Initializing message logger')
   client.on('messageUpdate', async (oldMsg, newMsg) => {
-    if (oldMsg.author?.bot === true) return
-    if (newMsg.author?.bot === true) return
+    if (oldMsg.author?.bot) return
+    if (newMsg.author?.bot) return
+
+    await editMessage(oldMsg, newMsg)
 
     logger.logSync('INFO', 'messageUpdate')
 
@@ -51,6 +53,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
   })
 
   client.on('messageDelete', async (msg) => {
+    if (msg.author?.bot) return
     const logChannel = await msg.guild?.channels.fetch(process.env.MESSAGE_LOGS ?? '')
 
     if (logChannel == null) {
@@ -77,6 +80,9 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
   })
 
   client.on('messageCreate', async (msg) => {
-    await urlFilter(client, msg)
+    if (msg.author.bot) {
+      return
+    }
+    await renderNewLatexMessage(msg)
   })
 }
