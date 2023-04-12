@@ -29,14 +29,14 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
           .setAuthor({
             name: `${oldMsg.author?.username as string}#${oldMsg.author?.discriminator as string} - #${oldMsg.author?.id as string}`
           })
-          .setDescription(oldMsg.content ?? '<kein Inhalt>')
+          .setDescription(oldMsg.content ? (oldMsg.content?.length > 0 ? oldMsg.content : '<kein Inhalt>') : '<kein Inhalt>')
           .setColor(Colors.Yellow)
           .setTimestamp(oldMsg.createdTimestamp),
         new EmbedBuilder()
           .setAuthor({
             name: `${newMsg.author?.username as string}#${newMsg.author?.discriminator as string}`
           })
-          .setDescription(newMsg.content ?? '<kein Inhalt>')
+          .setDescription(oldMsg.content ? (oldMsg.content?.length > 0 ? oldMsg.content : '<kein Inhalt>') : '<kein Inhalt>')
           .setColor(Colors.Green)
           .setTimestamp(newMsg.editedTimestamp)
       ],
@@ -62,16 +62,34 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
       logger.logSync('WARN', 'LogChannel is not TextBased')
       return
     }
+    let embed: EmbedBuilder
+    if (msg.attachments && msg.attachments.size > 0) {
+      embed = new EmbedBuilder()
+        .setAuthor({
+          name: `${msg.author?.username as string}#${msg.author?.discriminator as string} - #${msg.author?.id as string}`
+        })
+        .setColor(Colors.Red)
+        .setDescription(msg.content ? (msg.content?.length > 0 ? msg.content : '<kein Inhalt>') : '<kein Inhalt>')
+        .setColor(Colors.Red)
+        .setTimestamp(msg.createdTimestamp)
+      msg.attachments.forEach(attechment => {
+        embed.addFields(
+          { name: `${attechment.name ?? 'kein Name'} | ${attechment.contentType ?? 'unknown Type'}`, value: attechment.url ?? 'Fehler' })
+      })
+    } else {
+      embed = new EmbedBuilder()
+        .setAuthor({
+          name: `${msg.author?.username as string}#${msg.author?.discriminator as string} - #${msg.author?.id as string}`
+        })
+        .setDescription(msg.content ? (msg.content?.length > 0 ? msg.content : '<kein Inhalt>') : '<kein Inhalt>')
+        .setColor(Colors.Red)
+        .setTimestamp(msg.createdTimestamp)
+    }
+
     await logChannel.send({
       content: `Message deleted in <#${msg.channelId}>`,
       embeds: [
-        new EmbedBuilder()
-          .setAuthor({
-            name: `${msg.author?.username as string}#${msg.author?.discriminator as string} - #${msg.author?.id as string}`
-          })
-          .setDescription(msg.content ?? '<kein Inhalt>')
-          .setColor(Colors.Red)
-          .setTimestamp(msg.createdTimestamp)
+        embed
       ]
     })
   })
