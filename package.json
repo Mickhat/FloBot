@@ -19,7 +19,7 @@
     "google-auth-library": "^8.7.0",
     "googleapis": "^110.0.0",
     "node-fetch": "^3.3.0",
-    "sqlite3": "^5.1.5",
+    "sqlite3": "^5.1.6",
     "ts-node": "^10.9.1",
     "uuid": "^9.0.0"
   },
