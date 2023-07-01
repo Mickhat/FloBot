@@ -7,7 +7,7 @@ import {
   AutocompleteInteraction
 } from 'discord.js'
 import { LogManager } from '../logger/logger'
-import { codeblocks, metafrage, about, ping } from '../action/infoMessages'
+import { codeblocks, metafrage, about, ping, invite } from '../action/infoMessages'
 import { createRoleInterface } from '../action/roles_buttons_create'
 import { toggleRoles } from '../action/toggleRole'
 import startUserReport from '../action/userReport'
@@ -188,6 +188,10 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       break
     case 'bj':
       await handleBlackJackCommands(interaction, logger)
+      break
+    case 'invite':
+      await invite(interaction, logger.logger("INVITE"))
+      break
   }
 }
 
