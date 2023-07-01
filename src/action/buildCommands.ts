@@ -209,6 +209,9 @@ export default [
         .setDescription('Die ID der Nachricht vom Bot in dem der Giveaway verkündet wurde')
         .setRequired(true)
     ),
+  new SlashCommandBuilder().setName("invite")
+    .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
+    .setDescription("Erstellt einen einmaligen Invite-Link für den Server"),
   /*
       Blackjack
   */

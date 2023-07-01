@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, EmbedBuilder } from 'discord.js'
+import { ChannelType, Client, Colors, CommandInteraction, EmbedBuilder } from 'discord.js'
 import { ILogger } from 'src/logger/logger'
 import fs from 'fs'
 
@@ -108,5 +108,47 @@ export async function ping (client: Client, interaction: CommandInteraction, log
     logger.logSync('INFO', 'Pong wurde erfolgreich gesendet.')
   } catch (err) {
     logger.logSync('ERROR', `Ping konnte nicht gesendet werden. Error ${JSON.stringify(err)}`)
+  }
+}
+
+/**
+ * Create an one use invite link for the server and send it to the user
+ * @param interaction
+ */
+export async function invite (interaction: CommandInteraction, logger: ILogger): Promise<void> {
+  try {
+    const guild = interaction.guild
+    if (!guild) {
+      await interaction.reply({ content: 'Dieser Befehl kann nur auf einem Server ausgeführt werden.', ephemeral: true })
+      return
+    }
+
+    if (interaction.channel?.type !== ChannelType.GuildText) {
+      await interaction.reply({ content: 'Dieser Befehl kann nur in einem Textkanal ausgeführt werden.', ephemeral: true })
+      return
+    }
+
+    const inviteLink = await guild.invites.create(interaction.channel, {
+      maxAge: 24 * 60 * 60, // 24 hours
+      maxUses: 1
+    })
+
+    await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setAuthor({ name: 'FloBot' })
+          .setTitle("Einladungslink")
+          .setDescription(`Hier ein Einladungslink für diesen Server: ${inviteLink.url}\nDer Einladungslink ist für 24h und maximal eine Verwendung gültig. Für permanente Links, nutze einen von <@${guild.ownerId}> bereitgestellten Link (z.B. YouTube Videos).`)
+          .setColor(Colors.Navy)
+      ],
+      ephemeral: true
+    })
+  } catch {
+    try {
+      await interaction.reply({ content: 'Ein Fehler ist aufgetreten. Bitte versuche es später erneut.', ephemeral: true })
+    } catch {
+    // ignore and log
+      logger.logSync("ERROR", "Invite Link konnte nicht gesendet werden")
+    }
   }
 }
