@@ -125,7 +125,7 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       await timeout(client, interaction, logger.logger('timeout'), db)
       return
     case 'ticket-create':
-      if ((interaction.guild == null) || (interaction.member == null) || interaction.member.user.id != null) {
+      if ((interaction.guild == null) || (interaction.member == null) || !interaction.member.user.id) {
         await interaction.reply({ content: 'Ticket konnte nicht erstellt werden', ephemeral: true })
         return
       }
@@ -139,7 +139,7 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       await interaction.reply({ content: `Ticket erstellt. <#${result.id}>`, ephemeral: true })
       return
     case 'ticket-add':
-      if ((interaction.guild == null) || (interaction.member == null) || interaction.member.user.id != null) {
+      if ((interaction.guild == null) || (interaction.member == null) || !interaction.member.user.id) {
         await interaction.reply({ content: 'Ticket konnte nicht erstellt werden', ephemeral: true })
         return
       }
@@ -160,7 +160,7 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       })
       return
     case 'ticket-close':
-      if ((interaction.guild == null) || (interaction.member == null) || interaction.member.user.id != null) {
+      if ((interaction.guild == null) || (interaction.member == null) || !interaction.member.user.id) {
         await interaction.reply({ content: 'Ticket konnte nicht erstellt werden', ephemeral: true })
         return
       }
