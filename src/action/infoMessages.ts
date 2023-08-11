@@ -72,10 +72,10 @@ export async function about (client: Client, interaction: CommandInteraction, lo
             'Um zu sehen, was ich alles kann, nutze einfach /help.\n\n**__Meine Entwickler:__**')
   // .setThumbnail('https://i.imgur.com/AfFp7pu.png')
     .addFields(
-      { name: 'heeecker', value: '<@768872955500953710>\nheeecker#5770', inline: true },
-      { name: 'oglimmer', value: '<@441658607818375183>\noglimmer#4256', inline: true },
-      { name: 'Christian.sh', value: '<@779419763938951228>\nChristian.sh#2486', inline: true },
-      { name: 'Mickhat', value: '<@226223176269561857>\nMickhat#1337', inline: true },
+      { name: 'heeecker', value: '<@768872955500953710>\nheeecker', inline: true },
+      { name: 'oglimmer', value: '<@441658607818375183>\noglimmer', inline: true },
+      { name: 'Christian.sh', value: '<@779419763938951228>\nchristian.sh', inline: true },
+      { name: 'Mickhat', value: '<@226223176269561857>\nmickhat', inline: true },
       { name: '\u200B', value: '\u200B' },
       { name: 'Github Build:', value: buildInfo },
       { name: 'Github Repo:', value: 'https://github.com/Mickhat/FloBot' }
