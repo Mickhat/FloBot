@@ -16,7 +16,6 @@ import continueReport from '../action/continueReport'
 import finishReport from '../action/finishReport'
 import messageReport from '../action/messageReport'
 import { createTicket, ticketAdd, ticketClose } from '../action/ticket-system'
-import unban from '../action/unban'
 import timeout from '../action/timeout'
 import warn from '../action/warn'
 import { search } from '../action/google'
@@ -82,9 +81,6 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       return
     case 'search':
       await search(client, interaction, logger.logger('search'))
-      return
-    case 'unban':
-      await unban(client, interaction, logger.logger('unban'))
       return
     case 'timeout':
       await timeout(client, interaction, logger.logger('timeout'), db)

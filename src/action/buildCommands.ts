@@ -71,14 +71,6 @@ export default [
   //           .setMaxValue(11)
   //           .setRequired(true)
   //   ),
-  new SlashCommandBuilder().setName('unban')
-    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
-    .setDescription('Entfernt eine Person von der Blacklist')
-    .addUserOption(
-      opt => opt.setName('target')
-        .setDescription('Die Person, die entbannt werden soll')
-        .setRequired(true)
-    ),
   new SlashCommandBuilder().setName('search')
     .setDescription('Internet-Suche')
     .addStringOption(option => option.setName('query')
