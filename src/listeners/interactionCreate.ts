@@ -17,7 +17,6 @@ import finishReport from '../action/finishReport'
 import messageReport from '../action/messageReport'
 import { createTicket, ticketAdd, ticketClose } from '../action/ticket-system'
 import timeout from '../action/timeout'
-import warn from '../action/warn'
 import { search } from '../action/google'
 import { AsyncDatabase } from '../sqlite/sqlite'
 import { createGiveaway, evalGiveaway, newParticipant } from '../action/giveaway'
@@ -72,12 +71,6 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
       return
     case 'rename':
       await rename(client, interaction, logger.logger('Rename'))
-      return
-    case 'warn':
-      await warn(client, interaction, logger.logger('warn-system'), db, 0, "WARN")
-      return
-    case 'strike':
-      await warn(client, interaction, logger.logger('warn-system'), db, 1, "STRIKE")
       return
     case 'search':
       await search(client, interaction, logger.logger('search'))
