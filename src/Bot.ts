@@ -9,7 +9,6 @@ import { AsyncDatabase } from './sqlite/sqlite'
 import message from './listeners/message'
 import path from 'path'
 import { PersistentDataStorage } from './action/blackjack/persistentDataStorage'
-import { evalGiveawayBackground } from './action/giveaway'
 
 const logManager: LogManager = LogManager.getInstance()
 
@@ -87,11 +86,6 @@ async function init (): Promise<void> {
     await message(client, logManager.logger('Message-Logger'))
 
     await client.login(token)
-
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    setInterval(async () => {
-      await evalGiveawayBackground(client, db, logManager)
-    }, 1000 * 60 * 5) // every 5 minutes
   } catch (err) {
     logManager.logger().logSync('ERROR', `Failed to initialize system. Used db ${path.resolve(dbFile)}, error: ${JSON.stringify(err)}`)
   }
