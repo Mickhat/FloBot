@@ -100,19 +100,6 @@ export default [
   //           .setMaxValue(11)
   //           .setRequired(true)
   //   ),
-  new SlashCommandBuilder().setName('ban')
-    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
-    .setDescription('Entfernt eine Person final vom Server')
-    .addUserOption(
-      opt => opt.setName('target')
-        .setDescription('Die Person, die gebannt werden soll')
-        .setRequired(true)
-    )
-    .addStringOption(
-      opt => opt.setName('reason')
-        .setDescription('Der Grund für den /ban')
-        .setRequired(true)
-    ),
   new SlashCommandBuilder().setName('unban')
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .setDescription('Entfernt eine Person von der Blacklist')
