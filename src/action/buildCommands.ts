@@ -19,17 +19,6 @@ export default [
   //           .setMaxValue(11)
   //           .setRequired(true)
   //   ),
-  new SlashCommandBuilder().setName('search')
-    .setDescription('Internet-Suche')
-    .addStringOption(option => option.setName('query')
-      .setDescription('Was soll gesucht werden?')
-      .setRequired(true))
-    .addStringOption(o => o
-      .setName('engine')
-      .addChoices({ name: 'searxng', value: 'x' }, { name: 'google', value: 'g' }, { name: 'duckduckgo', value: 'ddg' })
-      .setDescription('Welche Suchmaschine soll verwendet werden?')
-      .setRequired(false)
-    ),
   /*
     Info-Text-Commands
     */
