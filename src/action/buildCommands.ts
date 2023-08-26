@@ -12,14 +12,6 @@ export default [
   /*
     Mod-Commands
     */
-  new SlashCommandBuilder().setName('history')
-    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
-    .setDescription('Sieht die Historie eines Users ein')
-    .addUserOption(
-      opt => opt.setName('target')
-        .setDescription('Die Person, dessen Historie eingesehen werden soll')
-        .setRequired(true)
-    ),
   new SlashCommandBuilder().setName('clear')
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .setDescription('Leert die Historie eines Users')
@@ -60,19 +52,6 @@ export default [
     .addStringOption(
       opt => opt.setName('reason')
         .setDescription('Der Grund für den /strike')
-        .setRequired(true)
-    ),
-  new SlashCommandBuilder().setName('kick')
-    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
-    .setDescription('Kickt eine Person vom Server.')
-    .addUserOption(
-      opt => opt.setName('target')
-        .setDescription('Die Person, die gekickt werden soll')
-        .setRequired(true)
-    )
-    .addStringOption(
-      opt => opt.setName('reason')
-        .setDescription('Der Grund für den kick')
         .setRequired(true)
     ),
   new SlashCommandBuilder().setName('timeout')
@@ -128,12 +107,8 @@ export default [
     .setDescription('Ein Text über Codeblocks'),
   new SlashCommandBuilder().setName('about')
     .setDescription('About me'),
-  new SlashCommandBuilder().setName('help')
-    .setDescription('Was kann ich?'),
   new SlashCommandBuilder().setName('ping')
     .setDescription('ping'),
-  new SlashCommandBuilder().setName('meme')
-    .setDescription('Random memes von Reddit.'),
   /*
     Toggle-Role-Commands
     */
