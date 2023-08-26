@@ -12,14 +12,6 @@ export default [
   /*
     Mod-Commands
     */
-  new SlashCommandBuilder().setName('clear')
-    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
-    .setDescription('Leert die Historie eines Users')
-    .addUserOption(
-      opt => opt.setName('target')
-        .setDescription('Die Person, dessen Historie geleert werden soll')
-        .setRequired(true)
-    ),
   new SlashCommandBuilder().setName('warn')
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .setDescription('Verwarnt eine Person')
@@ -107,8 +99,6 @@ export default [
     .setDescription('Ein Text über Codeblocks'),
   new SlashCommandBuilder().setName('about')
     .setDescription('About me'),
-  new SlashCommandBuilder().setName('ping')
-    .setDescription('ping'),
   /*
     Toggle-Role-Commands
     */
@@ -116,25 +106,6 @@ export default [
     .setDescription('Dir bestimmte Rollen geben / entfernen'),
   new SlashCommandBuilder().setName('role-force-button')
     .setDescription('Einen Button zum verteilen von Rollen anzeigen'),
-  /*
-    Voting
-    */
-  new SlashCommandBuilder().setName('voting')
-    .setDescription('Eine Umfrage / Abstimmung machen.')
-    .addStringOption(option =>
-      option.setName('question')
-        .setDescription('Die Frage')
-        .setRequired(true))
-    .addStringOption(option =>
-      option.setName('answers')
-        .setDescription('Die Antworten, mit Kommata getrennt')
-        .setRequired(true)),
-  new SlashCommandBuilder().setName('poll')
-    .setDescription('Eine Umfrage / Abstimmung machen.')
-    .addStringOption(option =>
-      option.setName('question')
-        .setDescription('Die Frage')
-        .setRequired(true)),
   /*
     Ticket-System
     */
@@ -171,9 +142,6 @@ export default [
         .setDescription('Die ID der Nachricht vom Bot in dem der Giveaway verkündet wurde')
         .setRequired(true)
     ),
-  new SlashCommandBuilder().setName("invite")
-    .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
-    .setDescription("Erstellt einen einmaligen Invite-Link für den Server"),
   /*
       Blackjack
   */

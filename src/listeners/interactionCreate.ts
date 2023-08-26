@@ -7,7 +7,7 @@ import {
   AutocompleteInteraction
 } from 'discord.js'
 import { LogManager } from '../logger/logger'
-import { codeblocks, metafrage, about, ping, invite } from '../action/infoMessages'
+import { codeblocks, metafrage, about } from '../action/infoMessages'
 import { createRoleInterface } from '../action/roles_buttons_create'
 import { toggleRoles } from '../action/toggleRole'
 import startUserReport from '../action/userReport'
@@ -15,22 +15,14 @@ import startUserReport from '../action/userReport'
 import continueReport from '../action/continueReport'
 import finishReport from '../action/finishReport'
 import messageReport from '../action/messageReport'
-import voting from '../action/voting'
-import { fourthPage, helpIntroduction, mainHelpPage, secondPage, thirdPage } from '../action/help'
 import { createTicket, ticketAdd, ticketClose } from '../action/ticket-system'
-import { meme } from '../action/meme'
-import kick from '../action/kick'
-import ban from '../action/ban'
 import unban from '../action/unban'
 import timeout from '../action/timeout'
 import warn from '../action/warn'
-import history from '../action/history'
 import { search } from '../action/google'
-import clear from '../action/clearHistory'
 import { AsyncDatabase } from '../sqlite/sqlite'
 import { createGiveaway, evalGiveaway, newParticipant } from '../action/giveaway'
 import { handleBlackJackCommands } from '../action/blackjack/handleCommands'
-import poll from '../action/poll'
 import rename from '../action/rename'
 // import { autocomplete } from "../action/youtube";
 
@@ -79,44 +71,17 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
     case 'about':
       await about(client, interaction, logger.logger('About'))
       return
-    case 'voting':
-      await voting(client, interaction)
-      return
-    case 'poll':
-      await poll(client, interaction)
-      return
-    case 'help':
-      await helpIntroduction(interaction)
-      return
     case 'rename':
       await rename(client, interaction, logger.logger('Rename'))
-      return
-    case 'ping':
-      await ping(client, interaction, logger.logger('Ping'))
-      return
-    case 'meme':
-      await meme(client, interaction, logger.logger('meme'))
       return
     case 'warn':
       await warn(client, interaction, logger.logger('warn-system'), db, 0, "WARN")
       return
-    case 'clear':
-      await clear(client, interaction, logger.logger('clear'), db)
-      return
     case 'strike':
       await warn(client, interaction, logger.logger('warn-system'), db, 1, "STRIKE")
       return
-    case 'history':
-      await history(client, interaction, logger.logger('history'), db)
-      return
     case 'search':
       await search(client, interaction, logger.logger('search'))
-      return
-    case 'kick':
-      await kick(client, interaction, logger.logger('kick'), db)
-      return
-    case 'ban':
-      await ban(client, interaction, logger.logger('ban'), db)
       return
     case 'unban':
       await unban(client, interaction, logger.logger('unban'))
@@ -189,9 +154,6 @@ const handleSlashCommand = async (client: Client, interaction: CommandInteractio
     case 'bj':
       await handleBlackJackCommands(interaction, logger)
       break
-    case 'invite':
-      await invite(interaction, logger.logger("INVITE"))
-      break
   }
 }
 
@@ -201,18 +163,6 @@ const handleButtonInteraction = async (client: Client, interaction: ButtonIntera
   }
   if (interaction.customId === 'giveaway-participate') {
     await newParticipant(client, interaction, db)
-  }
-  if (interaction.customId === 'help-page1') {
-    await mainHelpPage(interaction)
-  }
-  if (interaction.customId === 'help-page2') {
-    await secondPage(interaction)
-  }
-  if (interaction.customId === 'help-page3') {
-    await thirdPage(interaction)
-  }
-  if (interaction.customId === 'help-page4') {
-    await fourthPage(interaction)
   }
   if (interaction.customId === 'ticket-delete') {
     await interaction.reply({
