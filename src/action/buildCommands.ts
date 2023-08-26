@@ -1,14 +1,10 @@
-import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType } from 'discord.js'
+import { SlashCommandBuilder } from 'discord.js'
 import { registerBlackJackCommands } from './blackjack/registerCommands'
 
 export default [
   /*
     Report-System-Commands
     */
-  new ContextMenuCommandBuilder().setType(ApplicationCommandType.Message)
-    .setName('REPORT').setDMPermission(false),
-  new ContextMenuCommandBuilder().setType(ApplicationCommandType.User)
-    .setName('REPORT').setDMPermission(false),
   /*
     Mod-Commands
     */

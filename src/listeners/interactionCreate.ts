@@ -9,7 +9,7 @@ import {
 import { LogManager } from '../logger/logger'
 import { createRoleInterface } from '../action/roles_buttons_create'
 import startUserReport from '../action/userReport'
-import messageReport from '../action/messageReport'
+import messageReport from '../messageContextMenuInteractions/messageReport'
 import { createTicket, ticketAdd, ticketClose } from '../action/ticket-system'
 import { AsyncDatabase } from '../sqlite/sqlite'
 import { handleBlackJackCommands } from '../action/blackjack/handleCommands'
