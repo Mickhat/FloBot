@@ -46,3 +46,6 @@ test-sqlite*.db
 sqlite3.db
 
 .vscode
+
+# built files
+dist
