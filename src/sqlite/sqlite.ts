@@ -4,7 +4,32 @@ import sqlite3, { RunResult } from 'sqlite3'
  * AsyncDatabase extends the sqlite3.Database with methods returning a Promise
  */
 export class AsyncDatabase extends sqlite3.verbose().Database {
-  static async open (filename: string, mode?: number): Promise<AsyncDatabase> {
+  private static _instance: AsyncDatabase
+
+  /**
+   * Opens a already existing database instance but does not create a new one
+   * @param filename The path to the database file
+   */
+  static async open (): Promise<AsyncDatabase | undefined>
+  /**
+   * Opens a already existing database instance or creates a new one
+   * @param filename The path to the database file (only used if an open database does not exist yet)
+   */
+  static async open (filename: string): Promise<AsyncDatabase>
+  /**
+   * Opens a already existing database instance or creates a new one
+   * @param filename The path to the database file (only used if an open database does not exist yet)
+   * @param mode The mode the database should be opened in (only used if an open database does not exist yet)
+   */
+  static async open (filename: string, mode: number): Promise<AsyncDatabase>
+
+  static async open (filename?: string, mode?: number): Promise<AsyncDatabase | undefined> {
+    if (AsyncDatabase._instance !== undefined) {
+      return AsyncDatabase._instance
+    }
+    if (filename === undefined) {
+      return undefined
+    }
     if (mode === undefined) {
       mode = sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE
     } else if (typeof mode !== 'number') {
@@ -15,6 +40,7 @@ export class AsyncDatabase extends sqlite3.verbose().Database {
         if (err != null) {
           reject(err)
         } else {
+          AsyncDatabase._instance = db
           resolve(db)
         }
       })
