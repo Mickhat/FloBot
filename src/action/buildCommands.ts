@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType, PermissionFlagsBits } from 'discord.js'
+import { SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType } from 'discord.js'
 import { registerBlackJackCommands } from './blackjack/registerCommands'
 
 export default [
@@ -12,32 +12,6 @@ export default [
   /*
     Mod-Commands
     */
-  new SlashCommandBuilder().setName('rename')
-    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
-    .setDescription('Ändert deinen Benutzernamen in einen random Namen auf dem Server')
-    .addUserOption(
-      opt => opt.setName('target')
-        .setDescription('Die Person, dessen Name geändert werden soll')
-        .setRequired(true)
-    ),
-  new SlashCommandBuilder().setName('timeout')
-    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
-    .setDescription('Versetzt eine Person in einem Timeout.')
-    .addUserOption(
-      opt => opt.setName('target')
-        .setDescription('Die Person, die einen Timeout erhalten soll')
-        .setRequired(true)
-    )
-    .addStringOption(
-      opt => opt.setName('zeit')
-        .setDescription('Wie lange soll der Timeout sein?')
-        .setRequired(true)
-    )
-    .addStringOption(
-      opt => opt.setName('reason')
-        .setDescription('Der Grund für den Timeout')
-        .setRequired(true)
-    ),
   //   .addIntegerOption(
   //       opt => opt.setName('weight')
   //           .setDescription('Die Anzahl von Punkten, die der Person angerechnet werden')
@@ -87,27 +61,6 @@ export default [
   /*
       Giveaway
   */
-  new SlashCommandBuilder().setName('giveaway')
-    .setDescription('Etwas verlosen')
-    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
-    .addStringOption(
-      o => o.setName('item')
-        .setDescription('Was soll verlost werden.')
-        .setRequired(true)
-    )
-    .addStringOption(
-      o => o.setName('time')
-        .setDescription('Wie lange soll das Giveaway gehen? Default: 24h')
-        .setRequired(false)
-    ),
-  new SlashCommandBuilder().setName('giveaway-eval')
-    .setDescription('Ein Giveaway auswerten')
-    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
-    .addStringOption(
-      o => o.setName('messageid')
-        .setDescription('Die ID der Nachricht vom Bot in dem der Giveaway verkündet wurde')
-        .setRequired(true)
-    ),
   /*
       Blackjack
   */
