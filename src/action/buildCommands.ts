@@ -21,10 +21,6 @@ export default [
   /*
     Toggle-Role-Commands
     */
-  new SlashCommandBuilder().setName('role')
-    .setDescription('Dir bestimmte Rollen geben / entfernen'),
-  new SlashCommandBuilder().setName('role-force-button')
-    .setDescription('Einen Button zum verteilen von Rollen anzeigen'),
   /*
     Ticket-System
     */
