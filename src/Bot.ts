@@ -21,7 +21,7 @@ const token = process.env.BOT_TOKEN
 
 const dbFile = process.env.DB_PATH ?? './sqlite3.db'
 
-async function init(): Promise<void> {
+async function init (): Promise<void> {
   try {
     const db = await AsyncDatabase.open(dbFile)
     logManager.logger('sqlite3').logSync('INFO', `DB opened ${path.resolve(dbFile)}`)
@@ -84,7 +84,6 @@ async function init(): Promise<void> {
 
     ready(client, logManager.logger())
     status(client, logManager.logger()) // set the status to Testing and Playing as the activity
-    registerCommands(client, logManager.logger('Command-Registrierung'))
     await message(client, logManager.logger('Message-Logger'))
 
     const commands: Command[] = []
