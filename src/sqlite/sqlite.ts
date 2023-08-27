@@ -4,7 +4,8 @@ import sqlite3, { RunResult } from 'sqlite3'
  * AsyncDatabase extends the sqlite3.Database with methods returning a Promise
  */
 export class AsyncDatabase extends sqlite3.verbose().Database {
-  private static _instance: AsyncDatabase
+  private static readonly _instance = new Map<string, AsyncDatabase>()
+  private static _defaultInstanceName: string | undefined
 
   /**
    * Opens a already existing database instance but does not create a new one
@@ -24,23 +25,29 @@ export class AsyncDatabase extends sqlite3.verbose().Database {
   static async open (filename: string, mode: number): Promise<AsyncDatabase>
 
   static async open (filename?: string, mode?: number): Promise<AsyncDatabase | undefined> {
-    if (AsyncDatabase._instance !== undefined) {
-      return AsyncDatabase._instance
-    }
     if (filename === undefined) {
-      return undefined
+      if (AsyncDatabase._defaultInstanceName === undefined) {
+        throw new Error('Database.open: no default instance name set')
+      }
+      return AsyncDatabase._instance.get(AsyncDatabase._defaultInstanceName)
+    }
+    if (AsyncDatabase._instance.get(filename) !== undefined) {
+      return AsyncDatabase._instance.get(filename)
     }
     if (mode === undefined) {
       mode = sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE
     } else if (typeof mode !== 'number') {
       throw new TypeError('Database.open: mode is not a number')
     }
+    if (AsyncDatabase._defaultInstanceName === undefined) {
+      AsyncDatabase._defaultInstanceName = filename
+    }
     return await new Promise<AsyncDatabase>((resolve, reject) => {
       const db = new AsyncDatabase(filename, mode, (err) => {
         if (err != null) {
           reject(err)
         } else {
-          AsyncDatabase._instance = db
+          AsyncDatabase._instance.set(filename, db)
           resolve(db)
         }
       })

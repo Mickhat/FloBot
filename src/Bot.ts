@@ -249,16 +249,18 @@ async function init (): Promise<void> {
       }
     })
 
-    const tickers = fs.readdirSync(join(__dirname, "tick")).filter(file => file.endsWith('.js'))
-    for (const file of tickers) {
-      const ticker = (await import(`./tick/${file}`)).default
-      // check if ticker is a valid ticker
-      if (!ticker || typeof ticker !== "function") {
-        console.error("Ticker file is not valid " + file)
-        continue
+    if (token !== undefined) {
+      const tickers = fs.readdirSync(join(__dirname, "tick")).filter(file => file.endsWith('.js'))
+      for (const file of tickers) {
+        const ticker = (await import(`./tick/${file}`)).default
+        // check if ticker is a valid ticker
+        if (!ticker || typeof ticker !== "function") {
+          console.error("Ticker file is not valid " + file)
+          continue
+        }
+        setInterval(() => ticker(client), 1000 * 60)
+        console.log(`Ticker ${file} loaded`)
       }
-      setInterval(() => ticker(client), 1000 * 60)
-      console.log(`Ticker ${file} loaded`)
     }
 
     registerCommands(client, logManager.logger('Command-Registrierung'), [
@@ -266,8 +268,7 @@ async function init (): Promise<void> {
       ...messageContextMenuInteractions.map(messageContextMenu => messageContextMenu.data),
       ...userContextMenuInteractions.map(userContextMenu => userContextMenu.data),
       registerBlackJackCommands()
-    ]
-    )
+    ])
 
     await client.login(token)
   } catch (err) {
