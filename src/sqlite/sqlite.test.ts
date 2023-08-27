@@ -30,12 +30,12 @@ test('create table', async () => {
 test('insert', async () => {
   const db = await AsyncDatabase.open(createDBName(2))
   await db.runAsync('create table if not exists foo (id int, name varchar(255))')
-  // const runResult = await db.runAsync('insert into foo (id, name) values (?,?)', [1, 'mega'])
-  // expect(runResult.changes).toBe(1)
-  // expect(runResult.lastID).toBe(1)
-  // const runResult2 = await db.runAsync('insert into foo (id, name) values (?,?)', [2, 'giga'])
-  // expect(runResult2.changes).toBe(1)
-  // expect(runResult2.lastID).toBe(2)
+  const runResult = await db.runAsync('insert into foo (id, name) values (?,?)', [1, 'mega'])
+  expect(runResult.changes).toBe(1)
+  expect(runResult.lastID).toBe(1)
+  const runResult2 = await db.runAsync('insert into foo (id, name) values (?,?)', [2, 'giga'])
+  expect(runResult2.changes).toBe(1)
+  expect(runResult2.lastID).toBe(2)
   unlink(2)
 })
 
