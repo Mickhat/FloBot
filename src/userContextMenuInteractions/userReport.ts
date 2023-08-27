@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ApplicationCommandType, Colors, ContextMenuCommandBuilder, EmbedBuilder, StringSelectMenuBuilder, UserContextMenuCommandInteraction } from "discord.js"
-import { AsyncDatabase } from "src/sqlite/sqlite"
+import { AsyncDatabase } from "../sqlite/sqlite"
 import { v4 as uuid } from "uuid"
 
 export default {

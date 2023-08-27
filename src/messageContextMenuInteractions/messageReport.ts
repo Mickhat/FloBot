@@ -1,7 +1,7 @@
 import discord, { ApplicationCommandType, ContextMenuCommandBuilder } from 'discord.js'
 import LogManager from '../logger/logger'
 import { v4 as uuid } from 'uuid'
-import { AsyncDatabase } from 'src/sqlite/sqlite'
+import { AsyncDatabase } from '../sqlite/sqlite'
 
 export default {
   data: new ContextMenuCommandBuilder().setType(ApplicationCommandType.Message)
