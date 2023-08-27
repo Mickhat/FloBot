@@ -94,7 +94,7 @@ async function init (): Promise<void> {
       // check if command is a valid command
       if (!command || !isCommand(command)) {
         console.error("Command file is not valid " + file)
-        break
+        continue
       }
       commands.push(command)
       console.log(`Command ${command.data.name} loaded`)
@@ -108,7 +108,7 @@ async function init (): Promise<void> {
       // check if button is a valid button
       if (!button || !isButton(button)) {
         console.error("Button file is not valid " + file)
-        break
+        continue
       }
       buttons.push(button)
       console.log(`Button ${button.buttonId.toString()} loaded`)
@@ -122,7 +122,7 @@ async function init (): Promise<void> {
       // check if menu is a valid menu
       if (!menu || !isMenu(menu)) {
         console.error("Menu file is not valid " + file)
-        break
+        continue
       }
       menuInteractions.push(menu)
       console.log(`Menu ${menu.customId.toString()} loaded`)
@@ -136,7 +136,7 @@ async function init (): Promise<void> {
       // check if message context menu is a valid message context menu
       if (!messageContextMenu || !isMessageContextMenu(messageContextMenu)) {
         console.error("Message context menu file is not valid " + file)
-        break
+        continue
       }
       messageContextMenuInteractions.push(messageContextMenu)
       console.log(`Message context menu ${messageContextMenu.data.name} loaded`)
@@ -150,7 +150,7 @@ async function init (): Promise<void> {
       // check if modal is a valid modal
       if (!modal || !isModal(modal)) {
         console.error("Modal file is not valid " + file)
-        break
+        continue
       }
       modalInteractions.push(modal)
       console.log(`Modal ${modal.customId.toString()} loaded`)
@@ -164,7 +164,7 @@ async function init (): Promise<void> {
       // check if user context menu is a valid user context menu
       if (!userContextMenu || !isUserContextMenu(userContextMenu)) {
         console.error("User context menu file is not valid " + file)
-        break
+        continue
       }
       userContextMenuInteractions.push(userContextMenu)
       console.log(`User context menu ${userContextMenu.data.name} loaded`)

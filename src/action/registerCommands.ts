@@ -12,6 +12,9 @@ export default (client: Client, logger: ILogger, commands: any[]): void => {
     return
   }
 
+  logger.logSync('INFO', 'Anzahl der Commands: ' + commands.length.toString())
+  console.log(commands)
+
   const rest = new (REST)({ version: '10' }).setToken(process.env.BOT_TOKEN ?? '')
 
   client.once('ready', async () => {

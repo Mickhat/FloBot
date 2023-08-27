@@ -9,7 +9,7 @@ export function isCommand (object: any): object is Command {
   if (!("data" in object)) return false
   if (!("execute" in object)) return false
   if (typeof object.data !== "object") return false
-  if (object.data instanceof SlashCommandBuilder) return false
+  if (!(object.data instanceof SlashCommandBuilder)) return false
   if (typeof object.execute !== "function") return false
   return true
 }
