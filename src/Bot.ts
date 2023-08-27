@@ -249,6 +249,18 @@ async function init (): Promise<void> {
       }
     })
 
+    const tickers = fs.readdirSync(join(__dirname, "tick")).filter(file => file.endsWith('.js'))
+    for (const file of tickers) {
+      const ticker = (await import(`./tick/${file}`)).default
+      // check if ticker is a valid ticker
+      if (!ticker || typeof ticker !== "function") {
+        console.error("Ticker file is not valid " + file)
+        continue
+      }
+      setInterval(() => ticker(client), 1000 * 60)
+      console.log(`Ticker ${file} loaded`)
+    }
+
     registerCommands(client, logManager.logger('Command-Registrierung'), [
       ...commands.map(command => command.data),
       ...messageContextMenuInteractions.map(messageContextMenu => messageContextMenu.data),
