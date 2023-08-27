@@ -1,5 +1,5 @@
 import { CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js"
-import LogManager from "src/logger/logger"
+import LogManager from "../logger/logger"
 import fs from "node:fs"
 
 export default {

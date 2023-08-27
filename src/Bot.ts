@@ -6,7 +6,7 @@ import { LogManager } from './logger/logger'
 import registerCommands from './action/registerCommands'
 import { AsyncDatabase } from './sqlite/sqlite'
 import message from './listeners/message'
-import path from 'path'
+import path, { join } from 'path'
 import { PersistentDataStorage } from './action/blackjack/persistentDataStorage'
 import fs from "node:fs"
 import { Button, Command, Menu, MessageContextMenu, Modal, UserContextMenu, isButton, isCommand, isMenu, isMessageContextMenu, isModal, isUserContextMenu } from './commandTypes'
@@ -88,7 +88,7 @@ async function init (): Promise<void> {
 
     const commands: Command[] = []
     // command handling
-    const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'))
+    const commandFiles = fs.readdirSync(join(__dirname, "commands")).filter(file => file.endsWith('.js'))
     for (const file of commandFiles) {
       const command = (await import(`./commands/${file}`)).default
       // check if command is a valid command
@@ -102,7 +102,7 @@ async function init (): Promise<void> {
 
     const buttons: Button[] = []
     // button handling
-    const buttonFiles = fs.readdirSync('./src/buttons').filter(file => file.endsWith('.js'))
+    const buttonFiles = fs.readdirSync(join(__dirname, "buttons")).filter(file => file.endsWith('.js'))
     for (const file of buttonFiles) {
       const button = (await import(`./buttons/${file}`)).default
       // check if button is a valid button
@@ -116,7 +116,7 @@ async function init (): Promise<void> {
 
     const menuInteractions: Menu[] = []
     // menu handling
-    const menuFiles = fs.readdirSync('./src/menuInteractions').filter(file => file.endsWith('.js'))
+    const menuFiles = fs.readdirSync(join(__dirname, "menuInteractions")).filter(file => file.endsWith('.js'))
     for (const file of menuFiles) {
       const menu = (await import(`./menuInteractions/${file}`)).default
       // check if menu is a valid menu
@@ -130,7 +130,7 @@ async function init (): Promise<void> {
 
     const messageContextMenuInteractions: MessageContextMenu[] = []
     // message context menu handling
-    const messageContextMenuFiles = fs.readdirSync('./src/messageContextMenuInteractions').filter(file => file.endsWith('.js'))
+    const messageContextMenuFiles = fs.readdirSync(join(__dirname, "messageContextMenuInteractions")).filter(file => file.endsWith('.js'))
     for (const file of messageContextMenuFiles) {
       const messageContextMenu = (await import(`./messageContextMenuInteractions/${file}`)).default
       // check if message context menu is a valid message context menu
@@ -144,7 +144,7 @@ async function init (): Promise<void> {
 
     const modalInteractions: Modal[] = []
     // modal handling
-    const modalFiles = fs.readdirSync('./src/modalInteractions').filter(file => file.endsWith('.js'))
+    const modalFiles = fs.readdirSync(join(__dirname, "modalInteractions")).filter(file => file.endsWith('.js'))
     for (const file of modalFiles) {
       const modal = (await import(`./modalInteractions/${file}`)).default
       // check if modal is a valid modal
@@ -158,7 +158,7 @@ async function init (): Promise<void> {
 
     const userContextMenuInteractions: UserContextMenu[] = []
     // user context menu handling
-    const userContextMenuFiles = fs.readdirSync('./src/userContextMenuInteractions').filter(file => file.endsWith('.js'))
+    const userContextMenuFiles = fs.readdirSync(join(__dirname, "userContextMenuInteractions")).filter(file => file.endsWith('.js'))
     for (const file of userContextMenuFiles) {
       const userContextMenu = (await import(`./userContextMenuInteractions/${file}`)).default
       // check if user context menu is a valid user context menu

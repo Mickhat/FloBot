@@ -1,6 +1,6 @@
 import { Colors, CommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from "discord.js"
-import LogManager from "src/logger/logger"
-import { AsyncDatabase } from "src/sqlite/sqlite"
+import LogManager from "../logger/logger"
+import { AsyncDatabase } from "../sqlite/sqlite"
 import { v4 as uuid } from "uuid"
 
 export default {

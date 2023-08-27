@@ -1,5 +1,5 @@
 import { ChannelType, CommandInteraction, PermissionFlagsBits, SlashCommandBuilder } from "discord.js"
-import LogManager from "src/logger/logger"
+import LogManager from "../logger/logger"
 
 function nameGen (): string {
   const number1 = Math.floor(Math.random() * 10)

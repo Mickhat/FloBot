@@ -1,7 +1,7 @@
 import { Colors, CommandInteraction, EmbedBuilder, GuildMember, PermissionFlagsBits, SlashCommandBuilder } from "discord.js"
 import ms from "ms"
-import LogManager from "src/logger/logger"
-import { AsyncDatabase } from "src/sqlite/sqlite"
+import LogManager from "../logger/logger"
+import { AsyncDatabase } from "../sqlite/sqlite"
 
 export default {
   data: new SlashCommandBuilder().setName('timeout')

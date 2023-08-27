@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios"
 import { Colors, CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js"
-import LogManager from "src/logger/logger"
+import LogManager from "../logger/logger"
 
 export default {
   data: new SlashCommandBuilder().setName('meme')

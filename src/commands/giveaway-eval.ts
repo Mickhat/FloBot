@@ -1,7 +1,7 @@
 import { randomInt } from "crypto"
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, CommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder, TextChannel } from "discord.js"
-import LogManager from "src/logger/logger"
-import { AsyncDatabase } from "src/sqlite/sqlite"
+import LogManager from "../logger/logger"
+import { AsyncDatabase } from "../sqlite/sqlite"
 
 type giveawayStatus = 0 | 1
 const GIVEAWAY_STATUS: { OPENED: giveawayStatus, CLOSED: giveawayStatus } = { OPENED: 0, CLOSED: 1 }
