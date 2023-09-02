@@ -23,6 +23,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
 
     await logChannel.send({
       content: `Message edited in <#${oldMsg.channelId}>`,
+      files: oldMsg.attachments.map(attachment => attachment.url),
       embeds: [
         new EmbedBuilder()
           .setAuthor({
@@ -73,7 +74,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
         .setTimestamp(msg.createdTimestamp)
       msg.attachments.forEach(attechment => {
         embed.addFields(
-          { name: `${attechment.name ?? 'kein Name'} | ${attechment.contentType ?? 'unknown Type'}`, value: attechment.url ?? 'Fehler' })
+          { name: `${attechment.name ?? 'kein Name'} | ${attechment.contentType ?? 'unknown Type'}`, value: (attechment.url ?? 'Fehler') + "\n" + (attechment.proxyURL ?? 'Fehler') })
       })
     } else {
       embed = new EmbedBuilder()
@@ -89,7 +90,8 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
       content: `Message deleted in <#${msg.channelId}>`,
       embeds: [
         embed
-      ]
+      ],
+      files: msg.attachments.map(attachment => attachment.url)
     })
   })
 }
