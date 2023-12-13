@@ -36,7 +36,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
           .setAuthor({
             name: `${newMsg.author?.username as string}#${newMsg.author?.discriminator as string}`
           })
-          .setDescription(oldMsg.content ? (oldMsg.content?.length > 0 ? oldMsg.content : '<kein Inhalt>') : '<kein Inhalt>')
+          .setDescription(newMsg.content ? (newMsg.content?.length > 0 ? newMsg.content : '<kein Inhalt>') : '<kein Inhalt>')
           .setColor(Colors.Green)
           .setTimestamp(newMsg.editedTimestamp)
       ],
