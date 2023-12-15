@@ -9,6 +9,12 @@ import {
 } from "discord.js"
 
 const channelsToMove = [
+  "955865282709188640", // #vorstellungsrunde
+  "1171933755032735804", // #mathe-mit-klemmbausteinen
+  "955867141968638032", // #flotaku
+  "1169407539713151087", // #youtube-livestreams
+  "1169010139718746112", // #cyberanwalt
+  "955865970788925440", // #videowünsche
   "955864641928593408", // #mathematik
   "955864692167938088", // #netzwerktechnik
   "955864732022210562", // #betriebssysteme
