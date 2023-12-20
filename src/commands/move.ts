@@ -36,8 +36,8 @@ export default {
     .setName("move")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setDescription("Schreibt eine Nachricht mit einem Embed zum neuen Server."),
-  
-  async execute(interaction: CommandInteraction) {
+
+  async execute (interaction: CommandInteraction) {
     const channelList: GuildTextBasedChannel[] = []
     const guild = interaction.guild
 
