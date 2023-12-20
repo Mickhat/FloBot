@@ -36,42 +36,45 @@ export default {
     .setName("move")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setDescription("Schreibt eine Nachricht mit einem Embed zum neuen Server."),
-
-  async execute (interaction: CommandInteraction) {
-    const channelList: GuildTextBasedChannel[] = []
-    const guild = interaction.guild
+  
+  async execute(interaction: CommandInteraction) {
+    const channelList: GuildTextBasedChannel[] = [];
+    const guild = interaction.guild;
 
     if (!guild) {
-      await interaction.reply("Dieser Befehl kann nur auf einem Server ausgeführt werden.")
-      return
+      await interaction.reply("Dieser Befehl kann nur auf einem Server ausgeführt werden.");
+      return;
     }
 
     // Fetch channels and filter text channels
     await Promise.all(channelsToMove.map(async channelId => {
-      const channel = await guild.channels.fetch(channelId)
+      const channel = await guild.channels.fetch(channelId);
       if (channel?.type === ChannelType.GuildText) {
-        channelList.push(channel)
+        channelList.push(channel);
       }
-    }))
+    }));
 
     // Embed message
     const embed = new EmbedBuilder()
       .setTitle("Wir ziehen um!")
       .setDescription("Dieser Server wird leider geschlossen. https://discord.gg/65pXxkSE5g Komm doch einfach vorbei!")
       .setFooter({ text: "Der neue Server gehört Mickhat. Er wird nicht von Florian Dalwigk betrieben." })
-      .setColor(Colors.Aqua)
+      .setColor(Colors.Aqua);
 
     // Send embed and update channel permissions
     await Promise.all(channelList.map(async channel => {
-      await channel.send({ embeds: [embed] })
+      await channel.send({ embeds: [embed] });
 
-      // Setting the channel to read-only for @everyone
-      await channel.permissionOverwrites.edit(guild.roles.everyone, {
-        SendMessages: false,
-        CreatePublicThreads: false,
-        CreatePrivateThreads: false,
-        SendMessagesInThreads: false
-      })
-    }))
+      // Check if channel is TextChannel, NewsChannel, or VoiceChannel
+      if (channel instanceof TextChannel || channel instanceof NewsChannel || channel instanceof VoiceChannel) {
+        // Setting the channel to read-only for @everyone
+        await channel.permissionOverwrites.edit(guild.roles.everyone, {
+          SendMessages: false,
+          CreatePublicThreads: false,
+          CreatePrivateThreads: false,
+          SendMessagesInThreads: false
+        });
+      }
+    }));
   }
-}
+};
