@@ -58,7 +58,7 @@ export default {
 
     const embed = new EmbedBuilder()
       .setTitle("Wir ziehen um!")
-      .setDescription("Dieser Server wird leider geschlossen. Du willst weiterchatten? https://discord.gg/65pXxkSE5g Komm doch einfach vorbei!")
+      .setDescription("Dieser Server wird leider geschlossen. https://discord.gg/65pXxkSE5g Komm doch einfach vorbei!")
       .setFooter({
         text: "Der neue Server gehört Mickhat. Er wird nicht von Florian Dalwigk betrieben."
       })
