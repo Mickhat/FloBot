@@ -36,7 +36,7 @@ export default {
     .setName("move")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setDescription(
-      "Schreibt eine Nachricht mit einem Embed zum neuen Server in jeden Channel dieses Server und sperrt die Channel."
+      "Schreibt eine Nachricht mit einem Embed zum neuen Server."
     ),
   async execute (interaction: CommandInteraction) {
     const channelList: GuildTextBasedChannel[] = []
