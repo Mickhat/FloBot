@@ -1,12 +1,15 @@
-import { EmbedBuilder } from "@discordjs/builders"
+import { EmbedBuilder } from "@discordjs/builders";
 import {
   PermissionFlagsBits,
   SlashCommandBuilder,
   CommandInteraction,
   GuildTextBasedChannel,
   ChannelType,
-  Colors
-} from "discord.js"
+  Colors,
+  TextChannel,
+  NewsChannel,
+  VoiceChannel
+} from "discord.js";
 
 const channelsToMove = [
   "955865282709188640", // #vorstellungsrunde
@@ -29,7 +32,7 @@ const channelsToMove = [
   "961752018396020817", // #memes
   "991336423456243812", // #gaming
   "995445771472212148" // #bildung-karriere
-]
+];
 
 export default {
   data: new SlashCommandBuilder()
