@@ -30,7 +30,7 @@ const channelsToMove = [
   '1056618386521591919', // #essen
   '961752018396020817', // #memes
   '991336423456243812', // #gaming
-  '995445771472212148'  // #bildung-karriere
+  '995445771472212148' // #bildung-karriere
 ]
 
 export default {
@@ -38,7 +38,7 @@ export default {
     .setName('move')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setDescription('Setzt ausgewählte Channels auf dem Server auf schreibgeschützt'),
-  
+
   async execute (interaction: CommandInteraction) {
     const channelList: GuildTextBasedChannel[] = []
     const guild = interaction.guild
