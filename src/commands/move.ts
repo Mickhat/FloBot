@@ -2,7 +2,6 @@ import {
   PermissionFlagsBits,
   SlashCommandBuilder,
   CommandInteraction,
-  GuildTextBasedChannel,
   ChannelType,
   TextChannel,
   NewsChannel,
@@ -30,7 +29,7 @@ const channelsToMove = [
   '1056618386521591919', // #essen
   '961752018396020817', // #memes
   '991336423456243812', // #gaming
-  '995445771472212148' // #bildung-karriere
+  '995445771472212148'  // #bildung-karriere
 ]
 
 export default {
@@ -38,9 +37,8 @@ export default {
     .setName('move')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setDescription('Setzt ausgewählte Channels auf dem Server auf schreibgeschützt'),
-
+  
   async execute (interaction: CommandInteraction) {
-    const channelList: GuildTextBasedChannel[] = []
     const guild = interaction.guild
 
     if (!guild) {
@@ -50,20 +48,13 @@ export default {
 
     await Promise.all(channelsToMove.map(async channelId => {
       const channel = await guild.channels.fetch(channelId)
-      if (channel?.type === ChannelType.GuildText) {
-        channelList.push(channel)
-      }
-    }))
-
-    await Promise.all(channelList.map(async channel => {
-      if (channel instanceof TextChannel || channel instanceof NewsChannel || channel instanceof VoiceChannel) {
+      if (channel && (channel instanceof TextChannel || channel instanceof NewsChannel || channel instanceof VoiceChannel)) {
         await channel.permissionOverwrites.edit(guild.roles.everyone, {
-          SendMessages: false,
-          CreatePublicThreads: false,
-          CreatePrivateThreads: false,
-          SendMessagesInThreads: false
+          SEND_MESSAGES: false
         })
       }
     }))
+
+    await interaction.reply('Die ausgewählten Kanäle wurden auf schreibgeschützt gesetzt.')
   }
 }
