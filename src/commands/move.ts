@@ -49,7 +49,7 @@ export default {
       const channel = await guild.channels.fetch(channelId)
       if (channel && (channel instanceof TextChannel || channel instanceof NewsChannel || channel instanceof VoiceChannel)) {
         await channel.permissionOverwrites.edit(guild.roles.everyone, {
-          SENDMESSAGES: false
+          SendMessages: false
         })
       }
     }))
