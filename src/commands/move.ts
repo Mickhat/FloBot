@@ -36,7 +36,7 @@ export default {
     .setName('move')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .setDescription('Setzt ausgewählte Channels auf dem Server auf schreibgeschützt'),
-  
+
   async execute (interaction: CommandInteraction) {
     const guild = interaction.guild
 
