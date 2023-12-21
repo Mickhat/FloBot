@@ -1,4 +1,4 @@
-import { EmbedBuilder } from "@discordjs/builders";
+import { EmbedBuilder } from "@discordjs/builders"
 import {
   PermissionFlagsBits,
   SlashCommandBuilder,
@@ -9,7 +9,7 @@ import {
   TextChannel,
   NewsChannel,
   VoiceChannel
-} from "discord.js";
+} from "discord.js"
 
 const channelsToMove = [
   "955865282709188640", // #vorstellungsrunde
@@ -31,42 +31,42 @@ const channelsToMove = [
   "1056618386521591919", // #essen
   "961752018396020817", // #memes
   "991336423456243812", // #gaming
-  "995445771472212148" // #bildung-karriere
-];
+  "995445771472212148"  // #bildung-karriere
+]
 
 export default {
   data: new SlashCommandBuilder()
     .setName("move")
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-    .setDescription("Schreibt eine Nachricht mit einem Embed zum neuen Server."),
+    .setDescription("Schreibt eine Nachricht mit einem Embed zum neuen Server"),
   
-  async execute(interaction: CommandInteraction) {
-    const channelList: GuildTextBasedChannel[] = [];
-    const guild = interaction.guild;
+  async execute (interaction: CommandInteraction) {
+    const channelList: GuildTextBasedChannel[] = []
+    const guild = interaction.guild
 
     if (!guild) {
-      await interaction.reply("Dieser Befehl kann nur auf einem Server ausgeführt werden.");
-      return;
+      await interaction.reply("Dieser Befehl kann nur auf einem Server ausgeführt werden.")
+      return
     }
 
     // Fetch channels and filter text channels
     await Promise.all(channelsToMove.map(async channelId => {
-      const channel = await guild.channels.fetch(channelId);
+      const channel = await guild.channels.fetch(channelId)
       if (channel?.type === ChannelType.GuildText) {
-        channelList.push(channel);
+        channelList.push(channel)
       }
-    }));
+    }))
 
     // Embed message
     const embed = new EmbedBuilder()
       .setTitle("Wir ziehen um!")
       .setDescription("Dieser Server wird leider geschlossen. https://discord.gg/65pXxkSE5g Komm doch einfach vorbei!")
       .setFooter({ text: "Der neue Server gehört Mickhat. Er wird nicht von Florian Dalwigk betrieben." })
-      .setColor(Colors.Aqua);
+      .setColor(Colors.Aqua)
 
     // Send embed and update channel permissions
     await Promise.all(channelList.map(async channel => {
-      await channel.send({ embeds: [embed] });
+      await channel.send({ embeds: [embed] })
 
       // Check if channel is TextChannel, NewsChannel, or VoiceChannel
       if (channel instanceof TextChannel || channel instanceof NewsChannel || channel instanceof VoiceChannel) {
@@ -76,8 +76,8 @@ export default {
           CreatePublicThreads: false,
           CreatePrivateThreads: false,
           SendMessagesInThreads: false
-        });
+        })
       }
-    }));
+    }))
   }
-};
+}
