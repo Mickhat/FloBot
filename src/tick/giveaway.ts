@@ -47,7 +47,7 @@ export default async function (client: Client): Promise<void> {
                 { name: 'Gewinner:', value: `<@${winner}>` },
                 { name: 'Teilnehmeranzahl:', value: `${allTeilnehmerArr.length}` }
               )
-              .setFooter({ iconURL: client.user?.avatarURL() ?? undefined, text: 'FloBot' })
+              .setFooter({ iconURL: client.user?.avatarURL() ?? undefined, text: 'PlaceholderBot' })
               .setTimestamp(Math.floor(giveawayObj.timestamp / 1000))
           ]
         })
