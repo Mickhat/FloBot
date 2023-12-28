@@ -8,7 +8,7 @@ export default {
       .setRequired(true)),
 
   async execute (interaction: CommandInteraction) {
-    const targetId = interaction.options.getUser("target", true).id
+    const targetId: string = interaction.options.getUser("target", true).id
 
     if (!targetId) {
       await interaction.reply({ content: 'Benutzer konnte nicht hinzugefügt werden.', ephemeral: true })
