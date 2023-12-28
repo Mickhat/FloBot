@@ -25,7 +25,7 @@ export default {
       await interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setAuthor({ name: 'FloBot' })
+            .setAuthor({ name: 'PlaceholderBot' })
             .setTitle("Einladungslink")
             .setDescription(`Hier ein Einladungslink für diesen Server: ${inviteLink.url}\nDer Einladungslink ist für 2h und maximal eine Verwendung gültig. Für permanente Links, nutze einen von <@${guild.ownerId}> bereitgestellten Link (z.B. unter YouTube Videos).`)
             .setColor(Colors.Navy)

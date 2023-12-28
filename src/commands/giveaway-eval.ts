@@ -64,7 +64,7 @@ export default {
             { name: 'Gewinner:', value: `<@${winner}>` },
             { name: 'Teilnehmeranzahl:', value: `${teilnehmer.length}` }
           )
-          .setFooter({ iconURL: interaction.client.user?.avatarURL() ?? undefined, text: 'FloBot' })
+          .setFooter({ iconURL: interaction.client.user?.avatarURL() ?? undefined, text: 'PlaceholderBot' })
           .setTimestamp(Math.floor(giveaway_obj.timestamp / 1000))
       ]
     })

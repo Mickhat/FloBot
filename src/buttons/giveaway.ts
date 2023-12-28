@@ -58,7 +58,7 @@ export default {
             { name: 'Endet:', value: `<t:${Math.floor(new Date().getTime() / 1000)}:t>` },
             { name: 'Teilnehmer:', value: `${numberOfParticipants + 1}` }
           )
-          .setFooter({ iconURL: interaction.client.user?.avatarURL() ?? undefined, text: 'FloBot' })
+          .setFooter({ iconURL: interaction.client.user?.avatarURL() ?? undefined, text: 'PlaceholderBot' })
           .setTimestamp(Math.floor(giveaway_obj.timestamp / 1000))
       ]
     })
