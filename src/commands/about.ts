@@ -23,7 +23,7 @@ export default {
     const aboutEmbed = new EmbedBuilder()
       .setColor(0x0099FF)
       .setTitle('Etwas über mich')
-      .setAuthor({ name: 'Moderation Bot', url: 'https://discord.js.org' })
+      .setAuthor({ name: 'PlaceholderBot' })
       .setDescription('Ich bin ein Discord-Bot, der für die Administration, Verwaltung und Moderation des Servers von <@950222367311937606> erstellt wurde. ' +
         'Um zu sehen, was ich alles kann, nutze einfach /help.\n\n**__Meine Entwickler:__**')
       // .setThumbnail('https://i.imgur.com/AfFp7pu.png')
@@ -37,7 +37,7 @@ export default {
         { name: 'Github Repo:', value: 'https://github.com/Mickhat/FloBot' }
       )
       .setTimestamp()
-      .setFooter({ text: '\u200B', iconURL: 'https://cdn.discordapp.com/attachments/959462282939756624/1041868727613927424/flobot.png' })
+      .setFooter({ text: '\u200B', iconURL: interaction.client.user?.avatarURL() ?? undefined })
 
     try {
       await interaction.reply({

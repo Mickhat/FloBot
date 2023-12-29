@@ -50,7 +50,7 @@ export default {
             { name: 'Endet:', value: `<t:${timestap}:R> <t:${timestap}:d> <t:${timestap}:T>` },
             { name: 'Teilnehmer:', value: '0' }
           )
-          .setFooter({ iconURL: interaction.client.user?.avatarURL() ?? undefined, text: 'FloBot' })
+          .setFooter({ iconURL: interaction.client.user?.avatarURL() ?? undefined, text: 'PlaceholderBot' })
           .setTimestamp(timestap)
       ],
       fetchReply: true
