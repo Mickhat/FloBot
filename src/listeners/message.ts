@@ -26,7 +26,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
     if (isGreeting(msg.content)) {
       if (msg.mentions.users.has(client.user?.id as string)) {
         await msg.reply({
-          content: `👋 Hallo @${msg.author.id}!`
+          content: `👋 Hallo <@${msg.author.id}>!`
         })
       } else {
         // add a waving hand reaction to the message
