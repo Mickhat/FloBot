@@ -24,7 +24,10 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
   client.on("messageCreate", async (msg) => {
     if (msg.author?.bot) return
     if (isGreeting(msg.content)) {
-      if (msg.mentions.users.has(client.user?.id as string)) {
+      /*
+      Checks if the message mentions the bot and prevents the bot from replying to everyone pings or announcements
+      */
+      if (msg.mentions.users.has(client.user?.id as string) && !msg.mentions.everyone && msg.channelId === "1185324347934658593") {
         await msg.reply({
           content: `👋 Hallo <@${msg.author.id}>!`
         })
