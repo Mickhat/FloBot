@@ -10,10 +10,27 @@ import {
 import { ILogger } from "../logger/logger"
 
 function isGreeting (msg: string): boolean {
-  const greetings = ["hallo", "hi", "hey", "moin", "moin moin", "servus", "guten morgen", "guten tag", "guten abend", "wuhu"]
+  const greetings = ["hallo", "hi", "hey", "moin ", "moin moin", "servus", "guten morgen", "guten tag", "guten abend", "wuhu"]
   const msgLower = msg.toLowerCase()
   for (const greeting of greetings) {
-    if (msgLower.includes(greeting)) return true
+    // check if the msg includes the greeting
+    if (msgLower.includes(greeting)) {
+      if (msgLower.startsWith(greeting) && msgLower.endsWith(greeting)) {
+        return true
+      }
+      // check if the greeting is at the beginning of the msg and the next char is a space, ! or ? or . or ,
+      if (msgLower.startsWith(greeting) && [" ", "!", "?", ".", ","].includes(msgLower.charAt(greeting.length))) {
+        return true
+      }
+      // check if the greeting is at the end of the msg and the previous char is a space, ! or ? or . or ,
+      if (msgLower.endsWith(greeting) && [" ", "!", "?", ".", ","].includes(msgLower.charAt(msgLower.length - greeting.length - 1))) {
+        return true
+      }
+      // previous and next char is a space, ! or ? or . or ,
+      if ([" ", "!", "?", ".", ","].includes(msgLower.charAt(msgLower.indexOf(greeting) - 1)) && [" ", "!", "?", ".", ","].includes(msgLower.charAt(msgLower.indexOf(greeting) + greeting.length))) {
+        return true
+      }
+    }
   }
   return false
 }
