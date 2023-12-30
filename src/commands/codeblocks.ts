@@ -1,11 +1,10 @@
-import { CommandInteraction, SlashCommandBuilder } from "discord.js"
-import { LogManager } from "../logger/logger"
+import { CommandInteraction, SlashCommandBuilder } from 'discord.js'
+import { LogManager } from '../logger/logger'
 
 export default {
-  data: new SlashCommandBuilder().setName('codeblocks')
-    .setDescription('Ein Text über Codeblocks'),
-  async execute (interaction: CommandInteraction) {
-    const logger = LogManager.getInstance().logger("CodeblockCoFmmand")
+  data: new SlashCommandBuilder().setName('codeblocks').setDescription('Ein Text über Codeblocks'),
+  async execute(interaction: CommandInteraction) {
+    const logger = LogManager.getInstance().logger('CodeblockCoFmmand')
     if (!interaction.isRepliable()) {
       logger.logSync('ERROR', 'Gegebene interaction kann nicht beantwortet werden.')
       return

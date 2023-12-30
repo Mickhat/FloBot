@@ -3,15 +3,14 @@ import { PersistentDataStorage } from '../persistentDataStorage'
 import { getPlayer, postInsurance } from '../remote-api'
 import { evalResult } from '../handleCommands'
 
-export const getInsuranceSubCommand = (): ((subcommandGroup: SlashCommandSubcommandBuilder) => SlashCommandSubcommandBuilder) => {
-  return subcommand =>
+export const getInsuranceSubCommand = (): ((
+  subcommandGroup: SlashCommandSubcommandBuilder
+) => SlashCommandSubcommandBuilder) => {
+  return (subcommand) =>
     subcommand
       .setName('insurance')
       .setDescription('do and do not buy an insurance')
-      .addStringOption(option =>
-        option.setName('buy')
-          .setDescription('yes or no')
-          .setRequired(true))
+      .addStringOption((option) => option.setName('buy').setDescription('yes or no').setRequired(true))
 }
 
 export const handleInsurance = async (userTag: string, insuranceBuy: string): Promise<string> => {

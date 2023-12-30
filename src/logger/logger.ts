@@ -36,7 +36,7 @@ interface ILoggingConfig {
 class LogManager {
   private static readonly singleton: LogManager = new LogManager()
 
-  public static getInstance (): LogManager {
+  public static getInstance(): LogManager {
     return LogManager.singleton
   }
 
@@ -44,7 +44,7 @@ class LogManager {
 
   readonly config: ILoggingConfig
 
-  private constructor () {
+  private constructor() {
     const loggingConfig = JSON.parse(fs.readFileSync('./logging.json', 'utf8')) as ILoggingConfig
     this.config = loggingConfig
   }
@@ -55,9 +55,11 @@ class LogManager {
    * @param name a logger name, can be any string
    * @returns an instance of ILogger
    */
-  logger (name?: string): ILogger {
+  logger(name?: string): ILogger {
     // eslint-disable-next-line no-eval
-    return eval(`new ${this.config.loggerImplementation}(this.config.data, name ?? LogManager.DEFAULT_LOGGER_NAME, this.config.minLevel)`)
+    return eval(
+      `new ${this.config.loggerImplementation}(this.config.data, name ?? LogManager.DEFAULT_LOGGER_NAME, this.config.minLevel)`
+    )
   }
 }
 
@@ -70,7 +72,7 @@ class FileConsoleLogger implements ILogger {
   private readonly loggerName: string
   private readonly minLevel: ILoggingLevel
 
-  constructor (configData: any, logerName: string, minLevel: ILoggingLevel) {
+  constructor(configData: any, logerName: string, minLevel: ILoggingLevel) {
     this.configData = configData
     this.loggerName = logerName
     this.minLevel = minLevel
@@ -85,7 +87,7 @@ class FileConsoleLogger implements ILogger {
     }
   }
 
-  private filter (type: ILoggingLevel): boolean {
+  private filter(type: ILoggingLevel): boolean {
     switch (this.minLevel) {
       case 'LOG':
         return true
@@ -101,11 +103,11 @@ class FileConsoleLogger implements ILogger {
     return false
   }
 
-  private buildLogStr (type: ILoggingLevel, text: string): string {
+  private buildLogStr(type: ILoggingLevel, text: string): string {
     return `${type} [${this.loggerName} ${formatDate(new Date(), DATE_FORMAT_STR)}] ${text}\n`
   }
 
-  async log (type: ILoggingLevel, text: string): Promise<void> {
+  async log(type: ILoggingLevel, text: string): Promise<void> {
     if (this.filter(type)) {
       const toLog = this.buildLogStr(type, text)
       console.log(toLog)
@@ -113,7 +115,7 @@ class FileConsoleLogger implements ILogger {
     }
   }
 
-  logSync (type: ILoggingLevel, text: string): ILogger {
+  logSync(type: ILoggingLevel, text: string): ILogger {
     if (this.filter(type)) {
       const toLog = this.buildLogStr(type, text)
       console.log(toLog)
@@ -123,8 +125,6 @@ class FileConsoleLogger implements ILogger {
   }
 }
 
-export {
-  LogManager, ILogger, ILoggingLevel as IType, FileConsoleLogger
-}
+export { LogManager, ILogger, ILoggingLevel as IType, FileConsoleLogger }
 
 export default LogManager

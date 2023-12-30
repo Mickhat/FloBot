@@ -3,11 +3,10 @@ import { PersistentDataStorage } from '../persistentDataStorage'
 import { getPlayer, postStand } from '../remote-api'
 import { evalResult } from '../handleCommands'
 
-export const getStandSubCommand = (): ((subcommandGroup: SlashCommandSubcommandBuilder) => SlashCommandSubcommandBuilder) => {
-  return subcommand =>
-    subcommand
-      .setName('stand')
-      .setDescription('stand')
+export const getStandSubCommand = (): ((
+  subcommandGroup: SlashCommandSubcommandBuilder
+) => SlashCommandSubcommandBuilder) => {
+  return (subcommand) => subcommand.setName('stand').setDescription('stand')
 }
 
 export const handleStand = async (userTag: string): Promise<string> => {

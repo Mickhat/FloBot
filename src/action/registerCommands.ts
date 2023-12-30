@@ -15,7 +15,7 @@ export default (client: Client, logger: ILogger, commands: any[]): void => {
   logger.logSync('INFO', 'Anzahl der Commands: ' + commands.length.toString())
   console.log(commands)
 
-  const rest = new (REST)({ version: '10' }).setToken(process.env.BOT_TOKEN ?? '')
+  const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN ?? '')
 
   client.once('ready', async () => {
     logger.logSync('INFO', 'Registriere Commands')
@@ -24,17 +24,15 @@ export default (client: Client, logger: ILogger, commands: any[]): void => {
     for await (const [_, g] of client.guilds.cache) {
       try {
         logger.logSync('INFO', `Registriere Commands für Server ${g.name ?? '<Name nicht bekannt>'} #${g.id}`)
-        await rest.put(
-          Routes.applicationGuildCommands(process.env.APPLICATION_ID ?? '', g.id),
-          {
-            body: [
-              ...commands
-            ]
-          }
-        )
+        await rest.put(Routes.applicationGuildCommands(process.env.APPLICATION_ID ?? '', g.id), {
+          body: [...commands]
+        })
         logger.logSync('INFO', `Commands für Server ${g.name ?? '<Name nicht bekannt>'} #${g.id} registriert`)
       } catch (err) {
-        logger.logSync('WARN', `Commands konnten für Server ${g.name ?? '<Name nicht bekannt>'} #${g.id} : ${JSON.stringify(err)}`)
+        logger.logSync(
+          'WARN',
+          `Commands konnten für Server ${g.name ?? '<Name nicht bekannt>'} #${g.id} : ${JSON.stringify(err)}`
+        )
       }
     }
   })

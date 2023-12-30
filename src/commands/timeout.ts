@@ -1,29 +1,27 @@
-import { Colors, CommandInteraction, EmbedBuilder, GuildMember, PermissionFlagsBits, SlashCommandBuilder } from "discord.js"
-import ms from "ms"
-import LogManager from "../logger/logger"
-import { AsyncDatabase } from "../sqlite/sqlite"
+import {
+  Colors,
+  CommandInteraction,
+  EmbedBuilder,
+  GuildMember,
+  PermissionFlagsBits,
+  SlashCommandBuilder
+} from 'discord.js'
+import ms from 'ms'
+import LogManager from '../logger/logger'
+import { AsyncDatabase } from '../sqlite/sqlite'
 
 export default {
-  data: new SlashCommandBuilder().setName('timeout')
+  data: new SlashCommandBuilder()
+    .setName('timeout')
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .setDescription('Versetzt eine Person in einem Timeout.')
-    .addUserOption(
-      opt => opt.setName('target')
-        .setDescription('Die Person, die einen Timeout erhalten soll')
-        .setRequired(true)
+    .addUserOption((opt) =>
+      opt.setName('target').setDescription('Die Person, die einen Timeout erhalten soll').setRequired(true)
     )
-    .addStringOption(
-      opt => opt.setName('zeit')
-        .setDescription('Wie lange soll der Timeout sein?')
-        .setRequired(true)
-    )
-    .addStringOption(
-      opt => opt.setName('reason')
-        .setDescription('Der Grund für den Timeout')
-        .setRequired(true)
-    ),
-  async execute (interaction: CommandInteraction): Promise<void> {
-    const logger = LogManager.getInstance().logger("TimeoutCommand")
+    .addStringOption((opt) => opt.setName('zeit').setDescription('Wie lange soll der Timeout sein?').setRequired(true))
+    .addStringOption((opt) => opt.setName('reason').setDescription('Der Grund für den Timeout').setRequired(true)),
+  async execute(interaction: CommandInteraction): Promise<void> {
+    const logger = LogManager.getInstance().logger('TimeoutCommand')
     const db = await AsyncDatabase.open()
     if (!db) {
       logger.logSync('ERROR', 'Datenbank konnte nicht geöffnet werden.')
@@ -52,7 +50,8 @@ export default {
     } catch (err) {
       logger.logSync('ERROR', `Timeout konnte nicht ausgefuehrt werden. ${JSON.stringify(err)}`)
       await interaction.reply({
-        embeds: [new EmbedBuilder().setDescription('Timeout fehlgeschlagen')], ephemeral: false
+        embeds: [new EmbedBuilder().setDescription('Timeout fehlgeschlagen')],
+        ephemeral: false
       })
     }
   }

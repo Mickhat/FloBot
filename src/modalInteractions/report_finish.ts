@@ -1,10 +1,10 @@
-import { ChannelType, Colors, EmbedBuilder, ModalSubmitInteraction } from "discord.js"
-import LogManager from "../logger/logger"
-import { AsyncDatabase } from "../sqlite/sqlite"
+import { ChannelType, Colors, EmbedBuilder, ModalSubmitInteraction } from 'discord.js'
+import LogManager from '../logger/logger'
+import { AsyncDatabase } from '../sqlite/sqlite'
 
 export default {
   customId: /report_.+_finish/,
-  async execute (interaction: ModalSubmitInteraction): Promise<void> {
+  async execute(interaction: ModalSubmitInteraction): Promise<void> {
     const logger = LogManager.getInstance().logger('Report-System')
     const db = await AsyncDatabase.open()
     if (!db) {
@@ -16,18 +16,22 @@ export default {
 
     let result
     try {
-      result = await db.getAsync('SELECT uuid, reported_id, status, category, message FROM reports WHERE uuid = ?', [uuid])
+      result = await db.getAsync('SELECT uuid, reported_id, status, category, message FROM reports WHERE uuid = ?', [
+        uuid
+      ])
     } catch (err) {
       await interaction.reply('ID existiert nicht. Bitte mache den Report von neu.')
       return
     }
 
     await db.runAsync('UPDATE reports SET description = ? WHERE uuid = ?', [
-      interaction.fields.getTextInputValue('description'), uuid
+      interaction.fields.getTextInputValue('description'),
+      uuid
     ])
 
     await interaction.reply({
-      content: 'Dein Report wurde an das Mod-Team übermittelt. Du kannst im neu erstellten Ticket Datails, Screenshots und ähnliches teilen.',
+      content:
+        'Dein Report wurde an das Mod-Team übermittelt. Du kannst im neu erstellten Ticket Datails, Screenshots und ähnliches teilen.',
       embeds: [
         new EmbedBuilder()
           .setAuthor({
@@ -39,11 +43,13 @@ export default {
           .addFields(
             {
               name: 'Absender',
-              value: `${interaction.member?.user.username as string}#${interaction.member?.user.discriminator as string} <@${interaction.member?.user.id as string}> #${interaction.member?.user.id as string}`
+              value: `${interaction.member?.user.username as string}#${
+                interaction.member?.user.discriminator as string
+              } <@${interaction.member?.user.id as string}> #${interaction.member?.user.id as string}`
             },
             {
               name: 'Beschuldigt',
-              value: (await interaction.guild?.members.fetch(result?.reported_id ?? '') ?? '<ERROR>').toString()
+              value: ((await interaction.guild?.members.fetch(result?.reported_id ?? '')) ?? '<ERROR>').toString()
             },
             {
               name: 'Regel',
@@ -67,7 +73,7 @@ export default {
     })
 
     const channel = await interaction.guild?.channels.fetch(process.env.REPORT_CHANNEL_ID ?? '')
-    if ((channel == null) || channel?.type !== ChannelType.GuildText) {
+    if (channel == null || channel?.type !== ChannelType.GuildText) {
       logger.logSync('ERROR', 'Channel not found / not TextBased')
       return
     }
@@ -88,7 +94,7 @@ export default {
             },
             {
               name: 'Beschuldigt',
-              value: (await interaction.guild?.members.fetch(result?.reported_id ?? '') ?? '<ERROR>').toString()
+              value: ((await interaction.guild?.members.fetch(result?.reported_id ?? '')) ?? '<ERROR>').toString()
             },
             {
               name: 'Regel',

@@ -1,23 +1,18 @@
-import { CommandInteraction, SlashCommandBuilder, escapeMarkdown } from "discord.js"
+import { CommandInteraction, SlashCommandBuilder, escapeMarkdown } from 'discord.js'
 
 export default {
-  data: new SlashCommandBuilder().setName('voting')
+  data: new SlashCommandBuilder()
+    .setName('voting')
     .setDescription('Eine Umfrage / Abstimmung machen.')
-    .addStringOption(option =>
-      option.setName('question')
-        .setDescription('Die Frage')
-        .setRequired(true))
-    .addStringOption(option =>
-      option.setName('answers')
-        .setDescription('Die Antworten, mit Kommata getrennt')
-        .setRequired(true)),
-  async execute (interaction: CommandInteraction): Promise<void> {
+    .addStringOption((option) => option.setName('question').setDescription('Die Frage').setRequired(true))
+    .addStringOption((option) =>
+      option.setName('answers').setDescription('Die Antworten, mit Kommata getrennt').setRequired(true)
+    ),
+  async execute(interaction: CommandInteraction): Promise<void> {
     const question = escapeMarkdown(interaction.options.get('question', true).value?.toString() ?? '')
     const answers = escapeMarkdown(interaction.options.get('answers', true).value?.toString() ?? '').split(',')
 
-    const emojis = [
-      '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'
-    ]
+    const emojis = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
 
     if (question === '' || answers.length < 2) {
       await interaction.reply({

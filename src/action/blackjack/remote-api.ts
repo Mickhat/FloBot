@@ -78,7 +78,9 @@ export const getBet = async (storeElement: IGameData): Promise<IGetBet> => {
   if (!storeElement.betId) {
     throw Error('storeElement.betId not set!')
   }
-  const { data: resultData } = await axios.get<any, AxiosResponse<IGetBet>>(`${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet/${storeElement.betId}`)
+  const { data: resultData } = await axios.get<any, AxiosResponse<IGetBet>>(
+    `${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet/${storeElement.betId}`
+  )
   return resultData
 }
 
@@ -88,12 +90,16 @@ export const getHighscore = async (): Promise<IHighscore> => {
 }
 
 export const postPlayer = async (name: string): Promise<IPostPlayerResponse> => {
-  const { data } = await axios.post<any, AxiosResponse<IPostPlayerResponse>>(`${BACKEND_SERVER_ROOT}/v2/player`, { name })
+  const { data } = await axios.post<any, AxiosResponse<IPostPlayerResponse>>(`${BACKEND_SERVER_ROOT}/v2/player`, {
+    name
+  })
   return data
 }
 
 export const getPlayer = async (playerId: number): Promise<IGetPlayerResponse> => {
-  const { data } = await axios.get<any, AxiosResponse<IGetPlayerResponse>>(`${BACKEND_SERVER_ROOT}/v2/player/${playerId}`)
+  const { data } = await axios.get<any, AxiosResponse<IGetPlayerResponse>>(
+    `${BACKEND_SERVER_ROOT}/v2/player/${playerId}`
+  )
   return data
 }
 
@@ -106,7 +112,9 @@ export const postGame = async (storeElement: IGameData): Promise<IPostGameRespon
   if (!storeElement.deckId) {
     throw Error('storeElement.deckId not set!')
   }
-  const { data: gameData } = await axios.post<any, AxiosResponse<IPostGameResponse>>(`${BACKEND_SERVER_ROOT}/v2/game`, { deckId: storeElement.deckId })
+  const { data: gameData } = await axios.post<any, AxiosResponse<IPostGameResponse>>(`${BACKEND_SERVER_ROOT}/v2/game`, {
+    deckId: storeElement.deckId
+  })
   return gameData
 }
 
@@ -114,10 +122,13 @@ export const postBet = async (storeElement: IGameData, betValue: number): Promis
   if (!storeElement.gameId) {
     throw Error('storeElement.gameId not set!')
   }
-  const { data: betData } = await axios.post<any, AxiosResponse<IPostBetResponse>>(`${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet`, {
-    playerId: storeElement.playerId,
-    bet: betValue
-  })
+  const { data: betData } = await axios.post<any, AxiosResponse<IPostBetResponse>>(
+    `${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet`,
+    {
+      playerId: storeElement.playerId,
+      bet: betValue
+    }
+  )
   return betData
 }
 
@@ -128,7 +139,9 @@ export const postHit = async (storeElement: IGameData): Promise<IPostHit> => {
   if (!storeElement.betId) {
     throw Error('storeElement.betId not set!')
   }
-  const { data } = await axios.post<any, AxiosResponse<IPostHit>>(`${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet/${storeElement.betId}/hit`)
+  const { data } = await axios.post<any, AxiosResponse<IPostHit>>(
+    `${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet/${storeElement.betId}/hit`
+  )
   return data
 }
 
@@ -139,7 +152,9 @@ export const postStand = async (storeElement: IGameData): Promise<any> => {
   if (!storeElement.betId) {
     throw Error('storeElement.betId not set!')
   }
-  const { data } = await axios.post<any, AxiosResponse<any>>(`${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet/${storeElement.betId}/stand`)
+  const { data } = await axios.post<any, AxiosResponse<any>>(
+    `${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet/${storeElement.betId}/stand`
+  )
   return data
 }
 
@@ -150,7 +165,9 @@ export const postDouble = async (storeElement: IGameData): Promise<IPostDouble> 
   if (!storeElement.betId) {
     throw Error('storeElement.betId not set!')
   }
-  const { data } = await axios.post<any, AxiosResponse<IPostDouble>>(`${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet/${storeElement.betId}/double`)
+  const { data } = await axios.post<any, AxiosResponse<IPostDouble>>(
+    `${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet/${storeElement.betId}/double`
+  )
   return data
 }
 
@@ -161,7 +178,9 @@ export const postSplit = async (storeElement: IGameData): Promise<IPostSplit> =>
   if (!storeElement.betId) {
     throw Error('storeElement.betId not set!')
   }
-  const { data: betData } = await axios.post<any, AxiosResponse<IPostSplit>>(`${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet/${storeElement.betId}/split`)
+  const { data: betData } = await axios.post<any, AxiosResponse<IPostSplit>>(
+    `${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet/${storeElement.betId}/split`
+  )
   return betData
 }
 
@@ -172,6 +191,9 @@ export const postInsurance = async (storeElement: IGameData, insuranceBuy: strin
   if (!storeElement.betId) {
     throw Error('storeElement.betId not set!')
   }
-  const { data } = await axios.post<any, AxiosResponse<IPostInsurance>>(`${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet/${storeElement.betId}/insurance`, { insurance: insuranceBuy })
+  const { data } = await axios.post<any, AxiosResponse<IPostInsurance>>(
+    `${BACKEND_SERVER_ROOT}/v2/game/${storeElement.gameId}/bet/${storeElement.betId}/insurance`,
+    { insurance: insuranceBuy }
+  )
   return data
 }

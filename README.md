@@ -1,21 +1,21 @@
-# Moderation Bot in TypeScript using discordjs v14 
+# Moderation Bot in TypeScript using discordjs v14
 
-This project was programmed by some members of Florian Dalwigk's community discord which unfortunately doesn't exist anymore. You can find the new Discord Server [here](https://discord.gg/65pXxkSE5g). The bot uses discordjs v14 and is written entirely in TypeScript. We also use a github workflow to automatically deploy the bot on our own server. 
+This project was programmed by some members of Florian Dalwigk's community discord which unfortunately doesn't exist anymore. You can find the new Discord Server [here](https://discord.gg/65pXxkSE5g). The bot uses discordjs v14 and is written entirely in TypeScript. We also use a github workflow to automatically deploy the bot on our own server.
 
 # Function overview
 
 <div align="center">
 
-| Command       | Function      |
-|   :---:       |    :----:     | 
-| /kick         | Kicks a user  | 
-| /ban          | Bans a user   |
-| /timeout          | timeout a user   |
-| /warn          | warns a user   |
-| /strike          | strikes a user   |
-| /about          | about me   |
-| /help          | shows a multi page information widget   |
-| /bj help       | shows the help information for the BlackJack sub commands   |
+| Command  |                         Function                          |
+| :------: | :-------------------------------------------------------: |
+|  /kick   |                       Kicks a user                        |
+|   /ban   |                        Bans a user                        |
+| /timeout |                      timeout a user                       |
+|  /warn   |                       warns a user                        |
+| /strike  |                      strikes a user                       |
+|  /about  |                         about me                          |
+|  /help   |           shows a multi page information widget           |
+| /bj help | shows the help information for the BlackJack sub commands |
 
 </div>
 

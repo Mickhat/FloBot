@@ -8,8 +8,21 @@ import { AsyncDatabase } from './sqlite/sqlite'
 import message from './listeners/message'
 import path, { join } from 'path'
 import { PersistentDataStorage } from './action/blackjack/persistentDataStorage'
-import fs from "node:fs"
-import { Button, Command, Menu, MessageContextMenu, Modal, UserContextMenu, isButton, isCommand, isMenu, isMessageContextMenu, isModal, isUserContextMenu } from './commandTypes'
+import fs from 'node:fs'
+import {
+  Button,
+  Command,
+  Menu,
+  MessageContextMenu,
+  Modal,
+  UserContextMenu,
+  isButton,
+  isCommand,
+  isMenu,
+  isMessageContextMenu,
+  isModal,
+  isUserContextMenu
+} from './commandTypes'
 import { handleBlackJackCommands } from './action/blackjack/handleCommands'
 import { registerBlackJackCommands } from './action/blackjack/registerCommands'
 
@@ -21,7 +34,7 @@ const token = process.env.BOT_TOKEN
 
 const dbFile = process.env.DB_PATH ?? './sqlite3.db'
 
-async function init (): Promise<void> {
+async function init(): Promise<void> {
   try {
     const db = await AsyncDatabase.open(dbFile)
     logManager.logger('sqlite3').logSync('INFO', `DB opened ${path.resolve(dbFile)}`)
@@ -63,9 +76,18 @@ async function init (): Promise<void> {
         identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
         giveaway_message_id TEXT NOT NULL,
         dc_id TEXT NOT NULL,
-        hash TEXT NOT NULL UNIQUE ON CONFLICT REPLACE${'' /* Sollte mal ein Hash sein, ist aber keiner (nicht wundern) */}
+        hash TEXT NOT NULL UNIQUE ON CONFLICT REPLACE${
+          '' /* Sollte mal ein Hash sein, ist aber keiner (nicht wundern) */
+        }
       )`)
-      if ((await db.getAsync("select count(*) as count from pragma_table_info('giveaways') where name = 'channel_id';", [])).count === 0) {
+      if (
+        (
+          await db.getAsync(
+            "select count(*) as count from pragma_table_info('giveaways') where name = 'channel_id';",
+            []
+          )
+        ).count === 0
+      ) {
         await db.runAsync(`ALTER TABLE giveaways add channel_id TEXT NULL`)
         await db.runAsync(`ALTER TABLE giveaways add author_display_name TEXT NULL`)
         await db.runAsync(`ALTER TABLE giveaways add author_avatar_url TEXT NULL`)
@@ -88,12 +110,12 @@ async function init (): Promise<void> {
 
     const commands: Command[] = []
     // command handling
-    const commandFiles = fs.readdirSync(join(__dirname, "commands")).filter(file => file.endsWith('.js'))
+    const commandFiles = fs.readdirSync(join(__dirname, 'commands')).filter((file) => file.endsWith('.js'))
     for (const file of commandFiles) {
       const command = (await import(`./commands/${file}`)).default
       // check if command is a valid command
       if (!command || !isCommand(command)) {
-        console.error("Command file is not valid " + file)
+        console.error('Command file is not valid ' + file)
         continue
       }
       commands.push(command)
@@ -102,12 +124,12 @@ async function init (): Promise<void> {
 
     const buttons: Button[] = []
     // button handling
-    const buttonFiles = fs.readdirSync(join(__dirname, "buttons")).filter(file => file.endsWith('.js'))
+    const buttonFiles = fs.readdirSync(join(__dirname, 'buttons')).filter((file) => file.endsWith('.js'))
     for (const file of buttonFiles) {
       const button = (await import(`./buttons/${file}`)).default
       // check if button is a valid button
       if (!button || !isButton(button)) {
-        console.error("Button file is not valid " + file)
+        console.error('Button file is not valid ' + file)
         continue
       }
       buttons.push(button)
@@ -116,12 +138,12 @@ async function init (): Promise<void> {
 
     const menuInteractions: Menu[] = []
     // menu handling
-    const menuFiles = fs.readdirSync(join(__dirname, "menuInteractions")).filter(file => file.endsWith('.js'))
+    const menuFiles = fs.readdirSync(join(__dirname, 'menuInteractions')).filter((file) => file.endsWith('.js'))
     for (const file of menuFiles) {
       const menu = (await import(`./menuInteractions/${file}`)).default
       // check if menu is a valid menu
       if (!menu || !isMenu(menu)) {
-        console.error("Menu file is not valid " + file)
+        console.error('Menu file is not valid ' + file)
         continue
       }
       menuInteractions.push(menu)
@@ -130,12 +152,14 @@ async function init (): Promise<void> {
 
     const messageContextMenuInteractions: MessageContextMenu[] = []
     // message context menu handling
-    const messageContextMenuFiles = fs.readdirSync(join(__dirname, "messageContextMenuInteractions")).filter(file => file.endsWith('.js'))
+    const messageContextMenuFiles = fs
+      .readdirSync(join(__dirname, 'messageContextMenuInteractions'))
+      .filter((file) => file.endsWith('.js'))
     for (const file of messageContextMenuFiles) {
       const messageContextMenu = (await import(`./messageContextMenuInteractions/${file}`)).default
       // check if message context menu is a valid message context menu
       if (!messageContextMenu || !isMessageContextMenu(messageContextMenu)) {
-        console.error("Message context menu file is not valid " + file)
+        console.error('Message context menu file is not valid ' + file)
         continue
       }
       messageContextMenuInteractions.push(messageContextMenu)
@@ -144,12 +168,12 @@ async function init (): Promise<void> {
 
     const modalInteractions: Modal[] = []
     // modal handling
-    const modalFiles = fs.readdirSync(join(__dirname, "modalInteractions")).filter(file => file.endsWith('.js'))
+    const modalFiles = fs.readdirSync(join(__dirname, 'modalInteractions')).filter((file) => file.endsWith('.js'))
     for (const file of modalFiles) {
       const modal = (await import(`./modalInteractions/${file}`)).default
       // check if modal is a valid modal
       if (!modal || !isModal(modal)) {
-        console.error("Modal file is not valid " + file)
+        console.error('Modal file is not valid ' + file)
         continue
       }
       modalInteractions.push(modal)
@@ -158,19 +182,21 @@ async function init (): Promise<void> {
 
     const userContextMenuInteractions: UserContextMenu[] = []
     // user context menu handling
-    const userContextMenuFiles = fs.readdirSync(join(__dirname, "userContextMenuInteractions")).filter(file => file.endsWith('.js'))
+    const userContextMenuFiles = fs
+      .readdirSync(join(__dirname, 'userContextMenuInteractions'))
+      .filter((file) => file.endsWith('.js'))
     for (const file of userContextMenuFiles) {
       const userContextMenu = (await import(`./userContextMenuInteractions/${file}`)).default
       // check if user context menu is a valid user context menu
       if (!userContextMenu || !isUserContextMenu(userContextMenu)) {
-        console.error("User context menu file is not valid " + file)
+        console.error('User context menu file is not valid ' + file)
         continue
       }
       userContextMenuInteractions.push(userContextMenu)
       console.log(`User context menu ${userContextMenu.data.name} loaded`)
     }
 
-    client.on("interactionCreate", async interaction => {
+    client.on('interactionCreate', async (interaction) => {
       if (interaction.isCommand()) {
         for await (const command of commands) {
           if (command.data.name === interaction.commandName) {
@@ -178,7 +204,7 @@ async function init (): Promise<void> {
             return
           }
         }
-        if (interaction.commandName === "bj") {
+        if (interaction.commandName === 'bj') {
           await handleBlackJackCommands(interaction, logManager)
           return
         }
@@ -250,12 +276,12 @@ async function init (): Promise<void> {
     })
 
     if (token !== undefined) {
-      const tickers = fs.readdirSync(join(__dirname, "tick")).filter(file => file.endsWith('.js'))
+      const tickers = fs.readdirSync(join(__dirname, 'tick')).filter((file) => file.endsWith('.js'))
       for (const file of tickers) {
         const ticker = (await import(`./tick/${file}`)).default
         // check if ticker is a valid ticker
-        if (!ticker || typeof ticker !== "function") {
-          console.error("Ticker file is not valid " + file)
+        if (!ticker || typeof ticker !== 'function') {
+          console.error('Ticker file is not valid ' + file)
           continue
         }
         setInterval(() => ticker(client), 1000 * 60)
@@ -264,15 +290,17 @@ async function init (): Promise<void> {
     }
 
     registerCommands(client, logManager.logger('Command-Registrierung'), [
-      ...commands.map(command => command.data),
-      ...messageContextMenuInteractions.map(messageContextMenu => messageContextMenu.data),
-      ...userContextMenuInteractions.map(userContextMenu => userContextMenu.data),
+      ...commands.map((command) => command.data),
+      ...messageContextMenuInteractions.map((messageContextMenu) => messageContextMenu.data),
+      ...userContextMenuInteractions.map((userContextMenu) => userContextMenu.data),
       registerBlackJackCommands()
     ])
 
     await client.login(token)
   } catch (err) {
-    logManager.logger().logSync('ERROR', `Failed to initialize system. Used db ${path.resolve(dbFile)}, error: ${JSON.stringify(err)}`)
+    logManager
+      .logger()
+      .logSync('ERROR', `Failed to initialize system. Used db ${path.resolve(dbFile)}, error: ${JSON.stringify(err)}`)
   }
 }
 

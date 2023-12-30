@@ -1,9 +1,6 @@
 import { IGameData, PersistentDataStorage } from './persistentDataStorage'
 import { getBet } from './remote-api'
-import {
-  CommandInteraction,
-  CommandInteractionOptionResolver
-} from 'discord.js'
+import { CommandInteraction, CommandInteractionOptionResolver } from 'discord.js'
 import { handleHighscore } from './slashCommands/Highscore'
 import { handlePlay } from './slashCommands/Play'
 import { handleScore } from './slashCommands/Score'
@@ -21,7 +18,9 @@ export const handleBlackJackCommands = async (interaction: CommandInteraction, l
     const options = interaction.options as CommandInteractionOptionResolver
     const subcommand = options.getSubcommand(true)
 
-    await logger.logger('BlackJack').log('DEBUG', `Received BJ subcommand = ${subcommand} from user ${interaction.user.tag}`)
+    await logger
+      .logger('BlackJack')
+      .log('DEBUG', `Received BJ subcommand = ${subcommand} from user ${interaction.user.tag}`)
 
     if (subcommand === 'highscore') {
       content = await handleHighscore()
@@ -59,13 +58,7 @@ export const handleBlackJackCommands = async (interaction: CommandInteraction, l
 }
 
 export const evalResult = async (storeElement: IGameData): Promise<string> => {
-  const {
-    dealersSecondCard,
-    dealersAdditionalCard,
-    result,
-    payout,
-    dealerTotal
-  } = await getBet(storeElement)
+  const { dealersSecondCard, dealersAdditionalCard, result, payout, dealerTotal } = await getBet(storeElement)
   if (storeElement.secondBetId) {
     storeElement.betId = storeElement.secondBetId
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

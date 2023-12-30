@@ -4,15 +4,16 @@ import { IGameData, PersistentDataStorage } from '../persistentDataStorage'
 import { AxiosError } from 'axios'
 import { evalResult } from '../handleCommands'
 
-export const getPlaySubCommand = (): ((subcommandGroup: SlashCommandSubcommandBuilder) => SlashCommandSubcommandBuilder) => {
-  return subcommand =>
+export const getPlaySubCommand = (): ((
+  subcommandGroup: SlashCommandSubcommandBuilder
+) => SlashCommandSubcommandBuilder) => {
+  return (subcommand) =>
     subcommand
       .setName('play')
       .setDescription('Create a game and place your bet')
-      .addIntegerOption(option =>
-        option.setName('bet')
-          .setDescription('The amount to bet ($1 to $1000)')
-          .setRequired(true))
+      .addIntegerOption((option) =>
+        option.setName('bet').setDescription('The amount to bet ($1 to $1000)').setRequired(true)
+      )
 }
 
 const ensurePlayerExists = async (storeElement: IGameData, userTag: string): Promise<void> => {
@@ -49,9 +50,14 @@ export const handlePlay = async (userTag: string, betValue: number): Promise<str
     if (followActions.length === 0) {
       const player = await getPlayer(gameData.playerId ?? 0)
       await persistentDataStorage.cleanup(gameData.userTag, player.cash)
-      return `A game has started and your bet has been placed. Your cards: ${card1} and ${card2}. The dealer's open card ${dealersCard}. Your total is ${yourTotal}. ` + await evalResult(gameData)
+      return (
+        `A game has started and your bet has been placed. Your cards: ${card1} and ${card2}. The dealer's open card ${dealersCard}. Your total is ${yourTotal}. ` +
+        (await evalResult(gameData))
+      )
     } else {
-      return `A game has started and your bet has been placed. Your cards: ${card1} and ${card2}. The dealer's open card ${dealersCard}. Your total is ${yourTotal}. Your options are ${followActions.join(', ')}.`
+      return `A game has started and your bet has been placed. Your cards: ${card1} and ${card2}. The dealer's open card ${dealersCard}. Your total is ${yourTotal}. Your options are ${followActions.join(
+        ', '
+      )}.`
     }
   } catch (err: Error | AxiosError | any) {
     if (err instanceof AxiosError) {

@@ -1,23 +1,18 @@
-import { Colors, CommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from "discord.js"
-import LogManager from "../logger/logger"
-import { AsyncDatabase } from "../sqlite/sqlite"
-import { v4 as uuid } from "uuid"
+import { Colors, CommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
+import LogManager from '../logger/logger'
+import { AsyncDatabase } from '../sqlite/sqlite'
+import { v4 as uuid } from 'uuid'
 
 export default {
-  data: new SlashCommandBuilder().setName('kick')
+  data: new SlashCommandBuilder()
+    .setName('kick')
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .setDescription('Kickt eine Person vom Server.')
-    .addUserOption(
-      opt => opt.setName('target')
-        .setDescription('Die Person, die gekickt werden soll')
-        .setRequired(true)
+    .addUserOption((opt) =>
+      opt.setName('target').setDescription('Die Person, die gekickt werden soll').setRequired(true)
     )
-    .addStringOption(
-      opt => opt.setName('reason')
-        .setDescription('Der Grund für den kick')
-        .setRequired(true)
-    ),
-  async execute (interaction: CommandInteraction): Promise<void> {
+    .addStringOption((opt) => opt.setName('reason').setDescription('Der Grund für den kick').setRequired(true)),
+  async execute(interaction: CommandInteraction): Promise<void> {
     const logger = LogManager.getInstance().logger('KickCommand')
     const db = await AsyncDatabase.open()
 
@@ -51,19 +46,25 @@ export default {
       .addFields({ name: 'Grund', value: reason })
 
     try {
-      await db.runAsync('INSERT INTO records (uuid, dc_id, type, points, reason) VALUES (?, ?, \'KICK\', 0, ?)', [
-        uuid(), target, reason
+      await db.runAsync("INSERT INTO records (uuid, dc_id, type, points, reason) VALUES (?, ?, 'KICK', 0, ?)", [
+        uuid(),
+        target,
+        reason
       ])
     } catch (e) {
-      logger.logSync("ERROR", `SQLITE-ERROR: ${JSON.stringify(e)}`)
+      logger.logSync('ERROR', `SQLITE-ERROR: ${JSON.stringify(e)}`)
     }
 
     try {
-      await (await interaction.client.users.fetch(target)).send({
+      await (
+        await interaction.client.users.fetch(target)
+      ).send({
         embeds: [
           new EmbedBuilder()
             .setTitle('Kick')
-            .setDescription('Aufgrund deines Verhaltens wurdest du vom Server gekickt. Wir bitten dich zukünftig unsere Regeln zu beachten. Bist du der Meinung, zu unrecht gekickt worden zu sein, melde dich bitte bei uns persönlich.')
+            .setDescription(
+              'Aufgrund deines Verhaltens wurdest du vom Server gekickt. Wir bitten dich zukünftig unsere Regeln zu beachten. Bist du der Meinung, zu unrecht gekickt worden zu sein, melde dich bitte bei uns persönlich.'
+            )
             .addFields({ name: 'Grund', value: reason })
             .setColor(Colors.Red)
         ]
@@ -78,9 +79,7 @@ export default {
       logger.logSync('INFO', `Nutzer mit ID ${target} wurde gekickt.`)
     } catch (e) {
       await interaction.reply({
-        embeds: [
-          new EmbedBuilder().setDescription('Der Kick ist fehlgeschlagen.')
-        ],
+        embeds: [new EmbedBuilder().setDescription('Der Kick ist fehlgeschlagen.')],
         ephemeral: false
       })
       return

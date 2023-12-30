@@ -1,7 +1,7 @@
-import { ChannelType, CommandInteraction, PermissionFlagsBits, SlashCommandBuilder } from "discord.js"
-import LogManager from "../logger/logger"
+import { ChannelType, CommandInteraction, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
+import LogManager from '../logger/logger'
 
-function nameGen (): string {
+function nameGen(): string {
   const number1 = Math.floor(Math.random() * 10)
   const number2 = Math.floor(Math.random() * 10)
   const number3 = Math.floor(Math.random() * 10)
@@ -11,10 +11,11 @@ function nameGen (): string {
 }
 
 export default {
-  data: new SlashCommandBuilder().setName('ticket-create')
+  data: new SlashCommandBuilder()
+    .setName('ticket-create')
     .setDescription('Erstellt einen Channel, wo du mit dem Support-Team kommunizieren kannst'),
-  async execute (interaction: CommandInteraction) {
-    const logger = LogManager.getInstance().logger("TicketCreateCommand")
+  async execute(interaction: CommandInteraction) {
+    const logger = LogManager.getInstance().logger('TicketCreateCommand')
     const name = nameGen()
 
     if (!interaction.guild) {

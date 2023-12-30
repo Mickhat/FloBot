@@ -3,11 +3,10 @@ import { PersistentDataStorage } from '../persistentDataStorage'
 import { getPlayer, postDouble } from '../remote-api'
 import { evalResult } from '../handleCommands'
 
-export const getDoubleSubCommand = (): ((subcommandGroup: SlashCommandSubcommandBuilder) => SlashCommandSubcommandBuilder) => {
-  return subcommand =>
-    subcommand
-      .setName('double')
-      .setDescription('double')
+export const getDoubleSubCommand = (): ((
+  subcommandGroup: SlashCommandSubcommandBuilder
+) => SlashCommandSubcommandBuilder) => {
+  return (subcommand) => subcommand.setName('double').setDescription('double')
 }
 
 export const handleDouble = async (userTag: string): Promise<string> => {
@@ -23,5 +22,5 @@ export const handleDouble = async (userTag: string): Promise<string> => {
   const { drawnCard, yourTotal } = data
   const playerResponse = await getPlayer(storeElement.playerId ?? 0)
   await persistentDataStorage.cleanup(storeElement.userTag, playerResponse.cash)
-  return `You have drawn ${drawnCard}, which brings your total to ${yourTotal}. ` + await evalResult(storeElement)
+  return `You have drawn ${drawnCard}, which brings your total to ${yourTotal}. ` + (await evalResult(storeElement))
 }
