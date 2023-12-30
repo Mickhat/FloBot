@@ -9,19 +9,6 @@ import {
 } from "discord.js"
 import { ILogger } from "../logger/logger"
 
-// Function to handle the :kekw: reaction
-async function kekwReact(msg): Promise<void> {
-  const kekwEmojiId = '1185517935905734796'; // The ID of the :kekw: emoji
-  const kekwEmoji = msg.guild?.emojis.cache.get(kekwEmojiId);
-
-  if (kekwEmoji && msg.content.includes(`<:${kekwEmoji.name}:${kekwEmoji.id}>`)) {
-    // More varied random chance
-    if (Math.random() < 0.3) { // Adjust the probability as needed
-      await msg.react(kekwEmoji);
-    }
-  }
-}
-
 function isGreeting (msg: string): boolean {
   const greetings = ["hallo", "hi", "hey", "moin", "moin moin", "servus", "guten morgen", "guten tag", "guten abend", "wuhu", "nabend"]
   const msgLower = msg.toLowerCase()
@@ -94,9 +81,8 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
       embeds: [
         new EmbedBuilder()
           .setAuthor({
-            name: `${oldMsg.author?.username as string}#${
-              oldMsg.author?.discriminator as string
-            } - #${oldMsg.author?.id as string}`
+            name: `${oldMsg.author?.username as string} - ${oldMsg.author?.id as string}`,
+            iconURL: `${oldMsg.author?.avatarURL()}`
           })
           .setDescription(
             oldMsg.content
@@ -109,9 +95,8 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
           .setTimestamp(oldMsg.createdTimestamp),
         new EmbedBuilder()
           .setAuthor({
-            name: `${newMsg.author?.username as string}#${
-              newMsg.author?.discriminator as string
-            }`
+            name: `${newMsg.author?.username as string} - ${newMsg.author?.id as string}`,
+            iconURL: `${newMsg.author?.avatarURL()}`
           })
           .setDescription(
             newMsg.content
@@ -152,9 +137,8 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
     if (msg.attachments && msg.attachments.size > 0) {
       embed = new EmbedBuilder()
         .setAuthor({
-          name: `${msg.author?.username as string}#${
-            msg.author?.discriminator as string
-          } - #${msg.author?.id as string}`
+          name: `${msg.author?.username as string} - ${msg.author?.id as string}`,
+          iconURL: `${msg.author?.avatarURL()}`
         })
         .setColor(Colors.Red)
         .setDescription(
@@ -166,23 +150,22 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
         )
         .setColor(Colors.Red)
         .setTimestamp(msg.createdTimestamp)
-      msg.attachments.forEach((attechment) => {
+      msg.attachments.forEach((attachment) => {
         embed.addFields({
-          name: `${attechment.name ?? "kein Name"} | ${
-            attechment.contentType ?? "unknown Type"
+          name: `${attachment.name ?? "kein Name"} | ${
+            attachment.contentType ?? "unknown Type"
           }`,
           value:
-            (attechment.url ?? "Fehler") +
+            (attachment.url ?? "Fehler") +
             "\n" +
-            (attechment.proxyURL ?? "Fehler")
+            (attachment.proxyURL ?? "Fehler")
         })
       })
     } else {
       embed = new EmbedBuilder()
         .setAuthor({
-          name: `${msg.author?.username as string}#${
-            msg.author?.discriminator as string
-          } - #${msg.author?.id as string}`
+          name: `${msg.author?.username as string} - ${msg.author?.id as string}`,
+          iconURL: `${msg.author?.avatarURL()}`
         })
         .setDescription(
           msg.content
