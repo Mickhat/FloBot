@@ -2,11 +2,10 @@ import { PersistentDataStorage } from '../persistentDataStorage'
 import { getPlayer } from '../remote-api'
 import { SlashCommandSubcommandBuilder } from '@discordjs/builders'
 
-export const getScoreSubCommand = (): ((subcommandGroup: SlashCommandSubcommandBuilder) => SlashCommandSubcommandBuilder) => {
-  return subcommand =>
-    subcommand
-      .setName('score')
-      .setDescription('Get the score for a player')
+export const getScoreSubCommand = (): ((
+  subcommandGroup: SlashCommandSubcommandBuilder
+) => SlashCommandSubcommandBuilder) => {
+  return (subcommand) => subcommand.setName('score').setDescription('Get the score for a player')
 }
 
 export const handleScore = async (userTag: string): Promise<string> => {

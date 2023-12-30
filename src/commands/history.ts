@@ -1,17 +1,23 @@
-import { Colors, CommandInteraction, EmbedBuilder, GuildMember, PermissionFlagsBits, SlashCommandBuilder } from "discord.js"
-import LogManager from "../logger/logger"
-import { AsyncDatabase } from "../sqlite/sqlite"
+import {
+  Colors,
+  CommandInteraction,
+  EmbedBuilder,
+  GuildMember,
+  PermissionFlagsBits,
+  SlashCommandBuilder
+} from 'discord.js'
+import LogManager from '../logger/logger'
+import { AsyncDatabase } from '../sqlite/sqlite'
 
 export default {
-  data: new SlashCommandBuilder().setName('history')
+  data: new SlashCommandBuilder()
+    .setName('history')
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .setDescription('Sieht die Historie eines Users ein')
-    .addUserOption(
-      opt => opt.setName('target')
-        .setDescription('Die Person, dessen Historie eingesehen werden soll')
-        .setRequired(true)
+    .addUserOption((opt) =>
+      opt.setName('target').setDescription('Die Person, dessen Historie eingesehen werden soll').setRequired(true)
     ),
-  async execute (interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: CommandInteraction): Promise<void> {
     const target = interaction.options.getMember('target') as GuildMember
     const logger = LogManager.getInstance().logger('HistoryCommand')
     const db = await AsyncDatabase.open()
@@ -24,7 +30,10 @@ export default {
     try {
       const resultban = await db.allAsync(`SELECT * FROM records WHERE dc_id = ? AND type = ?`, [target.id, 'BAN'])
       const resultkick = await db.allAsync(`SELECT * FROM records WHERE dc_id = ? AND type = ?`, [target.id, 'KICK'])
-      const resultstrike = await db.allAsync(`SELECT * FROM records WHERE dc_id = ? AND type = ?`, [target.id, 'STRIKE'])
+      const resultstrike = await db.allAsync(`SELECT * FROM records WHERE dc_id = ? AND type = ?`, [
+        target.id,
+        'STRIKE'
+      ])
       const resultwarn = await db.allAsync(`SELECT * FROM records WHERE dc_id = ? AND type = ?`, [target.id, 'WARN'])
       const result = await db.allAsync(`SELECT points FROM records WHERE dc_id = ?`, [target.id])
       let gespoints = 0
@@ -36,7 +45,9 @@ export default {
         .setThumbnail(`${target.displayAvatarURL()}`)
         .setDescription(
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/restrict-plus-operands
-          `Joined: ${target.joinedAt?.getDate()}.${(target.joinedAt?.getMonth() ?? 0) + 1}.${target.joinedAt?.getFullYear()}
+          `Joined: ${target.joinedAt?.getDate()}.${
+            (target.joinedAt?.getMonth() ?? 0) + 1
+          }.${target.joinedAt?.getFullYear()}
         Anzahl Banns: ${resultban.length}
         Anzahl Kicks: ${resultkick.length}
         Anzahl Strikes: ${resultstrike.length}
@@ -47,21 +58,21 @@ export default {
         .setColor(Colors.Yellow)
         .setTimestamp()
       dataEmbed.addFields({ name: '\u200b', value: '__Kicks__' })
-      resultkick.forEach(row => {
+      resultkick.forEach((row) => {
         dataEmbed.addFields(
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           { name: `Grund:`, value: `\b ${row?.reason}` }
         )
       })
       dataEmbed.addFields({ name: '\u200b', value: '__Strikes__' })
-      resultstrike.forEach(row => {
+      resultstrike.forEach((row) => {
         dataEmbed.addFields(
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           { name: `Grund:`, value: `\b ${row?.reason}` }
         )
       })
       dataEmbed.addFields({ name: '\u200b', value: '__Warns__' })
-      resultwarn.forEach(row => {
+      resultwarn.forEach((row) => {
         dataEmbed.addFields(
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           { name: `Grund:`, value: `\b ${row?.reason}` }
@@ -75,18 +86,14 @@ export default {
           { name: `Grund:`, value: `\b ${row?.reason}` }
         )
       }) */
-      logger.logSync("INFO", `History from ${target.id}`)
+      logger.logSync('INFO', `History from ${target.id}`)
       await interaction.reply({
-        embeds: [
-          dataEmbed
-        ]
+        embeds: [dataEmbed]
       })
     } catch (e) {
-      logger.logSync("ERROR", `History could not be entered in `)
+      logger.logSync('ERROR', `History could not be entered in `)
       await interaction.reply({
-        embeds: [
-          new EmbedBuilder().setDescription('Abruf ist fehlgeschlagen.')
-        ]
+        embeds: [new EmbedBuilder().setDescription('Abruf ist fehlgeschlagen.')]
       })
     }
   }

@@ -3,7 +3,7 @@ import { ILogger } from '../logger/logger'
 
 export default (client: Client, logger: ILogger): void => {
   client.on('ready', async () => {
-    if ((client.user == null) || (client.application == null)) {
+    if (client.user == null || client.application == null) {
       return
     }
 

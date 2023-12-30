@@ -1,27 +1,31 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, EmbedBuilder, GuildMember, SlashCommandBuilder, PermissionFlagsBits } from "discord.js"
-import ms from "ms"
-import LogManager from "../logger/logger"
-import { AsyncDatabase } from "../sqlite/sqlite"
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  CommandInteraction,
+  EmbedBuilder,
+  GuildMember,
+  SlashCommandBuilder,
+  PermissionFlagsBits
+} from 'discord.js'
+import ms from 'ms'
+import LogManager from '../logger/logger'
+import { AsyncDatabase } from '../sqlite/sqlite'
 
 type giveawayStatus = 0 | 1
-const GIVEAWAY_STATUS: { OPENED: giveawayStatus, CLOSED: giveawayStatus } = { OPENED: 0, CLOSED: 1 }
+const GIVEAWAY_STATUS: { OPENED: giveawayStatus; CLOSED: giveawayStatus } = { OPENED: 0, CLOSED: 1 }
 
 export default {
-  data: new SlashCommandBuilder().setName('giveaway')
+  data: new SlashCommandBuilder()
+    .setName('giveaway')
     .setDescription('Etwas verlosen')
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
-    .addStringOption(
-      o => o.setName('item')
-        .setDescription('Was soll verlost werden.')
-        .setRequired(true)
-    )
-    .addStringOption(
-      o => o.setName('time')
-        .setDescription('Wie lange soll das Giveaway gehen? Default: 24h')
-        .setRequired(false)
+    .addStringOption((o) => o.setName('item').setDescription('Was soll verlost werden.').setRequired(true))
+    .addStringOption((o) =>
+      o.setName('time').setDescription('Wie lange soll das Giveaway gehen? Default: 24h').setRequired(false)
     ),
-  async execute (interaction: CommandInteraction): Promise<void> {
-    const logger = LogManager.getInstance().logger("GiveawayCommand")
+  async execute(interaction: CommandInteraction): Promise<void> {
+    const logger = LogManager.getInstance().logger('GiveawayCommand')
     const db = await AsyncDatabase.open()
     if (!db) {
       logger.logSync('ERROR', 'Datenbank konnte nicht geöffnet werden.')
@@ -36,7 +40,7 @@ export default {
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
           new ButtonBuilder()
-            .setLabel("Teilnehmen")
+            .setLabel('Teilnehmen')
             .setEmoji('🎉')
             .setCustomId('giveaway-participate')
             .setStyle(ButtonStyle.Primary)
@@ -56,15 +60,18 @@ export default {
       fetchReply: true
     })
     const channelId = interaction.channelId
-    await db.runAsync(`INSERT INTO giveaways(message_id, organizer_id, prize, status, timestamp, channel_id, author_display_name, author_avatar_url) VALUES(?,?,?,?,?,?,?,?)`, [
-      giveawayMessage.id,
-      interaction.member?.user.id ?? '<ERROR>',
-      giveawayItem,
-      GIVEAWAY_STATUS.OPENED,
-      timestap * 1000,
-      channelId,
-      giveawayBy.displayName,
-      giveawayBy.avatarURL()
-    ])
+    await db.runAsync(
+      `INSERT INTO giveaways(message_id, organizer_id, prize, status, timestamp, channel_id, author_display_name, author_avatar_url) VALUES(?,?,?,?,?,?,?,?)`,
+      [
+        giveawayMessage.id,
+        interaction.member?.user.id ?? '<ERROR>',
+        giveawayItem,
+        GIVEAWAY_STATUS.OPENED,
+        timestap * 1000,
+        channelId,
+        giveawayBy.displayName,
+        giveawayBy.avatarURL()
+      ]
+    )
   }
 }

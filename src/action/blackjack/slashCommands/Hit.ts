@@ -3,11 +3,10 @@ import { PersistentDataStorage } from '../persistentDataStorage'
 import { getPlayer, postHit } from '../remote-api'
 import { evalResult } from '../handleCommands'
 
-export const getHitSubCommand = (): ((subcommandGroup: SlashCommandSubcommandBuilder) => SlashCommandSubcommandBuilder) => {
-  return subcommand =>
-    subcommand
-      .setName('hit')
-      .setDescription('hit')
+export const getHitSubCommand = (): ((
+  subcommandGroup: SlashCommandSubcommandBuilder
+) => SlashCommandSubcommandBuilder) => {
+  return (subcommand) => subcommand.setName('hit').setDescription('hit')
 }
 
 export const handleHit = async (userTag: string): Promise<string> => {
@@ -26,8 +25,10 @@ export const handleHit = async (userTag: string): Promise<string> => {
   if (data.followActions.length === 0) {
     const playerResponse = await getPlayer(storeElement.playerId ?? 0)
     await persistentDataStorage.cleanup(storeElement.userTag, playerResponse.cash)
-    return `You have drawn ${drawnCard}, which brings your total to ${yourTotal}. ` + await evalResult(storeElement)
+    return `You have drawn ${drawnCard}, which brings your total to ${yourTotal}. ` + (await evalResult(storeElement))
   } else {
-    return `You have drawn ${drawnCard}, which brings your total to ${yourTotal}. Your options are ${followActions.join(', ')}.`
+    return `You have drawn ${drawnCard}, which brings your total to ${yourTotal}. Your options are ${followActions.join(
+      ', '
+    )}.`
   }
 }

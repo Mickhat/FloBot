@@ -1,20 +1,24 @@
-import { Colors, CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js"
-import LogManager from "../logger/logger"
+import { Colors, CommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js'
+import LogManager from '../logger/logger'
 
 export default {
-  data: new SlashCommandBuilder().setName('search')
+  data: new SlashCommandBuilder()
+    .setName('search')
     .setDescription('Internet-Suche')
-    .addStringOption(option => option.setName('query')
-      .setDescription('Was soll gesucht werden?')
-      .setRequired(true))
-    .addStringOption(o => o
-      .setName('engine')
-      .addChoices({ name: 'searxng', value: 'x' }, { name: 'google', value: 'g' }, { name: 'duckduckgo', value: 'ddg' })
-      .setDescription('Welche Suchmaschine soll verwendet werden?')
-      .setRequired(false)
+    .addStringOption((option) => option.setName('query').setDescription('Was soll gesucht werden?').setRequired(true))
+    .addStringOption((o) =>
+      o
+        .setName('engine')
+        .addChoices(
+          { name: 'searxng', value: 'x' },
+          { name: 'google', value: 'g' },
+          { name: 'duckduckgo', value: 'ddg' }
+        )
+        .setDescription('Welche Suchmaschine soll verwendet werden?')
+        .setRequired(false)
     ),
-  async execute (interaction: CommandInteraction) {
-    const logger = LogManager.getInstance().logger("SearchCommand")
+  async execute(interaction: CommandInteraction) {
+    const logger = LogManager.getInstance().logger('SearchCommand')
     if (!interaction.isRepliable()) {
       logger.logSync('ERROR', 'Gegebene interaction kann nicht beantwortet werden.')
       return
@@ -38,11 +42,7 @@ export default {
 
     try {
       await interaction.reply({
-        embeds: [new EmbedBuilder()
-          .setTitle('Let me search that for you')
-          .setDescription(engine)
-          .setColor(Colors.Blue)
-        ]
+        embeds: [new EmbedBuilder().setTitle('Let me search that for you').setDescription(engine).setColor(Colors.Blue)]
       })
     } catch (err) {
       logger.logSync('ERROR', `Suche konnte nicht gesendet werden. ${JSON.stringify(err)}`)

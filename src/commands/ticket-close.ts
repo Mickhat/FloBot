@@ -1,9 +1,15 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, CommandInteraction, SlashCommandBuilder } from "discord.js"
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ChannelType,
+  CommandInteraction,
+  SlashCommandBuilder
+} from 'discord.js'
 
 export default {
-  data: new SlashCommandBuilder().setName('ticket-close')
-    .setDescription('Das Ticket schließen'),
-  async execute (interaction: CommandInteraction) {
+  data: new SlashCommandBuilder().setName('ticket-close').setDescription('Das Ticket schließen'),
+  async execute(interaction: CommandInteraction) {
     const channel = interaction.channel
 
     if (!channel || channel.type !== ChannelType.GuildText) {
@@ -22,14 +28,13 @@ export default {
     await channel.send({
       content: 'Ticket geschlossen.\nDas Ticket kann frühstens nach einem Tag gelöscht werden.',
       components: [
-        new ActionRowBuilder<ButtonBuilder>()
-          .addComponents(
-            new ButtonBuilder()
-              .setCustomId('ticket-delete')
-              .setLabel('Löschen')
-              .setEmoji('🗑️')
-              .setStyle(ButtonStyle.Danger)
-          )
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
+          new ButtonBuilder()
+            .setCustomId('ticket-delete')
+            .setLabel('Löschen')
+            .setEmoji('🗑️')
+            .setStyle(ButtonStyle.Danger)
+        )
       ]
     })
   }

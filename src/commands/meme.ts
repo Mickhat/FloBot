@@ -1,11 +1,10 @@
-import axios, { AxiosError } from "axios"
-import { Colors, CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js"
-import LogManager from "../logger/logger"
+import axios, { AxiosError } from 'axios'
+import { Colors, CommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js'
+import LogManager from '../logger/logger'
 
 export default {
-  data: new SlashCommandBuilder().setName('meme')
-    .setDescription('Random memes von Reddit.'),
-  async execute (interaction: CommandInteraction): Promise<void> {
+  data: new SlashCommandBuilder().setName('meme').setDescription('Random memes von Reddit.'),
+  async execute(interaction: CommandInteraction): Promise<void> {
     const logger = LogManager.getInstance().logger('MemeCommand')
 
     if (!interaction.isRepliable()) {
@@ -13,16 +12,14 @@ export default {
       return
     }
 
-    const subReddit = [
-      'techhumor',
-      'programmerhumor',
-      'ITMemes'
-    ]
+    const subReddit = ['techhumor', 'programmerhumor', 'ITMemes']
 
     const pickSubReddit = subReddit[Math.floor(Math.random() * subReddit.length)]
 
     try {
-      const { data: brotliEncoded } = await axios.get(`https://meme-api.com/gimme/${pickSubReddit}`, { responseType: 'arraybuffer' })
+      const { data: brotliEncoded } = await axios.get(`https://meme-api.com/gimme/${pickSubReddit}`, {
+        responseType: 'arraybuffer'
+      })
       const data = JSON.parse(brotliEncoded.toString())
       // const textDecoder = new TextDecoder()
       // const data = JSON.parse(textDecoder.decode(decompress(brotliEncoded)))
@@ -63,7 +60,9 @@ export default {
         .setAuthor({
           name: `Senior Error-Helper`
         })
-        .setTitle('Es ist ein katastrophler Fehler beim laden des MEMEs aufgetreten! Es besteht jedoch kein Grund zur Panik! Bleiben sie ruhig!!!')
+        .setTitle(
+          'Es ist ein katastrophler Fehler beim laden des MEMEs aufgetreten! Es besteht jedoch kein Grund zur Panik! Bleiben sie ruhig!!!'
+        )
         .setImage('https://memesfeel.com/wp-content/uploads/2022/05/Everything-Is-Fine-Meme-1.jpg')
         .setColor(Colors.Green)
         .setTimestamp()

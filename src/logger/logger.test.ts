@@ -39,7 +39,8 @@ test('another logger name test', async () => {
   expect(fs.existsSync(FileConsoleLogger.filename ?? 'FILENAME_NOT_SET')).toBeTruthy()
   const filteredContent = fs
     .readFileSync(FileConsoleLogger.filename ?? 'FILENAME_NOT_SET', 'utf8')
-    .split('\n').find(e => e.match(/LOG \[another-logger-name.*\] logging message/))
+    .split('\n')
+    .find((e) => e.match(/LOG \[another-logger-name.*\] logging message/))
   const found = filteredContent !== undefined && filteredContent.length > 0
   expect(found).toBeTruthy()
 })

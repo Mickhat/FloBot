@@ -1,15 +1,15 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, EmbedBuilder, TextChannel } from "discord.js"
-import ms from "ms"
-import LogManager from "../logger/logger"
-import { AsyncDatabase } from "../sqlite/sqlite"
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, EmbedBuilder, TextChannel } from 'discord.js'
+import ms from 'ms'
+import LogManager from '../logger/logger'
+import { AsyncDatabase } from '../sqlite/sqlite'
 
 type giveawayStatus = 0 | 1
-const GIVEAWAY_STATUS: { OPENED: giveawayStatus, CLOSED: giveawayStatus } = { OPENED: 0, CLOSED: 1 }
+const GIVEAWAY_STATUS: { OPENED: giveawayStatus; CLOSED: giveawayStatus } = { OPENED: 0, CLOSED: 1 }
 
 export default {
   buttonId: /giveaway-participate/,
-  async execute (interaction: ButtonInteraction): Promise<void> {
-    const logger = LogManager.getInstance().logger("GiveawayButton")
+  async execute(interaction: ButtonInteraction): Promise<void> {
+    const logger = LogManager.getInstance().logger('GiveawayButton')
     const db = await AsyncDatabase.open()
     if (!db) {
       logger.logSync('ERROR', 'Datenbank konnte nicht geöffnet werden.')
@@ -20,11 +20,16 @@ export default {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const ga_id = interaction.message.id
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    const giveaway_obj = await db.getAsync(`SELECT message_id, timestamp, status, prize FROM giveaways WHERE message_id = ?`, [ga_id])
+    const giveaway_obj = await db.getAsync(
+      `SELECT message_id, timestamp, status, prize FROM giveaways WHERE message_id = ?`,
+      [ga_id]
+    )
     if (!giveaway_obj || giveaway_obj.status !== GIVEAWAY_STATUS.OPENED) {
       await interaction.reply({ content: 'Schlechter Versuch. Das gibt ein Timeout.' })
       if (interaction.inGuild()) {
-        await (await interaction.guild?.members.fetch(interaction.user.id))?.timeout(ms('24h'), 'Hat versucht Giveaway zu hacken. (vllt, maybe, kann sein)')
+        await (
+          await interaction.guild?.members.fetch(interaction.user.id)
+        )?.timeout(ms('24h'), 'Hat versucht Giveaway zu hacken. (vllt, maybe, kann sein)')
       }
       return
     }
@@ -38,13 +43,16 @@ export default {
       await interaction.reply({ content: 'ERROR. Giveaway gibt es nicht', ephemeral: true })
       return
     }
-    const teilnehmer = await db.allAsync(`SELECT count(*) as count FROM giveaway_participants WHERE giveaway_message_id = ?`, [ga_id])
+    const teilnehmer = await db.allAsync(
+      `SELECT count(*) as count FROM giveaway_participants WHERE giveaway_message_id = ?`,
+      [ga_id]
+    )
     const numberOfParticipants = teilnehmer[0]?.count as number
     await message.edit({
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
           new ButtonBuilder()
-            .setLabel("Teilnehmen")
+            .setLabel('Teilnehmen')
             .setEmoji('🎉')
             .setCustomId('giveaway-participate')
             .setStyle(ButtonStyle.Primary)
@@ -63,7 +71,11 @@ export default {
       ]
     })
     const hash = dc_id + ga_id /* Sollte mal ein Hash sein, ist aber keiner (nicht wundern) */
-    await db.runAsync(`INSERT INTO giveaway_participants(dc_id, giveaway_message_id, hash) VALUES(?,?,?)`, [dc_id, ga_id, hash])
+    await db.runAsync(`INSERT INTO giveaway_participants(dc_id, giveaway_message_id, hash) VALUES(?,?,?)`, [
+      dc_id,
+      ga_id,
+      hash
+    ])
     await interaction.reply({ content: 'Du nimmst beim Giveaway teil', ephemeral: true })
   }
 }

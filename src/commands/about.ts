@@ -1,11 +1,10 @@
-import { CommandInteraction, EmbedBuilder, SlashCommandBuilder } from "discord.js"
-import LogManager from "../logger/logger"
-import fs from "node:fs"
+import { CommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js'
+import LogManager from '../logger/logger'
+import fs from 'node:fs'
 
 export default {
-  data: new SlashCommandBuilder().setName('about')
-    .setDescription('About me'),
-  async execute (interaction: CommandInteraction) {
+  data: new SlashCommandBuilder().setName('about').setDescription('About me'),
+  async execute(interaction: CommandInteraction) {
     const logger = LogManager.getInstance().logger('AboutCommand')
     if (!interaction.isRepliable()) {
       logger.logSync('ERROR', 'Gegebene interaction kann nicht beantwortet werden.')
@@ -21,11 +20,13 @@ export default {
     }
 
     const aboutEmbed = new EmbedBuilder()
-      .setColor(0x0099FF)
+      .setColor(0x0099ff)
       .setTitle('Etwas über mich')
       .setAuthor({ name: 'PlaceholderBot' })
-      .setDescription('Ich bin ein Discord-Bot, der für die Administration, Verwaltung und Moderation des Servers von <@226223176269561857> erstellt wurde. ' +
-        'Um zu sehen, was ich alles kann, nutze einfach /help.\n\n**__Meine Entwickler:__**')
+      .setDescription(
+        'Ich bin ein Discord-Bot, der für die Administration, Verwaltung und Moderation des Servers von <@226223176269561857> erstellt wurde. ' +
+          'Um zu sehen, was ich alles kann, nutze einfach /help.\n\n**__Meine Entwickler:__**'
+      )
       // .setThumbnail('https://i.imgur.com/AfFp7pu.png')
       .addFields(
         { name: 'heeecker', value: '<@768872955500953710>', inline: true },

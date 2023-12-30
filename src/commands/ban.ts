@@ -1,23 +1,18 @@
-import { Colors, CommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from "discord.js"
-import LogManager from "../logger/logger"
-import { AsyncDatabase } from "../sqlite/sqlite"
-import { v4 as uuid } from "uuid"
+import { Colors, CommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
+import LogManager from '../logger/logger'
+import { AsyncDatabase } from '../sqlite/sqlite'
+import { v4 as uuid } from 'uuid'
 
 export default {
-  data: new SlashCommandBuilder().setName('ban')
+  data: new SlashCommandBuilder()
+    .setName('ban')
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .setDescription('Entfernt eine Person final vom Server')
-    .addUserOption(
-      opt => opt.setName('target')
-        .setDescription('Die Person, die gebannt werden soll')
-        .setRequired(true)
+    .addUserOption((opt) =>
+      opt.setName('target').setDescription('Die Person, die gebannt werden soll').setRequired(true)
     )
-    .addStringOption(
-      opt => opt.setName('reason')
-        .setDescription('Der Grund für den /ban')
-        .setRequired(true)
-    ),
-  async execute (interaction: CommandInteraction): Promise<void> {
+    .addStringOption((opt) => opt.setName('reason').setDescription('Der Grund für den /ban').setRequired(true)),
+  async execute(interaction: CommandInteraction): Promise<void> {
     const logger = LogManager.getInstance().logger('BanCommand')
     if (!interaction.isRepliable()) {
       logger.logSync('ERROR', 'Gegebene interaction kann nicht beantwortet werden.')
@@ -35,8 +30,10 @@ export default {
 
     // record
     try {
-      await db.runAsync('INSERT INTO records (uuid, dc_id, type, points, reason) VALUES (?, ?, \'BAN\', 0, ?)', [
-        uuid(), target, reason
+      await db.runAsync("INSERT INTO records (uuid, dc_id, type, points, reason) VALUES (?, ?, 'BAN', 0, ?)", [
+        uuid(),
+        target,
+        reason
       ])
     } catch (e) {
       logger.logSync('ERROR', `SQLITE-ERROR: ${JSON.stringify(e)}`)
@@ -49,10 +46,10 @@ export default {
         embeds: [
           new EmbedBuilder()
             .setTitle('Ban')
-            .setDescription('Es tut uns sehr leid, jedoch sind wir gezwungen dich aufgrund deines Verhaltens vom Server auszuschließen. Bist du der Meinung, zu unrecht gebannt worden zu sein, melde dich bitte bei uns persönlich.')
-            .addFields(
-              { name: 'Grund', value: reason }
+            .setDescription(
+              'Es tut uns sehr leid, jedoch sind wir gezwungen dich aufgrund deines Verhaltens vom Server auszuschließen. Bist du der Meinung, zu unrecht gebannt worden zu sein, melde dich bitte bei uns persönlich.'
             )
+            .addFields({ name: 'Grund', value: reason })
             .setColor(Colors.Red)
         ]
       })
@@ -63,7 +60,7 @@ export default {
 
     try {
       await interaction.guild?.members.ban(target, { reason })
-      logger.logSync("INFO", `Nutzer mit der ID ${target} wurde gebannt.`)
+      logger.logSync('INFO', `Nutzer mit der ID ${target} wurde gebannt.`)
     } catch (e) {
       logger.logSync('ERROR', `Ban ${target} konnte nicht ausgefuehrt werden. ${JSON.stringify(e)}`)
       await interaction.reply({
@@ -75,17 +72,23 @@ export default {
 
     try {
       await interaction.reply({
-        embeds: [new EmbedBuilder()
-          .setTitle('User wurde gebannt')
-          .setDescription((dmSucess) ? `<@${target.toString()}> wurde erfolgreich benachrichtigt und gebannt.` : `<@${target.toString()}> wurde erfolgreich gebannt. Die Benachrichtigung konnte nicht versendet werden.`)
-          .setColor(Colors.Red)
-          .setAuthor({ name: `Gebannt von: ${interaction.user.tag}` })
-          .addFields({ name: 'Grund', value: reason })
-          .setTimestamp()],
+        embeds: [
+          new EmbedBuilder()
+            .setTitle('User wurde gebannt')
+            .setDescription(
+              dmSucess
+                ? `<@${target.toString()}> wurde erfolgreich benachrichtigt und gebannt.`
+                : `<@${target.toString()}> wurde erfolgreich gebannt. Die Benachrichtigung konnte nicht versendet werden.`
+            )
+            .setColor(Colors.Red)
+            .setAuthor({ name: `Gebannt von: ${interaction.user.tag}` })
+            .addFields({ name: 'Grund', value: reason })
+            .setTimestamp()
+        ],
         ephemeral: false
       })
     } catch (e) {
-      logger.logSync("ERROR", 'Interaction could not be replied.')
+      logger.logSync('ERROR', 'Interaction could not be replied.')
     }
   }
 }

@@ -14,7 +14,7 @@ export interface IGameData {
 
 export class PersistentDataStorage {
   private static _instance: PersistentDataStorage
-  static async instance (): Promise<PersistentDataStorage> {
+  static async instance(): Promise<PersistentDataStorage> {
     if (!PersistentDataStorage._instance) {
       PersistentDataStorage._instance = new PersistentDataStorage()
     }
@@ -23,12 +23,11 @@ export class PersistentDataStorage {
 
   private db?: AsyncDatabase
 
-  private constructor () {
-  }
+  private constructor() {}
 
-  public async initBlackJack (_db: AsyncDatabase): Promise<void> {
+  public async initBlackJack(_db: AsyncDatabase): Promise<void> {
     if (this.db) {
-      throw Error("initBlackJack was already called!")
+      throw Error('initBlackJack was already called!')
     }
     this.db = _db
     await this.db.runAsync(`CREATE TABLE IF NOT EXISTS gameDataBlackJack (
@@ -45,15 +44,19 @@ export class PersistentDataStorage {
       )`)
   }
 
-  public async load (userTag: string): Promise<IGameData> {
+  public async load(userTag: string): Promise<IGameData> {
     if (!this.db) {
-      throw Error("initBlackJack never initialized!")
+      throw Error('initBlackJack never initialized!')
     }
-    let row: IGameData | undefined = await this.db.getAsync('SELECT * FROM gameDataBlackJack WHERE userTag = ?', userTag)
+    let row: IGameData | undefined = await this.db.getAsync(
+      'SELECT * FROM gameDataBlackJack WHERE userTag = ?',
+      userTag
+    )
     if (row) {
       // sqlite has not date/time support. the date is stored as a string in format "2022-12-04 22:12:46", but in UTC without Z at the end
       row.lastUpdateDate = new Date(`${row.lastUpdateDate as string}Z`)
-      if ((row.lastUpdateDate.getTime() + (1000 * 60 * 55)) < new Date().getTime()) { // remove after 55 minutes
+      if (row.lastUpdateDate.getTime() + 1000 * 60 * 55 < new Date().getTime()) {
+        // remove after 55 minutes
         row = {
           userTag,
           followActions: '',
@@ -67,29 +70,49 @@ export class PersistentDataStorage {
         followActions: '',
         lastUpdateDate: new Date()
       }
-      await this.db.run('INSERT INTO gameDataBlackJack (userTag, lastUpdateDate) VALUES (?, datetime(\'now\'))', userTag)
+      await this.db.run("INSERT INTO gameDataBlackJack (userTag, lastUpdateDate) VALUES (?, datetime('now'))", userTag)
     }
     return row
   }
 
-  public async save (storeElement: IGameData): Promise<void> {
+  public async save(storeElement: IGameData): Promise<void> {
     if (!this.db) {
-      throw Error("initBlackJack never initialized!")
+      throw Error('initBlackJack never initialized!')
     }
-    await this.db.runAsync('UPDATE gameDataBlackJack SET playerId=?, deckId=?, gameId=?, betId=?, secondBetId=?, followActions=?, secondBetFollowActions=? WHERE userTag = ?',
-      [storeElement.playerId, storeElement.deckId, storeElement.gameId, storeElement.betId, storeElement.secondBetId, storeElement.followActions, storeElement.secondBetFollowActions, storeElement.userTag])
+    await this.db.runAsync(
+      'UPDATE gameDataBlackJack SET playerId=?, deckId=?, gameId=?, betId=?, secondBetId=?, followActions=?, secondBetFollowActions=? WHERE userTag = ?',
+      [
+        storeElement.playerId,
+        storeElement.deckId,
+        storeElement.gameId,
+        storeElement.betId,
+        storeElement.secondBetId,
+        storeElement.followActions,
+        storeElement.secondBetFollowActions,
+        storeElement.userTag
+      ]
+    )
   }
 
-  public async cleanup (userTag: string, cash: number): Promise<void> {
+  public async cleanup(userTag: string, cash: number): Promise<void> {
     if (!this.db) {
-      throw Error("initBlackJack never initialized!")
+      throw Error('initBlackJack never initialized!')
     }
     if (cash === -1) {
-      await this.db.runAsync('UPDATE gameDataBlackJack SET deckId=0, playerId=0, gameId=0, betId=0, secondBetId=0, followActions=null, secondBetFollowActions=null, lastUpdateDate=datetime(\'now\') WHERE userTag = ?', userTag)
+      await this.db.runAsync(
+        "UPDATE gameDataBlackJack SET deckId=0, playerId=0, gameId=0, betId=0, secondBetId=0, followActions=null, secondBetFollowActions=null, lastUpdateDate=datetime('now') WHERE userTag = ?",
+        userTag
+      )
     } else if (cash === 0) {
-      await this.db.runAsync('UPDATE gameDataBlackJack SET playerId=0, gameId=0, betId=0, secondBetId=0, followActions=null, secondBetFollowActions=null, lastUpdateDate=datetime(\'now\') WHERE userTag = ?', userTag)
+      await this.db.runAsync(
+        "UPDATE gameDataBlackJack SET playerId=0, gameId=0, betId=0, secondBetId=0, followActions=null, secondBetFollowActions=null, lastUpdateDate=datetime('now') WHERE userTag = ?",
+        userTag
+      )
     } else {
-      await this.db.runAsync('UPDATE gameDataBlackJack SET gameId=0, betId=0, secondBetId=0, followActions=null, secondBetFollowActions=null, lastUpdateDate=datetime(\'now\') WHERE userTag = ?', userTag)
+      await this.db.runAsync(
+        "UPDATE gameDataBlackJack SET gameId=0, betId=0, secondBetId=0, followActions=null, secondBetFollowActions=null, lastUpdateDate=datetime('now') WHERE userTag = ?",
+        userTag
+      )
     }
   }
 }

@@ -11,20 +11,20 @@ export class AsyncDatabase extends sqlite3.verbose().Database {
    * Opens a already existing database instance but does not create a new one
    * @param filename The path to the database file
    */
-  static async open (): Promise<AsyncDatabase | undefined>
+  static async open(): Promise<AsyncDatabase | undefined>
   /**
    * Opens a already existing database instance or creates a new one
    * @param filename The path to the database file (only used if an open database does not exist yet)
    */
-  static async open (filename: string): Promise<AsyncDatabase>
+  static async open(filename: string): Promise<AsyncDatabase>
   /**
    * Opens a already existing database instance or creates a new one
    * @param filename The path to the database file (only used if an open database does not exist yet)
    * @param mode The mode the database should be opened in (only used if an open database does not exist yet)
    */
-  static async open (filename: string, mode: number): Promise<AsyncDatabase>
+  static async open(filename: string, mode: number): Promise<AsyncDatabase>
 
-  static async open (filename?: string, mode?: number): Promise<AsyncDatabase | undefined> {
+  static async open(filename?: string, mode?: number): Promise<AsyncDatabase | undefined> {
     if (filename === undefined) {
       if (AsyncDatabase._defaultInstanceName === undefined) {
         throw new Error('Database.open: no default instance name set')
@@ -54,7 +54,7 @@ export class AsyncDatabase extends sqlite3.verbose().Database {
     })
   }
 
-  async allAsync (sql: string, params: any): Promise<any[]> {
+  async allAsync(sql: string, params: any): Promise<any[]> {
     return await new Promise((resolve, reject) => {
       const callback = (err: Error | null, rows: any[]): void => {
         if (err != null) {
@@ -67,7 +67,7 @@ export class AsyncDatabase extends sqlite3.verbose().Database {
     })
   }
 
-  async getAsync (sql: string, params: any): Promise<any> {
+  async getAsync(sql: string, params: any): Promise<any> {
     return await new Promise((resolve, reject) => {
       const callback = (err: Error | null, rows: any[]): void => {
         if (err != null) {
@@ -80,12 +80,12 @@ export class AsyncDatabase extends sqlite3.verbose().Database {
     })
   }
 
-  async runAsync (sql: string): Promise<RunResult>
-  async runAsync (sql: string, params: any): Promise<RunResult>
+  async runAsync(sql: string): Promise<RunResult>
+  async runAsync(sql: string, params: any): Promise<RunResult>
 
-  async runAsync (sql: string, params?: any): Promise<RunResult> {
+  async runAsync(sql: string, params?: any): Promise<RunResult> {
     return await new Promise((resolve, reject) => {
-      function callback (this: RunResult, err: Error | null): void {
+      function callback(this: RunResult, err: Error | null): void {
         if (err != null) {
           reject(err)
         } else {
@@ -100,7 +100,7 @@ export class AsyncDatabase extends sqlite3.verbose().Database {
     })
   }
 
-  async serializeAsync (callback?: () => Promise<void>): Promise<void> {
+  async serializeAsync(callback?: () => Promise<void>): Promise<void> {
     this.serialize(callback)
   }
 }

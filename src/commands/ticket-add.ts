@@ -1,14 +1,15 @@
-import { ChannelType, CommandInteraction, SlashCommandBuilder } from "discord.js"
+import { ChannelType, CommandInteraction, SlashCommandBuilder } from 'discord.js'
 
 export default {
-  data: new SlashCommandBuilder().setName('ticket-add')
+  data: new SlashCommandBuilder()
+    .setName('ticket-add')
     .setDescription('Ein Mitglied in den Channel einladen')
-    .addUserOption(option => option.setName('target')
-      .setDescription('Der Nutzer, der hinzugefügt werden soll')
-      .setRequired(true)),
+    .addUserOption((option) =>
+      option.setName('target').setDescription('Der Nutzer, der hinzugefügt werden soll').setRequired(true)
+    ),
 
-  async execute (interaction: CommandInteraction) {
-    const targetId: string = interaction.options.getUser("target", true).id
+  async execute(interaction: CommandInteraction) {
+    const targetId: string = interaction.options.getUser('target', true).id
 
     if (!targetId) {
       await interaction.reply({ content: 'Benutzer konnte nicht hinzugefügt werden.', ephemeral: true })
