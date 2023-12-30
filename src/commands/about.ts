@@ -24,7 +24,7 @@ export default {
       .setColor(0x0099FF)
       .setTitle('Etwas über mich')
       .setAuthor({ name: 'PlaceholderBot' })
-      .setDescription('Ich bin ein Discord-Bot, der für die Administration, Verwaltung und Moderation des Servers von <@1185324347464892520> erstellt wurde. ' +
+      .setDescription('Ich bin ein Discord-Bot, der für die Administration, Verwaltung und Moderation des Servers von <@226223176269561857> erstellt wurde. ' +
         'Um zu sehen, was ich alles kann, nutze einfach /help.\n\n**__Meine Entwickler:__**')
       // .setThumbnail('https://i.imgur.com/AfFp7pu.png')
       .addFields(
