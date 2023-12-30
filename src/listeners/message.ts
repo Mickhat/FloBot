@@ -7,7 +7,6 @@ function isGreeting(msg: string): boolean {
     'hi',
     'hey',
     'moin',
-    'moin moin',
     'servus',
     'guten morgen',
     'guten tag',
