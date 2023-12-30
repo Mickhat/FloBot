@@ -95,7 +95,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
         new EmbedBuilder()
           .setAuthor({
             name: `${oldMsg.author?.username as string} - ${oldMsg.author?.id as string}`,
-            iconURL: oldMsg.author?.avatarURL()
+            iconURL: `${oldMsg.author?.avatarURL()}`
           })
           .setDescription(
             oldMsg.content
@@ -108,8 +108,8 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
           .setTimestamp(oldMsg.createdTimestamp),
         new EmbedBuilder()
           .setAuthor({
-            name: `${newMsg.author?.username as string}`,
-            iconURL: newMsg.author?.avatarURL()
+            name: `${newMsg.author?.username as string} - ${newMsg.author?.id as string}`,
+            iconURL: `${newMsg.author?.avatarURL()}`
           })
           .setDescription(
             newMsg.content
@@ -151,7 +151,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
       embed = new EmbedBuilder()
         .setAuthor({
           name: `${msg.author?.username as string} - ${msg.author?.id as string}`,
-          iconURL: msg.author?.avatarURL()
+          iconURL: `${msg.author?.avatarURL()}`
         })
         .setColor(Colors.Red)
         .setDescription(
@@ -178,7 +178,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
       embed = new EmbedBuilder()
         .setAuthor({
           name: `${msg.author?.username as string} - ${msg.author?.id as string}`,
-          iconURL: msg.author?.avatarURL()
+          iconURL: `${msg.author?.avatarURL()}`
         })
         .setDescription(
           msg.content
