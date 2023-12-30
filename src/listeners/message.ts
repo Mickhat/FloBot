@@ -69,7 +69,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
     }
 
     // check if the message contains the :kekw: emoji
-    if (msg.content.includes(':kekw:')) {
+    if (msg.content.toLowerCase().includes(':kekw:')) {
       // 50% chance to react with the :kekw: emoji
       if (Math.random() > 0.5) {
         console.log("reacting with ':kekw:'")
