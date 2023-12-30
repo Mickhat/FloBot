@@ -9,6 +9,19 @@ import {
 } from "discord.js"
 import { ILogger } from "../logger/logger"
 
+// Function to handle the :kekw: reaction
+async function kekwReact(msg): Promise<void> {
+  const kekwEmojiId = '1185517935905734796'; // The ID of the :kekw: emoji
+  const kekwEmoji = msg.guild?.emojis.cache.get(kekwEmojiId);
+
+  if (kekwEmoji && msg.content.includes(`<:${kekwEmoji.name}:${kekwEmoji.id}>`)) {
+    // More varied random chance
+    if (Math.random() < 0.3) { // Adjust the probability as needed
+      await msg.react(kekwEmoji);
+    }
+  }
+}
+
 function isGreeting (msg: string): boolean {
   const greetings = ["hallo", "hi", "hey", "moin", "moin moin", "servus", "guten morgen", "guten tag", "guten abend", "wuhu", "nabend"]
   const msgLower = msg.toLowerCase()
