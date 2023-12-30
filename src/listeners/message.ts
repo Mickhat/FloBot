@@ -66,6 +66,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
         await msg.react("👋")
       }
     }
+      await kekwReact(msg);
   })
 
   client.on("messageUpdate", async (oldMsg, newMsg) => {
