@@ -10,7 +10,7 @@ import {
 import { ILogger } from "../logger/logger"
 
 function isGreeting (msg: string): boolean {
-  const greetings = ["hallo", "hi", "hey", "moin ", "moin moin", "servus", "guten morgen", "guten tag", "guten abend", "wuhu"]
+  const greetings = ["hallo", "hi", "hey", "moin", "moin moin", "servus", "guten morgen", "guten tag", "guten abend", "wuhu", "nabend"]
   const msgLower = msg.toLowerCase()
   for (const greeting of greetings) {
     // check if the msg includes the greeting
