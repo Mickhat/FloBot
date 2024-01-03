@@ -44,6 +44,44 @@ function isGreeting(msg: string): boolean {
   return false
 }
 
+// checks if the message contains a keyword that indicates that the user is going to sleep
+function isGoingToSleep(msg: string): boolean {
+  const greetings = [
+    'gute nacht',
+    'nachti',
+    'schlaft gut',
+    'gn8'
+  ]
+  const msgLower = msg.toLowerCase()
+  for (const greeting of greetings) {
+    // check if the msg includes the greeting
+    if (msgLower.includes(greeting)) {
+      if (msgLower.startsWith(greeting) && msgLower.endsWith(greeting)) {
+        return true
+      }
+      // check if the greeting is at the beginning of the msg and the next char is a space, ! or ? or . or ,
+      if (msgLower.startsWith(greeting) && [' ', '!', '?', '.', ','].includes(msgLower.charAt(greeting.length))) {
+        return true
+      }
+      // check if the greeting is at the end of the msg and the previous char is a space, ! or ? or . or ,
+      if (
+        msgLower.endsWith(greeting) &&
+        [' ', '!', '?', '.', ','].includes(msgLower.charAt(msgLower.length - greeting.length - 1))
+      ) {
+        return true
+      }
+      // previous and next char is a space, ! or ? or . or ,
+      if (
+        [' ', '!', '?', '.', ','].includes(msgLower.charAt(msgLower.indexOf(greeting) - 1)) &&
+        [' ', '!', '?', '.', ','].includes(msgLower.charAt(msgLower.indexOf(greeting) + greeting.length))
+      ) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
 export default async (client: Client, logger: ILogger): Promise<void> => {
   logger.logSync('INFO', 'Initializing message logger')
 
@@ -64,6 +102,18 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
       } else {
         // add a waving hand reaction to the message
         await msg.react('👋')
+      }
+    } else if (isGoingToSleep(msg.content)) {
+      if (
+        msg.mentions.users.has(client.user?.id as string) &&
+        !msg.mentions.everyone &&
+        msg.channelId === '1185324347934658593'
+      ) {
+        await msg.reply({
+          content: `😴 Schlaf gut <@${msg.author.id}>!`
+        })
+      } else {
+        await msg.react('💤')
       }
     }
 
