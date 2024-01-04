@@ -26,10 +26,12 @@ To setup your bot, you have to copy the `env.example` to `.env` and set your TOK
 ```INI
 BOT_TOKEN=YOURTOKEN
 APPLICATION_ID=YOUR_APPLICATION_ID
-TOGGLE_ROLES= <ids von rollen, die sich Nutzer selbst geben können. Mit, getrennt. Maximal 5 (weil man nicht mehr buttons in eine Nachricht machen kann)>
+TOGGLE_ROLES= <IDs von rollen, die sich Nutzer selbst geben können. Mit, getrennt. Maximal 5 (weil man nicht mehr buttons in eine Nachricht machen kann)>
 DB_PATH=<path to sqlite3 db>
 REPORT_CHANNEL_ID= <channel, in den Reports geschickt werden sollen>
-TICKET_SUPPORTER= <id der Rolle, die jedem Ticket hinzugefügt wird>
+TICKET_SUPPORTER= <ID der Rolle, die jedem Ticket hinzugefügt wird>
+MESSAGE_LOGS= <ID des Channels, in dem gelöschte & bearbeitete Nachrichten protokolliert werden sollen>
+JOIN_LOGS= <ID des Channels, in dem protokolliert wird wenn ein Nutzer den Discord betritt/verlässt>
 ```
 
 You can also configure the logging behavior in `logging.json`.

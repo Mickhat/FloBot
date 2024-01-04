@@ -6,6 +6,7 @@ import { LogManager } from './logger/logger'
 import registerCommands from './action/registerCommands'
 import { AsyncDatabase } from './sqlite/sqlite'
 import message from './listeners/message'
+import joins from './listeners/join'
 import path, { join } from 'path'
 import { PersistentDataStorage } from './action/blackjack/persistentDataStorage'
 import fs from 'node:fs'
@@ -100,12 +101,14 @@ async function init(): Promise<void> {
         IntentsBitField.Flags.Guilds,
         IntentsBitField.Flags.GuildMessageReactions,
         IntentsBitField.Flags.MessageContent,
+        IntentsBitField.Flags.GuildMembers,
         IntentsBitField.Flags.GuildMessages
       ]
     })
 
     ready(client, logManager.logger())
     status(client, logManager.logger()) // set the status to Testing and Playing as the activity
+    await joins(client, logManager.logger('Join-Logger'))
     await message(client, logManager.logger('Message-Logger'))
 
     const commands: Command[] = []
