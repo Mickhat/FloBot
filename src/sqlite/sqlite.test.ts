@@ -9,13 +9,16 @@ const createDBName = (num: number): string => {
 
 const unlink = (num: number): void => {
   // windows has problem with unlinkSync (possibly due to Anti-Virus)
-  fs.unlink(createDBName(num), () => {})
+  fs.unlink(createDBName(num), (err) => {
+    if (err) throw err
+  })
 }
 
 test('open DB', async () => {
   const db = await AsyncDatabase.open(createDBName(0))
   expect(db).toBeDefined()
   expect(fs.existsSync(createDBName(0))).toBeTruthy()
+  db.close()
   unlink(0)
 })
 
@@ -24,6 +27,7 @@ test('create table', async () => {
   const runResult = await db.runAsync('create table if not exists foo (id int, name varchar(255))')
   expect(runResult.changes).toBe(0)
   expect(runResult.lastID).toBe(0)
+  db.close()
   unlink(1)
 })
 
@@ -36,6 +40,7 @@ test('insert', async () => {
   const runResult2 = await db.runAsync('insert into foo (id, name) values (?,?)', [2, 'giga'])
   expect(runResult2.changes).toBe(1)
   expect(runResult2.lastID).toBe(2)
+  db.close()
   unlink(2)
 })
 
@@ -55,5 +60,6 @@ test('query', async () => {
   const one = await db.getAsync('select * from foo where id = ?', [1])
   expect(one.id).toBe(1)
   expect(one.name).toBe('mega')
+  db.close()
   unlink(3)
 })
