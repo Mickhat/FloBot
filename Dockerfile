@@ -1,4 +1,4 @@
-FROM node:18-slim as builder
+FROM node:current-slim as builder
 
 RUN apt-get -qq update && \
     apt-get -y install git && \
@@ -16,7 +16,7 @@ RUN cd /home/FloBot && \
   echo "BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> .build-info	&& \
 	rm -rf .git
 
-FROM node:18-slim
+FROM node:current-slim
 
 COPY --from=builder /home/FloBot /home/FloBot
 
