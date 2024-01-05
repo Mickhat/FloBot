@@ -19,7 +19,7 @@ jobs:
       packages: write
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [21.x]
 
     steps:
       - name: Checkout repository
