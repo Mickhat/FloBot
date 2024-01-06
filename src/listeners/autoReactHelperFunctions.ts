@@ -1,13 +1,14 @@
 import { Client, Message } from "discord.js"
 
-const greetings = ['hallo', 'hi', 'hey', 'moin', 'servus', 'guten morgen', 'guten tag', 'guten abend', 'wuhu', 'nabend']
+const greetings = ['Hallo', 'Hi', 'Hey', 'Moin', 'Moinsen', 'Servus', 'Guten Morgen', 'Guten Tag', 'Guten Abend', 'Wuhu', 'Nabend']
 
 const sleepings = ['gute nacht', 'nachti', 'schlaft gut', 'gn8']
 
 function containsKeywordFromArray(msg: string, keywords: string[]): boolean {
   const msgLower = msg.toLowerCase()
-  for (const keyword of keywords) {
+  for (let keyword of keywords) {
     // check if the msg includes the keyword
+    keyword = keyword.toLowerCase()
     if (msgLower.includes(keyword)) {
       if (msgLower.startsWith(keyword) && msgLower.endsWith(keyword)) {
         return true
