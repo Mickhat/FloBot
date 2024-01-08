@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, EmbedBuilder } from 'discord.js'
-import { AsyncDatabase } from 'src/sqlite/sqlite'
+import { AsyncDatabase } from '../sqlite/sqlite'
 
 export default {
   buttonId: /toggle-role/,

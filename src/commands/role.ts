@@ -8,11 +8,11 @@ import {
   PermissionFlagsBits,
   SlashCommandBuilder
 } from 'discord.js'
-import { AsyncDatabase } from 'src/sqlite/sqlite'
+import { AsyncDatabase } from '../sqlite/sqlite'
 
 export default {
   data: new SlashCommandBuilder()
-    .setName('role')
+    .setName('toggle-role')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
     .setDescription('Creates a button that allows anyone with access to the channel to give themselves the role.')
     .addRoleOption((option) => option.setName('role').setDescription('The role to give to the user.').setRequired(true))
