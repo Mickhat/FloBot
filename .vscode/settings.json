@@ -1,5 +1,8 @@
 {
     "editor.tabSize": 2,
     "editor.formatOnSave": false,
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
+    "git.branchProtection": [
+        "master"
+    ],
 }

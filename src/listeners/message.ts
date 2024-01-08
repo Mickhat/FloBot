@@ -11,6 +11,7 @@ import {
 } from 'discord.js'
 import { ILogger } from '../logger/logger'
 import { containsKeywordFromArray, mentionsBot, greetings, sleepings } from './autoReactHelperFunctions'
+import { AsyncDatabase } from 'src/sqlite/sqlite'
 
 function buildAttachmentList(attachments: Collection<string, Attachment>): string {
   let i = 0
@@ -67,6 +68,8 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
 
     logger.logSync('INFO', 'messageUpdate')
 
+    if (oldMsg.author?.id === client.user?.id !== undefined) return
+
     const logChannel = await newMsg.guild?.channels.fetch(process.env.MESSAGE_LOGS ?? '')
 
     if (logChannel == null) {
@@ -121,6 +124,18 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
 
   client.on('messageDelete', async (msg) => {
     const logChannel = await msg.guild?.channels.fetch(process.env.MESSAGE_LOGS ?? '')
+
+    if (msg.author?.id === client.user?.id !== undefined) {
+      const db = await AsyncDatabase.open()
+      if (!db) {
+        logger.logSync('WARN', 'MessageLogger could not open database')
+      } else {
+        // if the message was created by the bot, its possible that the message was stored in the database
+        // delete the entry from the database
+        await db.runAsync(`DELETE FROM button_roles WHERE message_id = ?`, [msg.id])
+      }
+      return
+    }
 
     if (logChannel == null) {
       logger.logSync('WARN', 'MessageLogger could not find log channel')
