@@ -26,6 +26,7 @@ import {
 } from './commandTypes'
 import { handleBlackJackCommands } from './action/blackjack/handleCommands'
 import { registerBlackJackCommands } from './action/blackjack/registerCommands'
+import roleDelete from './listeners/roleDelete'
 
 const logManager: LogManager = LogManager.getInstance()
 
@@ -303,6 +304,8 @@ async function init(): Promise<void> {
       ...userContextMenuInteractions.map((userContextMenu) => userContextMenu.data),
       registerBlackJackCommands()
     ])
+
+    roleDelete(client, db)
 
     await client.login(token)
   } catch (err) {
