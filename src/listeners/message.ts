@@ -11,7 +11,6 @@ import {
 } from 'discord.js'
 import { ILogger } from '../logger/logger'
 import { containsKeywordFromArray, mentionsBot, greetings, sleepings } from './autoReactHelperFunctions'
-import schedule from 'node-schedule'
 
 function buildAttachmentList(attachments: Collection<string, Attachment>): string {
   let i = 0
@@ -26,25 +25,6 @@ function buildAttachmentList(attachments: Collection<string, Attachment>): strin
 
 export default async (client: Client, logger: ILogger): Promise<void> => {
   logger.logSync('INFO', 'Initializing message logger')
-
-  schedule.scheduleJob('37 13 * * *', async () => {
-    try {
-      const targetChannel = await client.channels.fetch(process.env.SEND_1337_CHANNEL_ID ?? '')
-
-      if (targetChannel && targetChannel.type === ChannelType.GuildText) {
-        await targetChannel.send('13:37')
-       // console.log('Message sent successfully');
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error('Error in sending message: ' + error.message)
-        logger.logSync('ERROR', 'Error in sending message: ' + error.message)
-      } else {
-        console.error('An unknown error occurred in sending the message')
-        logger.logSync('ERROR', 'An unknown error occurred in sending the message')
-      }
-    }
-  })
 
   client.on('messageCreate', async (msg) => {
     if (msg.author?.bot) return
@@ -112,7 +92,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
       })
       newMsgEmbed.addFields({
         name: 'Attachments',
-        value: (newMsg.attachments.size > 0) ? buildAttachmentList(newMsg.attachments) : '<keine Anhänge/Medien>'
+        value: newMsg.attachments.size > 0 ? buildAttachmentList(newMsg.attachments) : '<keine Anhänge/Medien>'
       })
     }
 
