@@ -5,7 +5,9 @@ import {
   ChannelType,
   CommandInteraction,
   EmbedBuilder,
+  GuildMember,
   PermissionFlagsBits,
+  Role,
   SlashCommandBuilder
 } from 'discord.js'
 import { AsyncDatabase } from '../sqlite/sqlite'
@@ -27,10 +29,51 @@ export default {
         .setMaxLength(50)
     ),
   async execute(interaction: CommandInteraction) {
+    if (!interaction.guild) {
+      await interaction.reply({
+        content: 'An error occurred while trying to get the guild.',
+        ephemeral: true
+      })
+      return
+    }
+
+    if (!interaction.guild.members.me) {
+      await interaction.reply({
+        content: 'An error occurred while trying to get the bot member.',
+        ephemeral: true
+      })
+      return
+    }
+
     const role = interaction.options.get('role', true).role
-    if (!role) {
+    if (!role || !(role instanceof Role)) {
       await interaction.reply({
         content: 'The role you provided was invalid.',
+        ephemeral: true
+      })
+      return
+    }
+
+    const member = interaction.member
+    if (!member || !(member instanceof GuildMember)) {
+      await interaction.reply({
+        content: 'An error occurred while trying to get the member.',
+        ephemeral: true
+      })
+      return
+    }
+
+    if (member.roles.highest.comparePositionTo(role) <= 0) {
+      await interaction.reply({
+        content: 'You do not have permission to assign this role.',
+        ephemeral: true
+      })
+      return
+    }
+
+    if (role.comparePositionTo(interaction.guild.members.me.roles.highest) >= 0) {
+      await interaction.reply({
+        content: "I don't have permission to assign this role.",
         ephemeral: true
       })
       return
@@ -83,7 +126,7 @@ export default {
         })
         return
       }
-      await db.runAsync('INSERT INTO role_buttons (message_id, role_id) VALUES (?, ?)', [messageSendId, role.id])
+      await db.runAsync('INSERT INTO button_roles (message_id, role_id) VALUES (?, ?)', [messageSendId, role.id])
 
       // now edit the message to enable the button
 
@@ -94,7 +137,7 @@ export default {
               .setCustomId('toggle-role')
               .setLabel(buttonLabel ?? 'Rolle geben/entfernen')
               .setStyle(ButtonStyle.Primary)
-              .setDisabled(true)
+              .setDisabled(false)
           ])
         ],
         embeds: [
@@ -104,8 +147,13 @@ export default {
             .setColor(role.color)
         ]
       })
-    } catch {
+      await interaction.reply({
+        content: 'The button has been created.',
+        ephemeral: true
+      })
+    } catch (err) {
       await messageSend.delete()
+      console.log(err)
       await interaction.reply({
         content: 'An error occurred. Please try again later.',
         ephemeral: true

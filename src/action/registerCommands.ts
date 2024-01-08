@@ -31,7 +31,7 @@ export default (client: Client, logger: ILogger, commands: any[]): void => {
       } catch (err) {
         logger.logSync(
           'WARN',
-          `Commands konnten für Server ${g.name ?? '<Name nicht bekannt>'} #${g.id} : ${JSON.stringify(err)}`
+          `Commands konnten für Server ${g.name ?? '<Name nicht bekannt>'} #${g.id} : ${JSON.stringify(err, undefined, 2)}`
         )
       }
     }
