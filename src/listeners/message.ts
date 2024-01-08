@@ -8,75 +8,84 @@ import {
   Collection,
   Colors,
   EmbedBuilder
-} from 'discord.js'
-import { ILogger } from '../logger/logger'
-import { containsKeywordFromArray, mentionsBot, greetings, sleepings } from './autoReactHelperFunctions'
+} from 'discord.js';
+import { ILogger } from '../logger/logger';
+import { containsKeywordFromArray, mentionsBot, greetings, sleepings } from './autoReactHelperFunctions';
+import schedule from 'node-schedule';
 
 function buildAttachmentList(attachments: Collection<string, Attachment>): string {
-  let i = 0
+  let i = 0;
   const attachmentList = attachments
     .map((attachment) => {
-      i++
-      return `${i}. ${attachment.contentType} - [${attachment.name.substring(0, 30)}](${attachment.url})`
+      i++;
+      return `${i}. ${attachment.contentType} - [${attachment.name.substring(0, 30)}](${attachment.url})`;
     })
-    .join('\n')
-  return attachmentList
+    .join('\n');
+  return attachmentList;
 }
 
 export default async (client: Client, logger: ILogger): Promise<void> => {
-  logger.logSync('INFO', 'Initializing message logger')
+  logger.logSync('INFO', 'Initializing message logger');
+
+  schedule.scheduleJob('37 13 * * *', async () => {
+
+    try {
+      const targetChannel = await client.channels.fetch(process.env.SEND_1337_CHANNEL_ID ?? '');
+
+      if (targetChannel && targetChannel.type === ChannelType.GuildText) {
+        await targetChannel.send('13:37');
+       // console.log('Message sent successfully');
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error('Error in sending message: ' + error.message);
+        logger.logSync('ERROR', 'Error in sending message: ' + error.message);
+      } else {
+        console.error('An unknown error occurred in sending the message');
+        logger.logSync('ERROR', 'An unknown error occurred in sending the message');
+      }
+    }
+  });
 
   client.on('messageCreate', async (msg) => {
-    if (msg.author?.bot) return
+    if (msg.author?.bot) return;
     if (containsKeywordFromArray(msg.content, greetings)) {
-      /*
-      Checks if the message mentions the bot and prevents the bot from replying to everyone pings or announcements
-      */
       if (mentionsBot(client, msg)) {
         await msg.reply({
           content: `👋 ${greetings[Math.floor(Math.random() * greetings.length)]} <@${msg.author.id}>!`
-        })
+        });
       } else {
-        // add a waving hand reaction to the message
-        await msg.react('👋')
+        await msg.react('👋');
       }
     } else if (containsKeywordFromArray(msg.content, sleepings)) {
       if (mentionsBot(client, msg)) {
         await msg.reply({
           content: `😴 Schlaf gut <@${msg.author.id}>!`
-        })
+        });
       } else {
-        await msg.react('💤')
+        await msg.react('💤');
       }
     }
 
-    // check if the message contains the :kekw: emoji
     if (msg.content.toLowerCase().includes(':kekw:')) {
-      // 50% chance to react with the :kekw: emoji
       if (Math.random() > 0.5) {
-        const reactionEmoji = msg.guild?.emojis.cache.find((emoji) => emoji.name === 'kekw')
-        if (reactionEmoji == null) return
-        await msg.react(reactionEmoji)
+        const reactionEmoji = msg.guild?.emojis.cache.find((emoji) => emoji.name === 'kekw');
+        if (reactionEmoji == null) return;
+        await msg.react(reactionEmoji);
       }
     }
-  })
+  });
 
   client.on('messageUpdate', async (oldMsg, newMsg) => {
-    if (oldMsg.author?.bot === true) return
-    if (newMsg.author?.bot === true) return
+    if (oldMsg.author?.bot === true || newMsg.author?.bot === true) return;
 
-    logger.logSync('INFO', 'messageUpdate')
+    logger.logSync('INFO', 'messageUpdate');
 
-    const logChannel = await newMsg.guild?.channels.fetch(process.env.MESSAGE_LOGS ?? '')
+    const logChannel = await newMsg.guild?.channels.fetch(process.env.MESSAGE_LOGS ?? '');
 
-    if (logChannel == null) {
-      logger.logSync('WARN', 'MessageLogger could not find log channel')
-      return
-    }
-
-    if (logChannel.type !== ChannelType.GuildText) {
-      logger.logSync('WARN', 'LogChannel is not TextBased')
-      return
+    if (logChannel == null || logChannel.type !== ChannelType.GuildText) {
+      logger.logSync('WARN', 'MessageLogger could not find log channel or LogChannel is not TextBased');
+      return;
     }
 
     const oldMsgEmbed = new EmbedBuilder()
@@ -86,7 +95,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
       })
       .setDescription(oldMsg.content ? oldMsg.content : '<kein Inhalt>')
       .setColor(Colors.Yellow)
-      .setTimestamp(oldMsg.createdTimestamp)
+      .setTimestamp(oldMsg.createdTimestamp);
 
     const newMsgEmbed = new EmbedBuilder()
       .setAuthor({
@@ -95,17 +104,17 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
       })
       .setDescription(newMsg.content ? newMsg.content : '<kein Inhalt>')
       .setColor(Colors.Green)
-      .setTimestamp(newMsg.editedTimestamp)
+      .setTimestamp(newMsg.editedTimestamp);
 
     if (oldMsg.attachments.size !== newMsg.attachments.size) {
       oldMsgEmbed.addFields({
         name: 'Attachments',
         value: buildAttachmentList(oldMsg.attachments)
-      })
+      });
       newMsgEmbed.addFields({
         name: 'Attachments',
         value: (newMsg.attachments.size > 0) ? buildAttachmentList(newMsg.attachments) : '<keine Anhänge/Medien>'
-      })
+      });
     }
 
     await logChannel.send({
@@ -116,20 +125,15 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
           new ButtonBuilder().setURL(newMsg.url).setLabel('Nachricht im Chat zeigen').setStyle(ButtonStyle.Link)
         )
       ]
-    })
-  })
+    });
+  });
 
   client.on('messageDelete', async (msg) => {
-    const logChannel = await msg.guild?.channels.fetch(process.env.MESSAGE_LOGS ?? '')
+    const logChannel = await msg.guild?.channels.fetch(process.env.MESSAGE_LOGS ?? '');
 
-    if (logChannel == null) {
-      logger.logSync('WARN', 'MessageLogger could not find log channel')
-      return
-    }
-
-    if (logChannel.type !== ChannelType.GuildText) {
-      logger.logSync('WARN', 'LogChannel is not TextBased')
-      return
+    if (logChannel == null || logChannel.type !== ChannelType.GuildText) {
+      logger.logSync('WARN', 'MessageLogger could not find log channel or LogChannel is not TextBased');
+      return;
     }
 
     const embed = new EmbedBuilder()
@@ -139,18 +143,18 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
       })
       .setColor(Colors.Red)
       .setDescription(msg.content ? msg.content : '<kein Inhalt>')
-      .setTimestamp(msg.createdTimestamp)
+      .setTimestamp(msg.createdTimestamp);
 
     if (msg.attachments && msg.attachments.size > 0) {
       embed.addFields({
         name: 'Attachments',
         value: buildAttachmentList(msg.attachments)
-      })
+      });
     }
 
     await logChannel.send({
       content: `Message deleted in <#${msg.channelId}>`,
       embeds: [embed]
-    })
-  })
+    });
+  });
 }
