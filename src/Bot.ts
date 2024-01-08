@@ -81,6 +81,11 @@ async function init(): Promise<void> {
           '' /* Sollte mal ein Hash sein, ist aber keiner (nicht wundern) */
         }
       )`)
+      await db.runAsync(`CREATE TABLE IF NOT EXISTS button_roles(
+        identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
+        message_id TEXT NOT NULL,
+        role_id TEXT NOT NULL
+      )`)
       if (
         (
           await db.getAsync(
@@ -304,6 +309,9 @@ async function init(): Promise<void> {
     logManager
       .logger()
       .logSync('ERROR', `Failed to initialize system. Used db ${path.resolve(dbFile)}, error: ${JSON.stringify(err)}`)
+    setTimeout(() => {
+      process.exit(0)
+    }, 1000) // wait 1 second and exit
   }
 }
 
