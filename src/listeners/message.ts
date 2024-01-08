@@ -30,15 +30,11 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
   client.on('messageCreate', async (msg) => {
     if (msg.author?.bot) return
     if (containsKeywordFromArray(msg.content, greetings)) {
-      /*
-      Checks if the message mentions the bot and prevents the bot from replying to everyone pings or announcements
-      */
       if (mentionsBot(client, msg)) {
         await msg.reply({
           content: `👋 ${greetings[Math.floor(Math.random() * greetings.length)]} <@${msg.author.id}>!`
         })
       } else {
-        // add a waving hand reaction to the message
         await msg.react('👋')
       }
     } else if (containsKeywordFromArray(msg.content, sleepings)) {
@@ -51,9 +47,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
       }
     }
 
-    // check if the message contains the :kekw: emoji
     if (msg.content.toLowerCase().includes(':kekw:')) {
-      // 50% chance to react with the :kekw: emoji
       if (Math.random() > 0.5) {
         const reactionEmoji = msg.guild?.emojis.cache.find((emoji) => emoji.name === 'kekw')
         if (reactionEmoji == null) return
@@ -63,8 +57,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
   })
 
   client.on('messageUpdate', async (oldMsg, newMsg) => {
-    if (oldMsg.author?.bot === true) return
-    if (newMsg.author?.bot === true) return
+    if (oldMsg.author?.bot === true || newMsg.author?.bot === true) return
 
     logger.logSync('INFO', 'messageUpdate')
 
@@ -72,13 +65,8 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
 
     const logChannel = await newMsg.guild?.channels.fetch(process.env.MESSAGE_LOGS ?? '')
 
-    if (logChannel == null) {
-      logger.logSync('WARN', 'MessageLogger could not find log channel')
-      return
-    }
-
-    if (logChannel.type !== ChannelType.GuildText) {
-      logger.logSync('WARN', 'LogChannel is not TextBased')
+    if (logChannel == null || logChannel.type !== ChannelType.GuildText) {
+      logger.logSync('WARN', 'MessageLogger could not find log channel or LogChannel is not TextBased')
       return
     }
 
@@ -107,7 +95,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
       })
       newMsgEmbed.addFields({
         name: 'Attachments',
-        value: (newMsg.attachments.size > 0) ? buildAttachmentList(newMsg.attachments) : '<keine Anhänge/Medien>'
+        value: newMsg.attachments.size > 0 ? buildAttachmentList(newMsg.attachments) : '<keine Anhänge/Medien>'
       })
     }
 
@@ -142,8 +130,8 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
       return
     }
 
-    if (logChannel.type !== ChannelType.GuildText) {
-      logger.logSync('WARN', 'LogChannel is not TextBased')
+    if (logChannel == null || logChannel.type !== ChannelType.GuildText) {
+      logger.logSync('WARN', 'MessageLogger could not find log channel or LogChannel is not TextBased')
       return
     }
 
