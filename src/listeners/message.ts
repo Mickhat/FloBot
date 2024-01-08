@@ -11,7 +11,7 @@ import {
 } from 'discord.js'
 import { ILogger } from '../logger/logger'
 import { containsKeywordFromArray, mentionsBot, greetings, sleepings } from './autoReactHelperFunctions'
-import { AsyncDatabase } from 'src/sqlite/sqlite'
+import { AsyncDatabase } from '../sqlite/sqlite'
 
 function buildAttachmentList(attachments: Collection<string, Attachment>): string {
   let i = 0
