@@ -49,3 +49,6 @@ sqlite3.db
 
 # built files
 dist
+
+# npm package lock
+package-lock.json
