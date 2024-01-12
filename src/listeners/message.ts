@@ -61,7 +61,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
 
     logger.logSync('INFO', 'messageUpdate')
 
-    if (oldMsg.author?.id === client.user?.id !== undefined) return
+    if (oldMsg.author?.id === client.user?.id && client.user?.id !== undefined) return
 
     const logChannel = await newMsg.guild?.channels.fetch(process.env.MESSAGE_LOGS ?? '')
 
@@ -113,7 +113,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
   client.on('messageDelete', async (msg) => {
     const logChannel = await msg.guild?.channels.fetch(process.env.MESSAGE_LOGS ?? '')
 
-    if (msg.author?.id === client.user?.id !== undefined) {
+    if (msg.author?.id === client.user?.id && client.user?.id !== undefined) {
       const db = await AsyncDatabase.open()
       if (!db) {
         logger.logSync('WARN', 'MessageLogger could not open database')
