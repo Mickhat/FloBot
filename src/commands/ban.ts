@@ -81,7 +81,7 @@ export default {
                 : `<@${target.toString()}> wurde erfolgreich gebannt. Die Benachrichtigung konnte nicht versendet werden.`
             )
             .setColor(Colors.Red)
-            .setAuthor({ name: `Gebannt von: ${interaction.user.tag}` })
+            .setAuthor({ name: `Gebannt von: ${interaction.user.username}` })
             .addFields({ name: 'Grund', value: reason })
             .setTimestamp()
         ],

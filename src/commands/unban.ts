@@ -23,7 +23,7 @@ export default {
       .setTitle('User wurde entbannt')
       .setDescription(`<@${target.toString()}> hat seine DMS deaktiviert.`)
       .setColor(Colors.Green)
-      .setAuthor({ name: `Entbannt von: ${interaction.user.tag}` })
+      .setAuthor({ name: `Entbannt von: ${interaction.user.username}` })
       .setTimestamp()
 
     try {

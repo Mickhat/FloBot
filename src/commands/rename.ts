@@ -39,7 +39,7 @@ export default {
           new EmbedBuilder()
             .setTitle('Umbennenung')
             .setDescription(
-              'Es tut uns sehr leid, jedoch sind wir gezwungen dich aufgrund deines Nicknames auf dem Server umzubennen. Du kannst deinen Nickname unter Serverprofil ändern.'
+              'Es tut uns sehr leid, jedoch sind wir gezwungen dich aufgrund deines Nicknames auf dem Server umzubenennen. Du kannst deinen Nickname unter *Server > Serverprofil* ändern.'
             )
             .setColor(Colors.Yellow)
         ]

@@ -41,7 +41,7 @@ export default {
       .setDescription(`<@${member.id}> hat einen Timeout bekommen.`)
       .setColor(Colors.Yellow)
       .addFields({ name: 'Grund', value: reason })
-      .setAuthor({ name: `Timeout durch ${interaction.user.tag}` })
+      .setAuthor({ name: `Timeout durch ${interaction.user.username}` })
       .setTimestamp()
 
     try {

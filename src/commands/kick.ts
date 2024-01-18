@@ -34,14 +34,14 @@ export default {
       .setTitle('User wurde gekickt')
       .setDescription(`<@${target}> wurde erfolgreich gekickt und wurde benachrichtigt.`)
       .setColor('Yellow')
-      .setAuthor({ name: `Gekickt von: ${interaction.user.tag}` })
+      .setAuthor({ name: `Gekickt von: ${interaction.user.username}` })
       .setTimestamp()
 
     const dmDisabled = new EmbedBuilder()
       .setTitle('User wurde gekickt')
       .setDescription(`<@${target}> wurde erfolgreich gekickt. Die Benachrichtigung konnte nicht verschickt werden.`)
       .setColor('Yellow')
-      .setAuthor({ name: `Gekickt von: ${interaction.user.tag}` })
+      .setAuthor({ name: `Gekickt von: ${interaction.user.username}` })
       .setTimestamp()
       .addFields({ name: 'Grund', value: reason })
 

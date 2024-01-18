@@ -33,7 +33,7 @@ export default {
     await interaction.reply({
       embeds: [
         new EmbedBuilder().setDescription(
-          `Historie von ${target.toString()} wurde von ${interaction.user.tag} geleert.`
+          `Historie von ${target.toString()} wurde von ${interaction.user.username} geleert.`
         )
       ]
     })

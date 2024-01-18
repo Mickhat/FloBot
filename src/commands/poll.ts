@@ -10,8 +10,7 @@ export default {
 
     const poll = ['👍', '👎']
 
-    const messageString = `**${interaction.member?.user.username as string}** _fragt_: ${question}
-`
+    const messageString = `**${interaction.member?.user.username as string}** _fragt_: ${question}`
 
     const message = await interaction.reply({
       content: messageString,
