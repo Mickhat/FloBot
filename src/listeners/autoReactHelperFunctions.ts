@@ -1,6 +1,18 @@
-import { Client, Message } from "discord.js"
+import { Client, Message } from 'discord.js'
 
-const greetings = ['Hallo', 'Hi', 'Hey', 'Moin', 'Moinsen', 'Servus', 'Guten Morgen', 'Guten Tag', 'Guten Abend', 'Wuhu', 'Nabend']
+const greetings = [
+  'Hallo',
+  'Hi',
+  'Hey',
+  'Moin',
+  'Moinsen',
+  'Servus',
+  'Guten Morgen',
+  'Guten Tag',
+  'Guten Abend',
+  'Wuhu',
+  'Nabend'
+]
 
 const sleepings = ['gute nacht', 'nachti', 'schlaft gut', 'gn8']
 
@@ -37,9 +49,11 @@ function containsKeywordFromArray(msg: string, keywords: string[]): boolean {
 }
 
 function mentionsBot(client: Client, msg: Message<boolean>): boolean {
-  return msg.mentions.users.has(client.user?.id as string) &&
-  !msg.mentions.everyone &&
-  msg.channelId === '1185324347934658593'
+  return (
+    msg.mentions.users.has(client.user?.id as string) &&
+    !msg.mentions.everyone &&
+    msg.channelId === '1185324347934658593'
+  )
 }
 
 export { containsKeywordFromArray, greetings, sleepings, mentionsBot }

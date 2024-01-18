@@ -1,5 +1,5 @@
-import { Client } from "discord.js"
-import { AsyncDatabase } from "../sqlite/sqlite"
+import { Client } from 'discord.js'
+import { AsyncDatabase } from '../sqlite/sqlite'
 
 export default (client: Client, db: AsyncDatabase): void => {
   client.on('roleDelete', async (role) => {
