@@ -25,7 +25,7 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "dev": "nodemon src/Bot.ts",
+    "dev": "nodemon -e ts --exec npm run start",
     "start": "tsc && node .",
     "build": "tsc",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts .",

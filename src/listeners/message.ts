@@ -58,10 +58,10 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
 
   client.on('messageUpdate', async (oldMsg, newMsg) => {
     if (oldMsg.author?.bot === true || newMsg.author?.bot === true) return
+    // to stop logging messages when nothing changes but discord adds the embed for example when someone sends a link
+    if (oldMsg.content === newMsg.content && oldMsg.embeds !== newMsg.embeds) return
 
     logger.logSync('INFO', 'messageUpdate')
-
-    if (oldMsg.author?.id === client.user?.id && client.user?.id !== undefined) return
 
     const logChannel = await newMsg.guild?.channels.fetch(process.env.MESSAGE_LOGS ?? '')
 

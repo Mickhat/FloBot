@@ -33,6 +33,7 @@ export default async (client: Client, logger: ILogger): Promise<void> => {
   })
 
   client.on('guildMemberRemove', async (member) => {
+    if (member.id === client.user?.id) return // Avoid crash when bot gets kicked
     await logger.log('INFO', `${member.user.username} left`)
     const logChannel = await member.guild?.channels.fetch(process.env.JOIN_LOGS ?? '')
 
