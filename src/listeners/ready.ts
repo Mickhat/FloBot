@@ -11,7 +11,7 @@ export default (client: Client, logger: ILogger): void => {
     logger.logSync('INFO', `${client.user.username}#${client.user.discriminator} ist online!`)
 
     // Everyday at 13:37 (24 hour clock)
-    schedule.scheduleJob('*/10 * * * *', async () => {
+    schedule.scheduleJob('37 * * * *', async () => {
       logger.logSync('INFO', `Entered scheduleJob : channel_id=${process.env.SEND_1337_CHANNEL_ID}`)
       const targetChannel = await client.channels.fetch(process.env.SEND_1337_CHANNEL_ID ?? '')
 
