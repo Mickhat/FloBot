@@ -21,7 +21,7 @@ export default (client: Client, logger: ILogger): void => {
         return
       }
       logger.logSync('INFO', `Before send`)
-      await targetChannel.send('15:37')
+      await targetChannel.send('13:37')
     })
   })
 }
