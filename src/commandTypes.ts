@@ -10,6 +10,7 @@ import {
 } from 'discord.js'
 
 export interface Command {
+  init?: (client: any, logger: any) => void
   data: SlashCommandBuilder
   execute: (interaction: CommandInteraction) => Promise<void>
 }
