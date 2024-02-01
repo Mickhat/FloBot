@@ -31,7 +31,7 @@ export default {
       .addFields(
         { name: 'heeecker', value: '<@768872955500953710>', inline: true },
         { name: 'oglimmer', value: '<@441658607818375183>', inline: true },
-        { name: 'Christian.sh', value: '<@779419763938951228>', inline: true },
+        { name: 'christian', value: '<@779419763938951228>', inline: true },
         { name: 'Mickhat', value: '<@226223176269561857>', inline: true },
         { name: '\u200B', value: '\u200B' },
         { name: 'Github Build:', value: buildInfo },
