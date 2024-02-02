@@ -54,6 +54,19 @@ export class AsyncDatabase extends sqlite3.verbose().Database {
     })
   }
 
+  async allAsyncT<T>(sql: string, params: any): Promise<T[]> {
+    return await new Promise((resolve, reject) => {
+      const callback = (err: Error | null, rows: T[]): void => {
+        if (err != null) {
+          reject(err)
+        } else {
+          resolve(rows)
+        }
+      }
+      this.all(sql, params, callback)
+    })
+  }
+
   async allAsync(sql: string, params: any): Promise<any[]> {
     return await new Promise((resolve, reject) => {
       const callback = (err: Error | null, rows: any[]): void => {
@@ -64,6 +77,19 @@ export class AsyncDatabase extends sqlite3.verbose().Database {
         }
       }
       this.all(sql, params, callback)
+    })
+  }
+
+  async getAsyncT<T>(sql: string, params: any): Promise<T> {
+    return await new Promise((resolve, reject) => {
+      const callback = (err: Error | null, rows: T): void => {
+        if (err != null) {
+          reject(err)
+        } else {
+          resolve(rows)
+        }
+      }
+      this.get(sql, params, callback)
     })
   }
 
