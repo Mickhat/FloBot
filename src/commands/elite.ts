@@ -1,57 +1,106 @@
-import { CommandInteraction, EmbedBuilder, SlashCommandBuilder, ChannelType, Client } from 'discord.js'
+import { CommandInteraction, EmbedBuilder, SlashCommandBuilder, ChannelType, Client, GuildMember } from 'discord.js'
 import LogManager, { ILogger } from '../logger/logger'
 import schedule from 'node-schedule'
-import { AsyncDatabase } from '../sqlite/sqlite'
+import { EliteGameDataStorage } from '../service/eliteGameDataStorage'
+import promotionService, { getTodayAsDate } from '../service/promotionService'
 
-function getTodayAsDate(): string {
-  const berlinDate = new Date().toLocaleDateString('de-DE', {
-    timeZone: 'Europe/Berlin',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
-  })
-  return berlinDate
+const LEET_GENERAL_ROLE_ID = process.env.LEET_GENERAL_ROLE_ID ?? '<ERROR>'
+const LEET_COMMANDER_ROLE_ID = process.env.LEET_COMMANDER_ROLE_ID ?? '<ERROR>'
+const LEET_SERGEANT_ROLE_ID = process.env.LEET_SERGEANT_ROLE_ID ?? '<ERROR>'
+const GUILD_ID = process.env.GUILD_ID ?? '<ERROR>'
+
+async function removeRole(member: GuildMember, role: string): Promise<void> {
+  if (member.roles.cache.has(role)) {
+    await member.roles.remove(role)
+  }
 }
 
-let db: AsyncDatabase | undefined
+async function handleGeneralPromotion(general: string, oldGeneral: string | null, targetChannel: any, client: Client): Promise<void> {
+  await targetChannel.send(`<@${general}> has been promoted to Leet General!`)
+  const member = await client.guilds.cache.get(GUILD_ID)?.members.fetch(general)
+  if (member) {
+    await removeRole(member, LEET_COMMANDER_ROLE_ID)
+    await removeRole(member, LEET_SERGEANT_ROLE_ID)
+    await member.roles.add(LEET_GENERAL_ROLE_ID)
+  }
+  if (oldGeneral) {
+    const memberToRemove = await client.guilds.cache.get(GUILD_ID)?.members.fetch(oldGeneral)
+    if (memberToRemove) {
+      await removeRole(memberToRemove, LEET_GENERAL_ROLE_ID)
+    }
+  }
+}
+
+async function handleCommanderPromotion(commander: string, oldCommander: string | null, targetChannel: any, client: Client): Promise<void> {
+  await targetChannel.send(`<@${commander}> has been promoted to Leet Commander!`)
+  const member = await client.guilds.cache.get(GUILD_ID)?.members.fetch(commander)
+  if (member) {
+    await removeRole(member, LEET_SERGEANT_ROLE_ID)
+    await member.roles.add(LEET_COMMANDER_ROLE_ID)
+  }
+  if (oldCommander) {
+    const memberToRemove = await client.guilds.cache.get(GUILD_ID)?.members.fetch(oldCommander)
+    if (memberToRemove) {
+      await removeRole(memberToRemove, LEET_COMMANDER_ROLE_ID)
+    }
+  }
+}
+
+async function handleSergeantPromotion(sergeant: string, oldSergent: string | null, targetChannel: any, client: Client): Promise<void> {
+  await targetChannel.send(`<@${sergeant}> has been promoted to Leet Sergeant!`)
+  const member = await client.guilds.cache.get(GUILD_ID)?.members.fetch(sergeant)
+  await member?.roles.add(LEET_SERGEANT_ROLE_ID)
+  if (oldSergent) {
+    const memberToRemove = await client.guilds.cache.get(GUILD_ID)?.members.fetch(oldSergent)
+    if (memberToRemove) {
+      await removeRole(memberToRemove, LEET_SERGEANT_ROLE_ID)
+    }
+  }
+}
+
+async function doPromotions(targetChannel: any, client: Client): Promise<void> {
+  const { general: oldGeneral, commander: oldCommander, sergeant: oldSergent } = await promotionService.getCurrentRanks()
+  const { general, commander, sergeant } = await promotionService.doPromotions()
+  if (general) {
+    await handleGeneralPromotion(general, oldGeneral, targetChannel, client)
+  }
+  if (commander) {
+    await handleCommanderPromotion(commander, oldCommander, targetChannel, client)
+  }
+  if (sergeant) {
+    await handleSergeantPromotion(sergeant, oldSergent, targetChannel, client)
+  }
+}
+
 export default {
   init: (client: Client, logger: ILogger): void => {
     client.on('ready', async () => {
-      if (client.user == null || client.application == null) {
+      if (!client.user || !client.application) {
         return
       }
       logger.logSync('INFO', `Init EliteCommand`)
 
-      db = await AsyncDatabase.open()
-      if (!db) {
-        logger.logSync('ERROR', 'Datenbank konnte nicht geöffnet werden.')
-        return
-      }
       // Everyday at 13:37 (24 hour clock) Europe/
       schedule.scheduleJob({ rule: '37 13 * * *', tz: 'Europe/Berlin' }, async () => {
-        const targetChannel = await client.channels.fetch(process.env.SEND_1337_CHANNEL_ID ?? '')
+        const targetChannel = await client.channels.fetch(process.env.SEND_1337_CHANNEL_ID ?? '<ERROR>')
         if (!targetChannel || targetChannel.type !== ChannelType.GuildText) {
           logger.logSync('WARN', 'MessageLogger could not find log channel or LogChannel is not TextBased')
           return
         }
 
-        setTimeout(() => {
-          void (async () => {
-            const berlinDate = getTodayAsDate()
-            // write '\uFFFF' to player column to indicate that the game has been played for this day
-            await db?.runAsync(`INSERT INTO elite_game (register_date, player, play_timestamp) VALUES(?,?,?)`, [berlinDate, '\uFFFF', 0])
-            // find all participants and sort them by play_timestamp (first one is the winner)
-            let rows = await db?.getAsync(`select * from elite_game where register_date = ? and player != "\uFFFF" order by play_timestamp desc`, [berlinDate])
-            await targetChannel.send('13:37')
-            if (rows) {
-              if (!Array.isArray(rows)) {
-                rows = [rows]
-              }
-              console.log(rows)
-              await targetChannel.send(`Todays winner is <@${rows[0].player}>`)
-              await db?.runAsync(`INSERT INTO elite_game_winner (player, register_date, play_timestamp, target_timestamp) VALUES(?,?,?,?)`, [rows[0].player, berlinDate, rows[0].play_timestamp, Date.now()])
-            }
-          })()
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        setTimeout(async () => {
+          const berlinDate = getTodayAsDate()
+          // write '\uFFFF' to player column to indicate that the game has been played for this day
+          await EliteGameDataStorage.instance().writeGamePlay('\uFFFF', berlinDate)
+          // find all participants and sort them by play_timestamp (first one is the winner)
+          const rows = await EliteGameDataStorage.instance().loadGamePlayAll(berlinDate)
+          await targetChannel.send('13:37')
+          if (rows && rows.length > 0) {
+            const topRow = rows[0]
+            await EliteGameDataStorage.instance().writeGameWinner(topRow.player, berlinDate, topRow.play_timestamp)
+            await doPromotions(targetChannel, client)
+          }
         }, Math.random() * 60000) // delay by 0-60 seconds
       })
     })
@@ -67,12 +116,9 @@ export default {
 
     const userId = interaction.member?.user.id ?? '<ERROR>'
 
-    let rows = await db?.getAsync(`select * from elite_game where register_date = ? and (player = ? or player = "\uFFFF") order by player desc`, [berlinDate, userId])
+    const rows = await EliteGameDataStorage.instance().loadGamePlayForUser(userId, berlinDate)
     try {
-      if (rows) {
-        if (!Array.isArray(rows)) {
-          rows = [rows]
-        }
+      if (rows.length > 0) {
         if (rows[0].player === '\uFFFF') {
           // the player '\uFFFF' indicates that the game has been played for this day
           await interaction.reply({
@@ -98,7 +144,7 @@ export default {
           })
         }
       } else {
-        await db?.runAsync(`INSERT INTO elite_game(register_date, player, play_timestamp) VALUES(?,?,?)`, [berlinDate, userId, Date.now()])
+        await EliteGameDataStorage.instance().writeGamePlay(userId, berlinDate)
         await interaction.reply({
           embeds: [new EmbedBuilder()
             .setColor(0x0099ff)
@@ -111,6 +157,7 @@ export default {
         })
       }
     } catch (err) {
+      console.log(err)
       logger.logSync('ERROR', `Reply to elite command konnte nicht gesendet werden. ${JSON.stringify(err)}`)
     }
   }

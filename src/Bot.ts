@@ -27,6 +27,7 @@ import {
 import { handleBlackJackCommands } from './action/blackjack/handleCommands'
 import { registerBlackJackCommands } from './action/blackjack/registerCommands'
 import roleDelete from './listeners/roleDelete'
+import { EliteGameDataStorage } from './service/eliteGameDataStorage'
 
 const logManager: LogManager = LogManager.getInstance()
 
@@ -99,19 +100,7 @@ async function init(): Promise<void> {
         await db.runAsync(`ALTER TABLE giveaways add author_display_name TEXT NULL`)
         await db.runAsync(`ALTER TABLE giveaways add author_avatar_url TEXT NULL`)
       }
-      await db.runAsync(`CREATE TABLE IF NOT EXISTS elite_game (
-        identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-        player TEXT NOT NULL,
-        register_date TEXT NOT NULL,
-        play_timestamp INTEGER NOT NULL
-      )`)
-      await db.runAsync(`CREATE TABLE IF NOT EXISTS elite_game_winner (
-        identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-        player TEXT NOT NULL,
-        register_date TEXT NOT NULL,
-        play_timestamp INTEGER NOT NULL,
-        target_timestamp INTEGER NOT NULL
-      )`)
+      await EliteGameDataStorage.instance().initEliteGame(db)
       await (await PersistentDataStorage.instance()).initBlackJack(db)
     })
 
