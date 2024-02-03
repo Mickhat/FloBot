@@ -132,6 +132,6 @@ export class EliteGameDataStorage {
     if (!this.db) {
       throw Error('initEliteGame was not called!')
     }
-    return await this.db.allAsyncT<{ userId: string }>(`select player as userId from elite_game where register_date = (select max(register_date) from elite_game where player = "\uFFFF") and player != "\uFFFF" order by play_timestamp desc`, [])
+    return await this.db.allAsyncT<{ userId: string }>(`select player as userId from elite_game where register_date = (select register_date from elite_game where identifier = (select max(identifier) from elite_game where player = "\uFFFF")) and player != "\uFFFF" order by play_timestamp desc`, [])
   }
 }
