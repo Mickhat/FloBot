@@ -119,4 +119,19 @@ export class EliteGameDataStorage {
     }
     await this.db.runAsync(`DELETE FROM elite_game_rank where rank != ? and player = ?`, [rank, userId])
   }
+
+  public async loadWinnersStats(days: number): Promise<Array<{ userId: string, count: number }>> {
+    if (!this.db) {
+      throw Error('initEliteGame was not called!')
+    }
+    return await this.db.allAsyncT<{ userId: string, count: number }>(`select player as userId, count(identifier) as count from elite_game_winner where play_timestamp > ? group by player order by count(identifier) desc`,
+      [Date.now() - days * 24 * 60 * 60 * 1000])
+  }
+
+  public async loadTodaysPlayers(): Promise<Array<{ userId: string }>> {
+    if (!this.db) {
+      throw Error('initEliteGame was not called!')
+    }
+    return await this.db.allAsyncT<{ userId: string }>(`select player as userId from elite_game where register_date = (select max(register_date) from elite_game where player = "\uFFFF") and player != "\uFFFF" order by play_timestamp desc`, [])
+  }
 }
