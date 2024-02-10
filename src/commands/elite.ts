@@ -15,8 +15,8 @@ async function removeRole(member: GuildMember, role: string): Promise<void> {
   }
 }
 
-async function handleGeneralPromotion(general: string, oldGeneral: string | null, targetChannel: any, client: Client): Promise<void> {
-  await targetChannel.send(`<@${general}> has been promoted to Leet General!`)
+async function handleGeneralPromotion(general: string, oldGeneral: string | null, lastWinner: string | null, targetChannel: any, client: Client): Promise<void> {
+  await targetChannel.send(`<@${general}> ${general === lastWinner ? 'won and ' : ''} has been promoted to Leet General!`)
   const member = await client.guilds.cache.get(GUILD_ID)?.members.fetch(general)
   if (member) {
     await removeRole(member, LEET_COMMANDER_ROLE_ID)
@@ -31,8 +31,8 @@ async function handleGeneralPromotion(general: string, oldGeneral: string | null
   }
 }
 
-async function handleCommanderPromotion(commander: string, oldCommander: string | null, targetChannel: any, client: Client): Promise<void> {
-  await targetChannel.send(`<@${commander}> has been promoted to Leet Commander!`)
+async function handleCommanderPromotion(commander: string, oldCommander: string | null, lastWinner: string | null, targetChannel: any, client: Client): Promise<void> {
+  await targetChannel.send(`<@${commander}> ${commander === lastWinner ? 'won and ' : ''} has been promoted to Leet Commander!`)
   const member = await client.guilds.cache.get(GUILD_ID)?.members.fetch(commander)
   if (member) {
     await removeRole(member, LEET_SERGEANT_ROLE_ID)
@@ -46,9 +46,9 @@ async function handleCommanderPromotion(commander: string, oldCommander: string 
   }
 }
 
-async function handleSergeantPromotion(sergeant: string, oldSergent: string | null, targetChannel: any, client: Client): Promise<void> {
-  await targetChannel.send(`<@${sergeant}> has been promoted to Leet Sergeant!`)
-  const member = await client.guilds.cache.get(GUILD_ID)?.members.fetch(sergeant)
+async function handleSergeantPromotion(sergeantAndWinner: string, oldSergent: string | null, targetChannel: any, client: Client): Promise<void> {
+  await targetChannel.send(`<@${sergeantAndWinner}> won and has been promoted to Leet Sergeant!`)
+  const member = await client.guilds.cache.get(GUILD_ID)?.members.fetch(sergeantAndWinner)
   await member?.roles.add(LEET_SERGEANT_ROLE_ID)
   if (oldSergent) {
     const memberToRemove = await client.guilds.cache.get(GUILD_ID)?.members.fetch(oldSergent)
@@ -60,15 +60,18 @@ async function handleSergeantPromotion(sergeant: string, oldSergent: string | nu
 
 async function doPromotions(targetChannel: any, client: Client): Promise<void> {
   const { general: oldGeneral, commander: oldCommander, sergeant: oldSergent } = await promotionService.getCurrentRanks()
-  const { general, commander, sergeant } = await promotionService.doPromotions()
+  const { general, commander, sergeant, lastWinner } = await promotionService.doPromotions()
   if (general) {
-    await handleGeneralPromotion(general, oldGeneral, targetChannel, client)
+    await handleGeneralPromotion(general, oldGeneral, lastWinner, targetChannel, client)
   }
   if (commander) {
-    await handleCommanderPromotion(commander, oldCommander, targetChannel, client)
+    await handleCommanderPromotion(commander, oldCommander, lastWinner, targetChannel, client)
   }
   if (sergeant) {
     await handleSergeantPromotion(sergeant, oldSergent, targetChannel, client)
+  }
+  if (lastWinner && lastWinner !== general && lastWinner !== commander && lastWinner !== sergeant) {
+    await targetChannel.send(`<@${lastWinner}> won!`)
   }
 }
 

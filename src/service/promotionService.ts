@@ -78,9 +78,8 @@ class PromotionService {
     return null
   }
 
-  async getSergeantPromotion(nextGeneral: string | null, nextCommander: string | null): Promise<string | null> {
+  async getSergeantPromotion(topWinner: string | null, nextGeneral: string | null, nextCommander: string | null): Promise<string | null> {
     const currentRanks = await this.getCurrentRanks()
-    const topWinner = await this.getLastWinner()
     if (topWinner && currentRanks.sergeant !== topWinner && nextGeneral !== topWinner && nextCommander !== topWinner && currentRanks.commander !== topWinner && currentRanks.general !== topWinner) {
       this.logger.logSync('INFO', `Found new sergeant: ${topWinner}, old was ${currentRanks.sergeant}`)
       await EliteGameDataStorage.instance().writeGameRank(RANKS.SERGEANT, topWinner)
@@ -89,14 +88,16 @@ class PromotionService {
     return null
   }
 
-  async doPromotions(): Promise<{ general: string | null, commander: string | null, sergeant: string | null }> {
+  async doPromotions(): Promise<{ general: string | null, commander: string | null, sergeant: string | null, lastWinner: string | null }> {
     const general = await this.getGeneralPromotion()
     const commander = await this.getCommanderPromotion(general)
-    const sergeant = await this.getSergeantPromotion(general, commander)
+    const lastWinner = await this.getLastWinner()
+    const sergeant = await this.getSergeantPromotion(lastWinner, general, commander)
     return {
       general,
       commander,
-      sergeant
+      sergeant,
+      lastWinner
     }
   }
 }
