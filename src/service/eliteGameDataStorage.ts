@@ -42,6 +42,11 @@ export class EliteGameDataStorage {
       register_date TEXT NOT NULL,
       play_timestamp INTEGER NOT NULL
     )`)
+    const rowST = await this.db.getAsyncT<{ count: number }>(`SELECT 1 as count FROM sqlite_master WHERE type='table' AND name='elite_game' AND sql LIKE '%submission_time%';`, [])
+    if (rowST?.count !== 1) {
+      await this.db.runAsync(`ALTER TABLE elite_game ADD COLUMN submission_time INTEGER NOT NULL DEFAULT 0`)
+      await this.db.runAsync(`ALTER TABLE elite_game ADD COLUMN valid_starting_at INTEGER NOT NULL DEFAULT 0`)
+    }
     await this.db.runAsync(`CREATE TABLE IF NOT EXISTS elite_game_winner (
       identifier INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
       player TEXT NOT NULL,
@@ -84,7 +89,15 @@ export class EliteGameDataStorage {
     if (!this.db) {
       throw Error('initEliteGame was not called!')
     }
-    await this.db.runAsync(`INSERT INTO elite_game(register_date, player, play_timestamp) VALUES(?,?,?)`, [berlinDate, userId, Date.now()])
+    const now = Date.now()
+    await this.db.runAsync(`INSERT INTO elite_game(register_date, player, play_timestamp, submission_time, valid_starting_at) VALUES(?,?,?,?,0)`, [berlinDate, userId, now, now])
+  }
+
+  public async writeGamePlayEarlyBird(userId: string, berlinDate: string, tippTime: number, validFrom: number): Promise<void> {
+    if (!this.db) {
+      throw Error('initEliteGame was not called!')
+    }
+    await this.db.runAsync(`INSERT INTO elite_game(register_date, player, play_timestamp, submission_time, valid_starting_at) VALUES(?,?,?,?,?)`, [berlinDate, userId, tippTime, Date.now(), validFrom])
   }
 
   public async loadGamePlayForUser(userId: string, berlinDate: string): Promise<EliteGame[]> {
@@ -98,7 +111,8 @@ export class EliteGameDataStorage {
     if (!this.db) {
       throw Error('initEliteGame was not called!')
     }
-    return await this.db.allAsyncT<EliteGame>(`select * from elite_game where register_date = ? and player != "\uFFFF" order by play_timestamp desc`, [berlinDate])
+    const now = Date.now()
+    return await this.db.allAsyncT<EliteGame>(`select * from elite_game where register_date = ? and valid_starting_at <= ? and player != "\uFFFF" order by play_timestamp desc`, [berlinDate, now])
   }
 
   public async writeGameWinner(userId: string, berlinDate: string, playerTimestamp: number): Promise<void> {
@@ -132,6 +146,10 @@ export class EliteGameDataStorage {
     if (!this.db) {
       throw Error('initEliteGame was not called!')
     }
-    return await this.db.allAsyncT<{ userId: string }>(`select player as userId from elite_game where register_date = (select register_date from elite_game where identifier = (select max(identifier) from elite_game where player = "\uFFFF")) and player != "\uFFFF" order by play_timestamp desc`, [])
+    return await this.db.allAsyncT<{ userId: string }>(`select player as userId from elite_game where register_date = ` +
+      `(select register_date from elite_game where identifier = (select max(identifier) from elite_game where player = "\uFFFF")) ` +
+      `and player != "\uFFFF" and valid_starting_at <= ` +
+      `(select play_timestamp from elite_game where identifier = (select max(identifier) from elite_game where player = "\uFFFF")) ` +
+      `order by play_timestamp desc`, [])
   }
 }
