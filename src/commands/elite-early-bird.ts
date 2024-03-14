@@ -3,7 +3,7 @@ import { CommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.j
 import LogManager from '../logger/logger'
 import { EliteGameDataStorage } from '../service/eliteGameDataStorage'
 import { getTodayAsDate } from '../service/promotionService'
-import { calcValidFrom, parse } from 'src/service/eliteEarlyBirdService'
+import { calcValidFrom, parse } from '../service/eliteEarlyBirdService'
 
 export default {
   data: new SlashCommandBuilder()
