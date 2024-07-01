@@ -50,7 +50,6 @@ export default {
       hash
     ])
     await interaction.reply({ content: 'Du nimmst beim Giveaway teil', ephemeral: true })
-    
     const teilnehmer = await db.allAsync(
       `SELECT count(*) as count FROM giveaway_participants WHERE giveaway_message_id = ?`,
       [ga_id]

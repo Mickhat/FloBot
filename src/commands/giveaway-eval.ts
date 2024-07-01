@@ -52,6 +52,7 @@ export default {
     }
     const channel = interaction.channel as TextChannel
     const message = await channel?.messages.fetch(ga_id)
+    const gaTimestamp = Math.floor(giveaway_obj.timestamp / 1000)
     if (!message) {
       await interaction.reply({ content: 'ERROR. Giveaway gibt es nicht', ephemeral: true })
       return
@@ -89,12 +90,12 @@ export default {
           .setTitle('Altes Giveaway')
           .addFields(
             { name: 'Gewinn:', value: giveaway_obj.prize },
-            { name: 'Endete:', value: `<t:${Math.floor(new Date().getTime() / 1000)}:t>` },
+            { name: 'Endete:', value: `<t:${gaTimestamp}:R> <t:${gaTimestamp}:d> <t:${gaTimestamp}:T>` },
             { name: 'Gewinner:', value: `<@${winner}>` },
             { name: 'Teilnehmeranzahl:', value: `${teilnehmer.length}` }
           )
           .setFooter({ iconURL: interaction.client.user?.avatarURL() ?? undefined, text: 'PlaceholderBot' })
-          .setTimestamp(Math.floor(giveaway_obj.timestamp / 1000))
+          .setTimestamp(gaTimestamp)
       ]
     })
     await interaction.reply({
