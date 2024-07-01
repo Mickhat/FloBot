@@ -1,4 +1,12 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, EmbedBuilder, TextChannel } from 'discord.js'
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonInteraction,
+  ButtonStyle,
+  Colors,
+  EmbedBuilder,
+  TextChannel
+} from 'discord.js'
 import ms from 'ms'
 import LogManager from '../logger/logger'
 import { AsyncDatabase } from '../sqlite/sqlite'
@@ -43,11 +51,19 @@ export default {
       await interaction.reply({ content: 'ERROR. Giveaway gibt es nicht', ephemeral: true })
       return
     }
+    const hash = dc_id + ga_id /* Sollte mal ein Hash sein, ist aber keiner (nicht wundern) */
+    await db.runAsync(`INSERT INTO giveaway_participants(dc_id, giveaway_message_id, hash) VALUES(?,?,?)`, [
+      dc_id,
+      ga_id,
+      hash
+    ])
+    await interaction.reply({ content: 'Du nimmst beim Giveaway teil', ephemeral: true })
     const teilnehmer = await db.allAsync(
       `SELECT count(*) as count FROM giveaway_participants WHERE giveaway_message_id = ?`,
       [ga_id]
     )
     const numberOfParticipants = teilnehmer[0]?.count as number
+    const gaTimestamp = Math.floor(giveaway_obj.timestamp / 1000)
     await message.edit({
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -63,19 +79,11 @@ export default {
           .setTitle('Neues Giveaway')
           .addFields(
             { name: 'Gewinn:', value: giveaway_obj.prize },
-            { name: 'Endet:', value: `<t:${Math.floor(new Date().getTime() / 1000)}:t>` },
-            { name: 'Teilnehmer:', value: `${numberOfParticipants + 1}` }
+            { name: 'Endet:', value: `<t:${gaTimestamp}:R> - <t:${gaTimestamp}>` },
+            { name: 'Teilnehmer:', value: `${numberOfParticipants}` }
           )
-          .setFooter({ iconURL: interaction.client.user?.avatarURL() ?? undefined, text: 'PlaceholderBot' })
-          .setTimestamp(Math.floor(giveaway_obj.timestamp / 1000))
+          .setColor(Colors.Green)
       ]
     })
-    const hash = dc_id + ga_id /* Sollte mal ein Hash sein, ist aber keiner (nicht wundern) */
-    await db.runAsync(`INSERT INTO giveaway_participants(dc_id, giveaway_message_id, hash) VALUES(?,?,?)`, [
-      dc_id,
-      ga_id,
-      hash
-    ])
-    await interaction.reply({ content: 'Du nimmst beim Giveaway teil', ephemeral: true })
   }
 }
