@@ -90,12 +90,11 @@ export default {
           .setTitle('Altes Giveaway')
           .addFields(
             { name: 'Gewinn:', value: giveaway_obj.prize },
-            { name: 'Endete:', value: `<t:${gaTimestamp}:R> <t:${gaTimestamp}:d> <t:${gaTimestamp}:T>` },
+            { name: 'Endete:', value: `<t:${gaTimestamp}:R> - <t:${gaTimestamp}>` },
             { name: 'Gewinner:', value: `<@${winner}>` },
             { name: 'Teilnehmeranzahl:', value: `${teilnehmer.length}` }
           )
-          .setFooter({ iconURL: interaction.client.user?.avatarURL() ?? undefined, text: 'PlaceholderBot' })
-          .setTimestamp(gaTimestamp)
+          .setColor(Colors.Orange)
       ]
     })
     await interaction.reply({

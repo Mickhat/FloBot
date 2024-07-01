@@ -6,7 +6,8 @@ import {
   EmbedBuilder,
   GuildMember,
   SlashCommandBuilder,
-  PermissionFlagsBits
+  PermissionFlagsBits,
+  Colors
 } from 'discord.js'
 import ms from 'ms'
 import LogManager from '../logger/logger'
@@ -51,11 +52,10 @@ export default {
           .setTitle('Neues Giveaway')
           .addFields(
             { name: 'Gewinn:', value: giveawayItem },
-            { name: 'Endet:', value: `<t:${timestamp}:R> <t:${timestamp}:d> <t:${timestamp}:T>` },
+            { name: 'Endet:', value: `<t:${timestamp}:R> - <t:${timestamp}>` },
             { name: 'Teilnehmer:', value: '0' }
           )
-          .setFooter({ iconURL: interaction.client.user?.avatarURL() ?? undefined, text: 'PlaceholderBot' })
-          .setTimestamp(timestamp)
+          .setColor(Colors.Green)
       ],
       fetchReply: true
     })

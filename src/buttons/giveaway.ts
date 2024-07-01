@@ -1,4 +1,12 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, EmbedBuilder, TextChannel } from 'discord.js'
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonInteraction,
+  ButtonStyle,
+  Colors,
+  EmbedBuilder,
+  TextChannel
+} from 'discord.js'
 import ms from 'ms'
 import LogManager from '../logger/logger'
 import { AsyncDatabase } from '../sqlite/sqlite'
@@ -71,11 +79,10 @@ export default {
           .setTitle('Neues Giveaway')
           .addFields(
             { name: 'Gewinn:', value: giveaway_obj.prize },
-            { name: 'Endet:', value: `<t:${gaTimestamp}:R> <t:${gaTimestamp}:d> <t:${gaTimestamp}:T>` },
-            { name: 'Teilnehmer:', value: `${numberOfParticipants + 1}` }
+            { name: 'Endet:', value: `<t:${gaTimestamp}:R> - <t:${gaTimestamp}>` },
+            { name: 'Teilnehmer:', value: `${numberOfParticipants}` }
           )
-          .setFooter({ iconURL: interaction.client.user?.avatarURL() ?? undefined, text: 'PlaceholderBot' })
-          .setTimestamp(gaTimestamp)
+          .setColor(Colors.Green)
       ]
     })
   }
