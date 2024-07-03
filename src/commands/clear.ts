@@ -1,4 +1,4 @@
-import { CommandInteraction, EmbedBuilder, GuildMember, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
+import { ChatInputCommandInteraction, CommandInteraction, EmbedBuilder, GuildMember, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import LogManager from '../logger/logger'
 import { AsyncDatabase } from '../sqlite/sqlite'
 
@@ -10,7 +10,7 @@ export default {
     .addUserOption((opt) =>
       opt.setName('target').setDescription('Die Person, dessen Historie geleert werden soll').setRequired(true)
     ),
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const target = interaction.options.getMember('target') as GuildMember
     const logger = LogManager.getInstance().logger('ClearCommand')
     const db = await AsyncDatabase.open()

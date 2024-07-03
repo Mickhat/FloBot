@@ -1,4 +1,4 @@
-import { ChannelType, CommandInteraction, SlashCommandBuilder } from 'discord.js'
+import { ChannelType, ChatInputCommandInteraction, CommandInteraction, SlashCommandBuilder } from 'discord.js'
 
 export default {
   data: new SlashCommandBuilder()
@@ -8,7 +8,7 @@ export default {
       option.setName('target').setDescription('Der Nutzer, der hinzugefügt werden soll').setRequired(true)
     ),
 
-  async execute(interaction: CommandInteraction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const targetId: string = interaction.options.getUser('target', true).id
 
     if (!targetId) {

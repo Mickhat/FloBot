@@ -1,4 +1,5 @@
 import {
+  ChatInputCommandInteraction,
   Colors,
   CommandInteraction,
   EmbedBuilder,
@@ -19,7 +20,7 @@ export default {
       opt.setName('target').setDescription('Die Person, die einen Strike bekommen soll').setRequired(true)
     )
     .addStringOption((opt) => opt.setName('reason').setDescription('Der Grund für den /strike').setRequired(true)),
-  async execute(interaction: CommandInteraction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const logger = LogManager.getInstance().logger('StrikeCommand')
     const db = await AsyncDatabase.open()
     if (!db) {
