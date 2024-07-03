@@ -13,7 +13,8 @@ module.exports = {
         '@typescript-eslint/space-before-function-paren': 'off',
         '@typescript-eslint/member-delimiter-style': 'off',
         '@typescript-eslint/restrict-template-expressions': 'off',
-        '@typescript-eslint/indent': 'off'
+        '@typescript-eslint/indent': 'off',
+        '@typescript-eslint/no-misused-promises': 'off'
       }
     }
   ],
