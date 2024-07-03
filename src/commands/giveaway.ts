@@ -6,7 +6,8 @@ import {
   EmbedBuilder,
   GuildMember,
   SlashCommandBuilder,
-  PermissionFlagsBits
+  PermissionFlagsBits,
+  Colors
 } from 'discord.js'
 import ms from 'ms'
 import LogManager from '../logger/logger'
@@ -34,7 +35,7 @@ export default {
     const giveawayBy = interaction.member as GuildMember
     const giveawayTime = ms(interaction.options.get('time', false)?.value?.toString() ?? '24h') || ms('24h')
     const giveawayItem = interaction.options.get('item', true).value?.toString() ?? 'nothing'
-    const timestap = Math.floor((new Date().getTime() + giveawayTime) / 1000)
+    const timestamp = Math.floor((new Date().getTime() + giveawayTime) / 1000)
     const giveawayMessage = await interaction.reply({
       ephemeral: false,
       components: [
@@ -51,11 +52,10 @@ export default {
           .setTitle('Neues Giveaway')
           .addFields(
             { name: 'Gewinn:', value: giveawayItem },
-            { name: 'Endet:', value: `<t:${timestap}:R> <t:${timestap}:d> <t:${timestap}:T>` },
+            { name: 'Endet:', value: `<t:${timestamp}:R> - <t:${timestamp}>` },
             { name: 'Teilnehmer:', value: '0' }
           )
-          .setFooter({ iconURL: interaction.client.user?.avatarURL() ?? undefined, text: 'PlaceholderBot' })
-          .setTimestamp(timestap)
+          .setColor(Colors.Green)
       ],
       fetchReply: true
     })
@@ -67,7 +67,7 @@ export default {
         interaction.member?.user.id ?? '<ERROR>',
         giveawayItem,
         GIVEAWAY_STATUS.OPENED,
-        timestap * 1000,
+        timestamp * 1000,
         channelId,
         giveawayBy.displayName,
         giveawayBy.avatarURL()
