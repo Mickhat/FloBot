@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, CommandInteraction, EmbedBuilder, GuildMember, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
+import { ChatInputCommandInteraction, EmbedBuilder, GuildMember, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js'
 import LogManager from '../logger/logger'
 import { AsyncDatabase } from '../sqlite/sqlite'
 

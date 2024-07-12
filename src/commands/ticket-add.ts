@@ -1,4 +1,4 @@
-import { ChannelType, ChatInputCommandInteraction, CommandInteraction, SlashCommandBuilder } from 'discord.js'
+import { ChannelType, ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js'
 
 export default {
   data: new SlashCommandBuilder()

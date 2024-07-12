@@ -1,8 +1,6 @@
 import {
   ChatInputCommandInteraction,
-  Colors,
-  CommandInteraction,
-  EmbedBuilder,
+  Colors, EmbedBuilder,
   GuildMember,
   PermissionFlagsBits,
   SlashCommandBuilder
