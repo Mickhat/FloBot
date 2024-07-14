@@ -1,6 +1,6 @@
 import {
+  ChatInputCommandInteraction,
   Colors,
-  CommandInteraction,
   EmbedBuilder,
   GuildMember,
   PermissionFlagsBits,
@@ -17,7 +17,7 @@ export default {
     .addUserOption((opt) =>
       opt.setName('target').setDescription('Die Person, dessen Historie eingesehen werden soll').setRequired(true)
     ),
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const target = interaction.options.getMember('target') as GuildMember
     const logger = LogManager.getInstance().logger('HistoryCommand')
     const db = await AsyncDatabase.open()

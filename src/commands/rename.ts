@@ -1,7 +1,6 @@
 import {
-  Colors,
-  CommandInteraction,
-  EmbedBuilder,
+  ChatInputCommandInteraction,
+  Colors, EmbedBuilder,
   GuildMember,
   PermissionFlagsBits,
   SlashCommandBuilder
@@ -21,7 +20,7 @@ export default {
     .addUserOption((opt) =>
       opt.setName('target').setDescription('Die Person, dessen Name geändert werden soll').setRequired(true)
     ),
-  async execute(interaction: CommandInteraction): Promise<void> {
+  async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const user = interaction.options.getMember('target') as GuildMember
     const userid = user.id
 

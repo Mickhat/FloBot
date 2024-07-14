@@ -1,7 +1,6 @@
 import {
-  Colors,
-  CommandInteraction,
-  EmbedBuilder,
+  ChatInputCommandInteraction,
+  Colors, EmbedBuilder,
   GuildMember,
   PermissionFlagsBits,
   SlashCommandBuilder
@@ -19,7 +18,7 @@ export default {
       opt.setName('target').setDescription('Die Person, die verwarnt werden soll').setRequired(true)
     )
     .addStringOption((opt) => opt.setName('reason').setDescription('Der Grund für den /warn').setRequired(true)),
-  async execute(interaction: CommandInteraction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const logger = LogManager.getInstance().logger('WarnCommand')
     const db = await AsyncDatabase.open()
     if (!db) {
