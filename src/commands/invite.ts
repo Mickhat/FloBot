@@ -1,7 +1,10 @@
-import { ChannelType, Colors, CommandInteraction, EmbedBuilder } from 'discord.js'
+import { ChannelType, Colors, CommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js'
 import { LogManager } from '../logger/logger'
 
 export default {
+  data: new SlashCommandBuilder()
+    .setName('invite')
+    .setDescription('Generiert einen Einladungslink für diesen Server'),
   async execute(interaction: CommandInteraction): Promise<void> {
     const logger = LogManager.getInstance().logger('InviteCommand')
     try {
