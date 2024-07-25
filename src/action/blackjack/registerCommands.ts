@@ -1,4 +1,3 @@
-import { SlashCommandBuilder } from '@discordjs/builders'
 import { getHighscoreSubCommand } from './slashCommands/Highscore'
 import { getPlaySubCommand } from './slashCommands/Play'
 import { getScoreSubCommand } from './slashCommands/Score'
@@ -8,19 +7,9 @@ import { getDoubleSubCommand } from './slashCommands/Double'
 import { getStandSubCommand } from './slashCommands/Stand'
 import { getHitSubCommand } from './slashCommands/Hit'
 import { getHelpSubCommand } from './slashCommands/Help'
+import { SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from 'discord.js'
 
-export const registerBlackJackCommands = (): Omit<
-  SlashCommandBuilder,
-  | 'addBooleanOption'
-  | 'addUserOption'
-  | 'addChannelOption'
-  | 'addRoleOption'
-  | 'addAttachmentOption'
-  | 'addMentionableOption'
-  | 'addStringOption'
-  | 'addIntegerOption'
-  | 'addNumberOption'
-> => {
+export const registerBlackJackCommands = (): SlashCommandSubcommandsOnlyBuilder => {
   return new SlashCommandBuilder()
     .setName('bj')
     .setDescription('Learn the BlackJack rules on Discord to join a CodingGame!')
