@@ -7,32 +7,32 @@ const greetings = [
   'Good Morning',
   'Good Day',
   'Good Evening',
-  'Hallo',          // german for hello
-  'Moin',           // northern german for hello
-  'Moinsen',        // northern german for hello
-  'Servus',         // austrian/bavarian for hello
-  'Grüß Gott',      // bavarian for hello
-  'Grüß dich',      // bavarian for hello
-  'Grüß di',        // bavarian for hello
+  'Hallo', // german for hello
+  'Moin', // northern german for hello
+  'Moinsen', // northern german for hello
+  'Servus', // austrian/bavarian for hello
+  'Grüß Gott', // bavarian for hello
+  'Grüß dich', // bavarian for hello
+  'Grüß di', // bavarian for hello
   'Guten Morgen',
   'Guten Tag',
   'Guten Abend',
   'Wuhu',
   'Nabend',
-  'Gumo',           // Short for Guten Morgen
+  'Gumo', // Short for Guten Morgen
   'Tach',
-  'Aloha',          // hawaiian for hello
-  'Hola',           // spanish for hello
+  'Aloha', // hawaiian for hello
+  'Hola', // spanish for hello
   'Ciao',
   'Hej',
   'Hei',
-  'Konichiwa',      // japanese for good afternoon
-  'Konnichiwa',     // japanese for good afternoon (alternative spelling)
-  'Annyeong',       // korean for hello
+  'Konichiwa', // japanese for good afternoon
+  'Konnichiwa', // japanese for good afternoon (alternative spelling)
+  'Annyeong', // korean for hello
   'Annyeonghaseyo', // korean for hello
-  'Bonjour',        // french for good morning
-  'Salut',          // french for hi
-  'Salve',          // latin for hello
+  'Bonjour', // french for good morning
+  'Salut', // french for hi
+  'Salve', // latin for hello
 ]
 
 const sleepings = ['gute nacht', 'nachti', 'schlaft gut', 'gn8']
