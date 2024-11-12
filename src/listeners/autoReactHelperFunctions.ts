@@ -32,7 +32,7 @@ const greetings = [
   'Annyeonghaseyo', // korean for hello
   'Bonjour', // french for good morning
   'Salut', // french for hi
-  'Salve', // latin for hello
+  'Salve' // latin for hello
 ]
 
 const sleepings = ['gute nacht', 'nachti', 'schlaft gut', 'gn8']
