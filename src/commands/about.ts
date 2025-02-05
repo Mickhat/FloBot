@@ -42,7 +42,8 @@ export default {
 
     try {
       await interaction.reply({
-        embeds: [aboutEmbed]
+        embeds: [aboutEmbed],
+        ephemeral: true
       })
       logger.logSync('INFO', 'About-info gesendet.')
     } catch (err) {
